@@ -21,7 +21,7 @@ function LessonView({
 }: LessonViewProps) {
   const [correctCount, setCorrectCount] = useState(0);
   const currentExercise = lesson.exercises[exerciseIndex];
-  const progress = ((exerciseIndex) / lesson.exercises.length) * 100;
+  const progress = ((exerciseIndex + 1) / lesson.exercises.length) * 100;
 
   const handleCorrect = () => {
     setCorrectCount(prev => prev + 1);
@@ -62,6 +62,7 @@ function LessonView({
       <div className="lesson-content">
         <ExerciseCard
           exercise={currentExercise}
+          exerciseIndex={exerciseIndex}
           onCorrect={handleCorrect}
           onIncorrect={handleIncorrect}
           isLastExercise={isLastExercise}
