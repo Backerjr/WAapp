@@ -93,4 +93,10 @@ Sample content covers:
 npm run dev      # Start development server
 npm run build    # Build for production
 npm run preview  # Preview production build
+npm run start    # Build and serve the production bundle with the Node static server
 ```
+
+## Hosting / Deployment
+- Run `npm run start` locally to build the app and launch the lightweight Node server that serves the static assets from the `dist/` folder on port `4173` (configurable via the `PORT` env var).
+- For cloud hosting providers (Railway, Render, Fly.io, etc.), set the start command to `npm run start`; the server automatically respects the port assigned in `process.env.PORT`.
+- Remember to set `NODE_VERSION` (or the provider equivalent) to a Node LTS release (e.g., `20.x`) for best compatibility.
