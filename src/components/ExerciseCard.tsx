@@ -10,10 +10,9 @@ interface ExerciseCardProps {
   exerciseIndex: number;
   onCorrect: () => void;
   onIncorrect: () => void;
-  isLastExercise: boolean;
 }
 
-function ExerciseCard({ exercise, exerciseIndex, onCorrect, onIncorrect, isLastExercise }: ExerciseCardProps) {
+function ExerciseCard({ exercise, exerciseIndex, onCorrect, onIncorrect }: ExerciseCardProps) {
   const [showResult, setShowResult] = useState<'correct' | 'incorrect' | null>(null);
   const [showHint, setShowHint] = useState(false);
 
