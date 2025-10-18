@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { Lesson } from '../types';
 import ExerciseCard from './ExerciseCard';
 
@@ -11,21 +10,18 @@ interface LessonViewProps {
   onNextExercise: (index: number) => void;
 }
 
-function LessonView({ 
-  lesson, 
-  exerciseIndex, 
-  onComplete, 
+function LessonView({
+  lesson,
+  exerciseIndex,
+  onComplete,
   onLoseHeart,
   onExit,
-  onNextExercise 
+  onNextExercise
 }: LessonViewProps) {
-  const [correctCount, setCorrectCount] = useState(0);
   const currentExercise = lesson.exercises[exerciseIndex];
   const progress = ((exerciseIndex + 1) / lesson.exercises.length) * 100;
 
   const handleCorrect = () => {
-    setCorrectCount(prev => prev + 1);
-    
     if (exerciseIndex < lesson.exercises.length - 1) {
       setTimeout(() => {
         onNextExercise(exerciseIndex + 1);
@@ -45,8 +41,6 @@ function LessonView({
     return null;
   }
 
-  const isLastExercise = exerciseIndex === lesson.exercises.length - 1;
-
   return (
     <div className="lesson-view">
       <div className="lesson-header">
@@ -65,7 +59,6 @@ function LessonView({
           exerciseIndex={exerciseIndex}
           onCorrect={handleCorrect}
           onIncorrect={handleIncorrect}
-          isLastExercise={isLastExercise}
         />
       </div>
     </div>
