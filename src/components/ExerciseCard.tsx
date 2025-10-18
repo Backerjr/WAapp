@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Exercise } from '../types';
 import MultipleChoice from './exercises/MultipleChoice';
 import TypeAnswer from './exercises/TypeAnswer';
@@ -7,14 +7,20 @@ import ListenAndType from './exercises/ListenAndType';
 
 interface ExerciseCardProps {
   exercise: Exercise;
+  exerciseIndex: number;
   onCorrect: () => void;
   onIncorrect: () => void;
   isLastExercise: boolean;
 }
 
-function ExerciseCard({ exercise, onCorrect, onIncorrect, isLastExercise }: ExerciseCardProps) {
+function ExerciseCard({ exercise, exerciseIndex, onCorrect, onIncorrect, isLastExercise }: ExerciseCardProps) {
   const [showResult, setShowResult] = useState<'correct' | 'incorrect' | null>(null);
   const [showHint, setShowHint] = useState(false);
+
+  useEffect(() => {
+    setShowResult(null);
+    setShowHint(false);
+  }, [exerciseIndex]);
 
   const handleSubmit = (isCorrect: boolean) => {
     setShowResult(isCorrect ? 'correct' : 'incorrect');
