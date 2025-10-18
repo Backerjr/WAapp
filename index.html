@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Personal Blog</title>
+    <link href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css" rel="stylesheet" />
+  </head>
+  <body>
+    <nav class="container-fluid">
+      <ul>
+        <li><strong>My Blog</strong></li>
+      </ul>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Posts</a></li>
+        <li><a href="#" role="button">Subscribe</a></li>
+      </ul>
+    </nav>
+
+    <main class="container">
+      <div class="grid">
+        <section>
+          <hgroup>
+            <h2>Welcome to My Blog</h2>
+            <h3>Thoughts, stories, and ideas</h3>
+          </hgroup>
+          <p>Hello and welcome to my little space on the internet. I share insights, personal experiences, and inspiration here weekly. Grab a cup of coffee and enjoy the read.</p>
+          <figure>
+            <img src="https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?fit=crop&w=1200&q=80" alt="Cozy workspace" />
+            <figcaption><a href="https://unsplash.com/photos/5QgIuuBxKwM" target="_blank">Image via Unsplash</a></figcaption>
+          </figure>
+
+          <h3>About Me</h3>
+          <p>Hi! I’m a writer, creator, and full-time coffee enthusiast. This blog is a place for me to share everything from daily thoughts to deep dives on topics I love.</p>
+
+          <h3>Latest Post</h3>
+          <p>“The Quiet Power of Morning Routines” – Learn how starting your day with intention can change your mindset and improve productivity.</p>
+          <figure>
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?fit=crop&w=1200&q=80" alt="Nature for blog post" />
+            <figcaption><a href="https://unsplash.com/photos/GkCzAYOybm8" target="_blank">Image via Unsplash</a></figcaption>
+          </figure>
+        </section>
+      </div>
+    </main>
+
+    <section aria-label="Subscribe example">
+      <div class="container">
+        <article>
+          <hgroup>
+            <h2>Stay in the Loop</h2>
+            <h3>Subscribe to get new blog posts straight to your inbox.</h3>
+          </hgroup>
+          <form class="grid">
+            <input type="text" id="firstname" name="firstname" placeholder="First name" aria-label="First name" required />
+            <input type="email" id="email" name="email" placeholder="Email address" aria-label="Email address" required />
+            <button type="submit" onclick="event.preventDefault()">Subscribe</button>
+          </form>
+        </article>
+      </div>
+    </section>
+
+    <footer class="container">
+      <small><a href="#">Privacy Policy</a> • <a href="#">Contact</a></small>
+    </footer>
+  </body>
+</html>
