@@ -47,6 +47,11 @@ CI / GHCR notes
 - The workflow builds the production `dist/` and then builds `Dockerfile.nginx` and pushes an image to `ghcr.io/<owner>/rozmowa:latest` and a SHA-tagged image.
 - The workflow uses the repository `GITHUB_TOKEN` for authentication; ensure `permissions.packages: write` is allowed (the workflow sets this).
 
+GHCR / secrets guidance
+
+- The CI uses the `GITHUB_TOKEN` by default. In some organizations this token may not have package write or visibility privileges. If you run into permission errors, create a Personal Access Token (PAT) with the `read:packages`,`write:packages` and `delete:packages` scopes and add it to repository secrets as `GHCR_PAT`, then update the workflow to use that secret instead of `GITHUB_TOKEN` for `docker/login-action`.
+- The workflow includes a best-effort step to set the package visibility to `public` via the GitHub API. If that fails, you can set package visibility manually in GitHub Packages UI.
+
 Running tests locally
 
 ```bash

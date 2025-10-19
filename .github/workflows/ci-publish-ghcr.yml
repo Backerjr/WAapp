@@ -54,29 +54,83 @@ jobs:
           context: .
           file: Dockerfile.nginx
           push: true
+          load: true
           platforms: linux/amd64
           tags: |
             ghcr.io/${{ github.repository_owner }}/rozmowa:latest
             ghcr.io/${{ github.repository_owner }}/rozmowa:${{ github.sha }}
 
-      - name: Smoke test the pushed image
+      - name: Smoke test (local built image)
         env:
           IMAGE: ghcr.io/${{ github.repository_owner }}/rozmowa:latest
         run: |
-          echo "Pulling image $IMAGE"
-          docker pull "$IMAGE" || true
-          echo "Starting container from $IMAGE"
+          IMAGE="$IMAGE"
+          echo "Starting container from local image tag $IMAGE"
           docker run -d --name rozmowa-ci -p 8080:80 "$IMAGE"
 
-          echo "Waiting for HTTP 200 from container..."
-          for i in $(seq 1 15); do
-            if curl -sS --max-time 2 http://localhost:8080 | grep -q '<div id="root">'; then
-              echo "Smoke test passed"
-              break
+          echo "Waiting for port 8080 to accept TCP connections..."
+          ok=false
+          for i in $(seq 1 12); do
+            # prefer nc if available
+            if command -v nc >/dev/null 2>&1; then
+              if nc -z -w 1 localhost 8080; then
+                ok=true; break
+              fi
+            else
+              # fallback to curl with short timeout
+              if curl -sS --max-time 2 http://localhost:8080 >/dev/null 2>&1; then
+                ok=true; break
+              fi
             fi
-            echo "Retry $i..."
             sleep 1
+            echo "retry $i"
           done
 
-          docker logs rozmowa-ci || true
+          if [ "$ok" != "true" ]; then
+            echo "Smoke test failed: port not accepting connections"
+            docker logs rozmowa-ci || true
+            docker rm -f rozmowa-ci || true
+            exit 1
+          fi
+
+          echo "Smoke test passed (TCP open)"
           docker rm -f rozmowa-ci || true
+
+  make-ghcr-public:
+    name: Attempt to make GHCR package public
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: always()
+    steps:
+      - name: Try to set package visibility (org then user)
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const pkg = 'rozmowa';
+            const tryEndpoints = [
+              `PUT /orgs/${owner}/packages/container/${pkg}/visibility`,
+              `PUT /user/packages/container/${pkg}/visibility`
+            ];
+
+            for (const ep of tryEndpoints) {
+              try {
+                core.info(`Trying ${ep}`);
+                const parts = ep.split(' ');
+                const method = parts[0];
+                const path = parts[1];
+                await github.request({
+                  method,
+                  url: path,
+                  data: { visibility: 'public' }
+                });
+                core.info(`Set visibility via ${ep}`);
+                break;
+              } catch (e) {
+                core.warning(`Failed ${ep}: ${e.message}`);
+              }
+            }
+        env:
+          # If GITHUB_TOKEN lacks permissions for packages, set a PAT in repo secrets named GHCR_PAT
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
