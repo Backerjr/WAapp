@@ -89,6 +89,22 @@ Release workflow
 
 - A separate workflow `.github/workflows/release-publish.yml` will build and publish images to GHCR when a GitHub Release is published. The release image is tagged with the release tag (`ghcr.io/<owner>/rozmowa:<release-tag>`).
 
+Image tags in CI
+
+- The CI publishes two images to GHCR per push:
+	- `ghcr.io/<owner>/rozmowa:nginx-latest` and `ghcr.io/<owner>/rozmowa:nginx-<sha>`
+	- `ghcr.io/<owner>/rozmowa:caddy-latest` and `ghcr.io/<owner>/rozmowa:caddy-<sha>`
+
+Local test of published images (pull & run):
+
+```bash
+docker pull ghcr.io/<owner>/rozmowa:nginx-latest
+docker run -p 8080:80 --rm ghcr.io/<owner>/rozmowa:nginx-latest
+
+docker pull ghcr.io/<owner>/rozmowa:caddy-latest
+docker run -p 8081:80 --rm ghcr.io/<owner>/rozmowa:caddy-latest
+```
+
 Notes & gotchas
 
 - Browser-only APIs: some exercises rely on `window.speechSynthesis`. Guard or mock those when running on Node or in SSR environments.
