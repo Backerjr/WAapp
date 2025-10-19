@@ -52,6 +52,12 @@ GHCR / secrets guidance
 - The CI uses the `GITHUB_TOKEN` by default. In some organizations this token may not have package write or visibility privileges. If you run into permission errors, create a Personal Access Token (PAT) with the `read:packages`,`write:packages` and `delete:packages` scopes and add it to repository secrets as `GHCR_PAT`, then update the workflow to use that secret instead of `GITHUB_TOKEN` for `docker/login-action`.
 - The workflow includes a best-effort step to set the package visibility to `public` via the GitHub API. If that fails, you can set package visibility manually in GitHub Packages UI.
 
+Create a `GHCR_PAT` secret
+
+1. Create a PAT at https://github.com/settings/tokens with scopes: read:packages, write:packages, delete:packages
+2. Go to your repo -> Settings -> Secrets and variables -> Actions -> New repository secret. Name it `GHCR_PAT` and paste the PAT value.
+3. The CI will automatically prefer `GHCR_PAT` when present.
+
 Running tests locally
 
 ```bash
