@@ -58,6 +58,12 @@ Create a `GHCR_PAT` secret
 2. Go to your repo -> Settings -> Secrets and variables -> Actions -> New repository secret. Name it `GHCR_PAT` and paste the PAT value.
 3. The CI will automatically prefer `GHCR_PAT` when present.
 
+Create a `GH_PAGES_PAT` secret (for GitHub Pages publishing)
+
+1. Create a PAT at https://github.com/settings/tokens with scopes: repo (or at least repo:status, repo_deployment, repo) and workflow permissions as needed.
+2. Go to your repo -> Settings -> Secrets and variables -> Actions -> New repository secret. Name it `GH_PAGES_PAT` and paste the PAT value.
+3. The `.github/workflows/gh-pages.yml` workflow uses this secret to push the built `dist/` to the `gh-pages` branch.
+
 Running tests locally
 
 ```bash
