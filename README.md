@@ -64,6 +64,20 @@ docker run -p 8080:80 --rm rozmowa-nginx:local
 # open http://localhost:8080
 ```
 
+Caddy Docker image (even smaller + automatic TLS in other envs)
+
+Build and run locally:
+
+```bash
+docker build -f Dockerfile.caddy -t rozmowa-caddy:local .
+docker run -p 8081:80 --rm rozmowa-caddy:local
+# open http://localhost:8081
+```
+
+Release workflow
+
+- A separate workflow `.github/workflows/release-publish.yml` will build and publish images to GHCR when a GitHub Release is published. The release image is tagged with the release tag (`ghcr.io/<owner>/rozmowa:<release-tag>`).
+
 Notes & gotchas
 
 - Browser-only APIs: some exercises rely on `window.speechSynthesis`. Guard or mock those when running on Node or in SSR environments.

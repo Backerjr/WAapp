@@ -58,3 +58,25 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/rozmowa:latest
             ghcr.io/${{ github.repository_owner }}/rozmowa:${{ github.sha }}
+
+      - name: Smoke test the pushed image
+        env:
+          IMAGE: ghcr.io/${{ github.repository_owner }}/rozmowa:latest
+        run: |
+          echo "Pulling image $IMAGE"
+          docker pull "$IMAGE" || true
+          echo "Starting container from $IMAGE"
+          docker run -d --name rozmowa-ci -p 8080:80 "$IMAGE"
+
+          echo "Waiting for HTTP 200 from container..."
+          for i in $(seq 1 15); do
+            if curl -sS --max-time 2 http://localhost:8080 | grep -q '<div id="root">'; then
+              echo "Smoke test passed"
+              break
+            fi
+            echo "Retry $i..."
+            sleep 1
+          done
+
+          docker logs rozmowa-ci || true
+          docker rm -f rozmowa-ci || true
