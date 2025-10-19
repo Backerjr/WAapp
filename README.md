@@ -40,7 +40,29 @@ docker run -p 4173:4173 --rm rozmowa:latest
 
 GitHub Actions (auto-deploy)
 
-This repository contains a workflow `.github/workflows/gh-pages.yml` which builds the project and deploys the `dist/` folder to the `gh-pages` branch on push to `replit-agent` (the repo's current default branch). The workflow uses the built-in `GITHUB_TOKEN` so no extra secrets are required for basic publishing.
+This repository contains a workflow `.github/workflows/ci-publish-ghcr.yml` which runs tests, builds the production bundle and publishes an nginx-based Docker image to GitHub Container Registry (GHCR) on push to `replit-agent`.
+
+CI / GHCR notes
+
+- The workflow builds the production `dist/` and then builds `Dockerfile.nginx` and pushes an image to `ghcr.io/<owner>/rozmowa:latest` and a SHA-tagged image.
+- The workflow uses the repository `GITHUB_TOKEN` for authentication; ensure `permissions.packages: write` is allowed (the workflow sets this).
+
+Running tests locally
+
+```bash
+npm ci
+npm test
+```
+
+Nginx Docker image (smaller static server)
+
+Build and run locally:
+
+```bash
+docker build -f Dockerfile.nginx -t rozmowa-nginx:local .
+docker run -p 8080:80 --rm rozmowa-nginx:local
+# open http://localhost:8080
+```
 
 Notes & gotchas
 

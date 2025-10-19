@@ -19,6 +19,7 @@
     "vite": "^7.1.10"
   },
   "devDependencies": {
+    "jsdom": "^22.1.0",
     "vitest": "^1.6.1"
   }
 }
