@@ -11,10 +11,10 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout (use PAT for push)
+      - name: Checkout (use GITHUB_TOKEN)
         uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          persist-credentials: true
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -27,8 +27,8 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Deploy to gh-pages (use PAT)
+      - name: Deploy to gh-pages (use GITHUB_TOKEN)
         uses: peaceiris/actions-gh-pages@v3
         with:
-          personal_token: ${{ secrets.GH_PAGES_PAT }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
