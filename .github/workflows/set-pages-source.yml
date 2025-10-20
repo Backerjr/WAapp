@@ -31,7 +31,7 @@ jobs:
             }
       
       - name: Set Pages source to gh-pages root (use PAT if available)
-        if: ${{ steps.check-branch.outputs.exists == 'true' && secrets.GH_PAGES_PAT != '' }}
+        if: steps.check-branch.outputs.exists == 'true' && secrets.GH_PAGES_PAT != ''
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GH_PAGES_PAT }}
@@ -50,7 +50,7 @@ jobs:
             }
       
       - name: Set Pages source to gh-pages root (fallback to GITHUB_TOKEN)
-        if: ${{ steps.check-branch.outputs.exists == 'true' && secrets.GH_PAGES_PAT == '' }}
+        if: steps.check-branch.outputs.exists == 'true' && secrets.GH_PAGES_PAT == ''
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -69,7 +69,7 @@ jobs:
             }
       
       - name: Branch does not exist
-        if: ${{ steps.check-branch.outputs.exists == 'false' }}
+        if: steps.check-branch.outputs.exists == 'false'
         run: |
           echo "❌ The gh-pages branch does not exist yet."
           echo "Please run the 'Build and deploy' workflow first to create the gh-pages branch."
