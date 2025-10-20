@@ -1,0 +1,30 @@
+name: Set Pages source (one-off)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  set-pages-source:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Pages source to gh-pages root
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            try {
+              await github.request('PATCH /repos/{owner}/{repo}/pages', {
+                owner,
+                repo,
+                source: { branch: 'gh-pages', path: '/' }
+              });
+              core.info('Pages source set to gh-pages /');
+            } catch (e) {
+              core.setFailed(`Failed to set Pages source: ${e.message}`);
+            }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAGES_PAT }}
