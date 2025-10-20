@@ -27,15 +27,7 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Deploy to gh-pages (use GH_PAGES_PAT if present)
-        if: secrets.GH_PAGES_PAT != ''
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          personal_token: ${{ secrets.GH_PAGES_PAT }}
-          publish_dir: ./dist
-
-      - name: Deploy to gh-pages (fallback to GITHUB_TOKEN)
-        if: secrets.GH_PAGES_PAT == ''
+      - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
