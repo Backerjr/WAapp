@@ -371,3 +371,14 @@
 .wall-post:first-child {
   animation: pin-drop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+
+/* Interface for Wall Post */
+
+interface WallPost {
+  id: string;              // Unique identifier
+  content: string;         // Post message (max 500 chars)
+  author: string;          // Person's name
+  tag: 'student-win' | 'challenge' | 'idea' | 'highlight';
+  createdAt: number;       // Timestamp
+  expiresAt: number;       // Auto-calculated (7 days)
+}
