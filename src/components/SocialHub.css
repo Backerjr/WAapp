@@ -1,51 +1,118 @@
-/* Social Hub Styles */
+/* Enhanced Social Hub Styles with Glassmorphism */
 
 .social-hub {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding: 1.5rem;
-  max-width: 800px;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 900px;
   margin: 0 auto;
+  position: relative;
+}
+
+/* Enhanced Glassmorphism Background */
+.social-hub::before {
+  content: '';
+  position: absolute;
+  top: -15%;
+  left: -15%;
+  right: -15%;
+  bottom: -15%;
+  background: 
+    radial-gradient(circle at 30% 30%, var(--color-primary-light) 0%, transparent 40%),
+    radial-gradient(circle at 70% 70%, var(--color-accent-light) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, var(--color-secondary-light) 0%, transparent 40%);
+  opacity: 0.08;
+  z-index: -1;
+  animation: gentle-pulse 10s ease-in-out infinite;
 }
 
 .social-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--glass-white);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: var(--shadow-glass);
+  animation: slide-in-up 0.6s ease-out;
 }
 
 .social-header h2 {
   font-family: 'Playfair Display', serif;
-  font-size: 2rem;
-  color: var(--text-primary);
+  font-size: 2.5rem;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin: 0;
+  position: relative;
+}
+
+.social-header h2::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: 2px;
+  animation: shimmer 2s ease-in-out infinite;
 }
 
 .share-btn {
-  background: linear-gradient(135deg, var(--accent-lavender), var(--accent-lavender-dark));
-  color: white;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 20px;
+  background: var(--glass-lavender);
+  border: 1px solid var(--glass-border);
+  color: var(--color-primary);
+  padding: 1rem 2rem;
+  border-radius: var(--radius-xl);
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 0.9rem;
+  transition: all var(--transition-smooth);
+  font-size: 1rem;
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: var(--shadow-glass);
+  position: relative;
+  overflow: hidden;
+}
+
+.share-btn::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: rotate(45deg);
+  transition: all var(--transition-smooth);
+  opacity: 0;
 }
 
 .share-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(196, 181, 253, 0.4);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: var(--shadow-glass-hover);
+  border-color: var(--color-primary);
+}
+
+.share-btn:hover::before {
+  opacity: 1;
+  animation: shimmer 1s ease-in-out;
 }
 
 .social-tabs {
   display: flex;
-  background: var(--bg-secondary);
-  border-radius: 12px;
-  padding: 0.5rem;
-  border: 1px solid var(--border-color);
+  background: var(--glass-white);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: 0.75rem;
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: var(--shadow-glass);
+  animation: slide-in-up 0.8s ease-out 0.2s both;
 }
 
 .tab-btn {
