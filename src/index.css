@@ -1,24 +1,40 @@
 :root {
-  --color-primary: #58cc02;
-  --color-primary-dark: #46a302;
-  --color-secondary: #1cb0f6;
-  --color-danger: #ff4b4b;
-  --color-warning: #ffc800;
-  --color-bg: #f7f7f7;
-  --color-white: #ffffff;
-  --color-text: #3c3c3c;
-  --color-text-light: #777;
-  --color-border: #e5e5e5;
-  --color-correct: #58cc02;
-  --color-incorrect: #ff4b4b;
+  /* Ivory Moonlight Theme */
+  --color-ivory: #FFFEF7;
+  --color-lavender-50: #F5F3FF;
+  --color-lavender: #E9D5FF;
+  --color-lavender-dark: #C4B5FD;
+  --color-gold: #D4AF37;
+  --color-silver: #C0C0C0;
+  --color-moonlight: #E8E4F3;
   
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
-  --shadow-md: 0 4px 8px rgba(0,0,0,0.12);
-  --shadow-lg: 0 8px 16px rgba(0,0,0,0.15);
+  /* Semantic Colors */
+  --color-primary: var(--color-lavender-dark);
+  --color-primary-dark: #A78BFA;
+  --color-secondary: var(--color-gold);
+  --color-danger: #FCA5A5;
+  --color-warning: #FCD34D;
+  --color-bg: var(--color-ivory);
+  --color-white: #FFFFFF;
+  --color-text: #4B4B4B;
+  --color-text-light: #8B8B8B;
+  --color-border: #E8E4F3;
+  --color-correct: #86EFAC;
+  --color-incorrect: #FCA5A5;
   
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
+  /* Shadows - soft and minimal */
+  --shadow-sm: 0 1px 3px rgba(139, 92, 246, 0.08);
+  --shadow-md: 0 4px 12px rgba(139, 92, 246, 0.1);
+  --shadow-lg: 0 12px 24px rgba(139, 92, 246, 0.12);
+  --shadow-glow: 0 0 20px rgba(233, 213, 255, 0.3);
+  
+  /* Border Radius - rounded and soft */
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  
+  /* Transitions */
+  --transition-smooth: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -27,49 +43,95 @@
   box-sizing: border-box;
 }
 
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--color-bg);
+  background: linear-gradient(135deg, var(--color-ivory) 0%, var(--color-lavender-50) 50%, var(--color-white) 100%);
+  background-size: 400% 400%;
+  animation: gradient-shift 20s ease infinite;
   color: var(--color-text);
-  line-height: 1.6;
+  line-height: 1.7;
+  font-weight: 400;
 }
 
 #root {
   min-height: 100vh;
+  opacity: 0;
+  animation: fade-in 0.6s ease forwards;
 }
 
 button {
-  font-family: inherit;
+  font-family: 'Inter', sans-serif;
   cursor: pointer;
   border: none;
   outline: none;
-  transition: all 0.2s ease;
+  transition: var(--transition-smooth);
+  font-weight: 500;
 }
 
 button:disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 input {
-  font-family: inherit;
+  font-family: 'Inter', sans-serif;
   outline: none;
-  border: 2px solid var(--color-border);
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
   border-radius: var(--radius-sm);
-  padding: 12px 16px;
+  padding: 14px 18px;
   font-size: 16px;
-  transition: border-color 0.2s;
+  transition: var(--transition-smooth);
+  color: var(--color-text);
+}
+
+input:hover {
+  border-color: var(--color-lavender);
+  background: rgba(255, 255, 255, 0.7);
 }
 
 input:focus {
-  border-color: var(--color-secondary);
+  border-color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0 3px rgba(196, 181, 253, 0.1);
 }
 
 h1, h2, h3, h4 {
+  font-family: 'Playfair Display', serif;
   color: var(--color-text);
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
 }

@@ -92,11 +92,18 @@ function App() {
       <Header progress={progress} />
       
       {!currentLesson ? (
-        <SkillTree 
-          units={skillTree} 
-          progress={progress}
-          onStartLesson={startLesson}
-        />
+        <>
+          <SkillTree 
+            units={skillTree} 
+            progress={progress}
+            onStartLesson={startLesson}
+          />
+          <footer className="app-footer">
+            <p className="footer-dedication">
+              Dedicated to the one who teaches the world how to listen.
+            </p>
+          </footer>
+        </>
       ) : (
         <LessonView
           lesson={currentLesson}

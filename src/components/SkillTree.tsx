@@ -10,8 +10,8 @@ function SkillTree({ units, progress, onStartLesson }: SkillTreeProps) {
   return (
     <main className="skill-tree">
       <div className="skill-tree-header">
-        <h2>Twoja Ścieżka Nauki</h2>
-        <p>Wybierz lekcję, aby rozpocząć naukę</p>
+        <h2>Words Between Worlds</h2>
+        <p>Where every conversation leaves a trace of light.</p>
       </div>
 
       {units.map((unit, unitIndex) => {
@@ -43,13 +43,13 @@ function SkillTree({ units, progress, onStartLesson }: SkillTreeProps) {
                     disabled={isLocked}
                   >
                     <div className="lesson-icon">
-                      {isLocked ? '🔒' : isCompleted ? '✅' : '📚'}
+                      {isLocked ? '🔒' : isCompleted ? '✨' : '🌙'}
                     </div>
                     <div className="lesson-info">
                       <h4>{lesson.title_pl}</h4>
                       <p className="lesson-subtitle">{lesson.title_en}</p>
                       <div className="lesson-meta">
-                        <span>⭐ {lesson.xp} XP</span>
+                        <span>✨ {lesson.xp} XP</span>
                         <span>📝 {lesson.exercises.length} ćwiczeń</span>
                       </div>
                     </div>
