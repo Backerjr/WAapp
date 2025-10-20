@@ -177,7 +177,7 @@ jobs:
       - name: Set Pages source to gh-pages root
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GH_PAGES_PAT }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const owner = context.repo.owner;
             const repo = context.repo.repo;
