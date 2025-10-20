@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react';
 import { Progress } from '../../types';
-import AddLessonModal from './AddLessonModal';
-import UploadAudioTool from './UploadAudioTool';
-import TeacherDashboard from './TeacherDashboard';
+import AddLessonModal from './AddLessonModal.tsx';
+import UploadAudioTool from './UploadAudioTool.tsx';
+import TeacherDashboard from './TeacherDashboard.tsx';
 import './TeacherTools.css';
 
 interface TeacherToolsProps {

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Progress } from '../types';
-import QuoteOfTheDay from './elegant/QuoteOfTheDay';
-import InteractiveAudio from './elegant/InteractiveAudio';
-import ConversationStarter from './elegant/ConversationStarter';
-import TeacherTools from './elegant/TeacherTools';
-import GlowingProgress from './elegant/GlowingProgress';
+import QuoteOfTheDay from './elegant/QuoteOfTheDay.tsx';
+import InteractiveAudio from './elegant/InteractiveAudio.tsx';
+import ConversationStarter from './elegant/ConversationStarter.tsx';
+import TeacherTools from './elegant/TeacherTools.tsx';
+import GlowingProgress from './elegant/GlowingProgress.tsx';
 import './elegant/ElegantDashboard.css';
 
 interface ElegantDashboardProps {
