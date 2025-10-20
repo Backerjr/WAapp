@@ -13,7 +13,13 @@ const INITIAL_PROGRESS: Progress = {
   xp: 0,
   streak: 1,
   hearts: 5,
-  lastActiveDate: new Date().toDateString()
+  lastActiveDate: new Date().toDateString(),
+  // Enhanced progression features
+  level: 1,
+  dailyGoal: 20, // 20 XP per day
+  dailyXP: 0,
+  achievements: [],
+  weeklyStreak: 0
 };
 
 const INITIAL_STATS: UserStats = {

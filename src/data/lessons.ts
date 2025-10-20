@@ -57,6 +57,25 @@ export const skillTree: Unit[] = [
             audioText: 'Nice to meet you',
             correctAnswer: 'nice to meet you',
             hint_pl: 'Zwrot używany przy pierwszym spotkaniu'
+          },
+          {
+            id: 'ex-1-1-6',
+            type: 'drag_words',
+            prompt_en: 'Arrange the words to form a greeting',
+            prompt_pl: 'Ułóż słowa w powitanie',
+            words: ['Good', 'morning', 'How', 'are', 'you'],
+            correctAnswer: 'Good morning How are you',
+            hint_pl: 'Powitanie na początek dnia + pytanie o samopoczucie'
+          },
+          {
+            id: 'ex-1-1-7',
+            type: 'fill_blanks',
+            prompt_en: 'Fill in the blanks to complete the conversation',
+            prompt_pl: 'Uzupełnij luki aby dokończyć rozmowę',
+            sentence: 'Hello! ___ are you? I am ___ thank you.',
+            blanks: ['How', 'fine'],
+            correctAnswer: 'How fine',
+            hint_pl: 'Podstawowa rozmowa powitalna'
           }
         ]
       },

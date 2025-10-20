@@ -4,6 +4,9 @@ import MultipleChoice from './exercises/MultipleChoice';
 import TypeAnswer from './exercises/TypeAnswer';
 import ListenAndSelect from './exercises/ListenAndSelect';
 import ListenAndType from './exercises/ListenAndType';
+import DragWords from './exercises/DragWords';
+import ImageMatch from './exercises/ImageMatch';
+import FillBlanks from './exercises/FillBlanks';
 
 interface ExerciseCardProps {
   exercise: Exercise;
@@ -38,6 +41,13 @@ function ExerciseCard({ exercise, exerciseIndex, onCorrect, onIncorrect }: Exerc
       showResult,
     };
 
+    // Props for new exercise types that don't use the standard pattern
+    const newExerciseProps = {
+      exercise,
+      onCorrect: () => handleSubmit(true),
+      onIncorrect: () => handleSubmit(false),
+    };
+
     switch (exercise.type) {
       case 'multiple_choice':
         return <MultipleChoice {...props} />;
@@ -47,6 +57,12 @@ function ExerciseCard({ exercise, exerciseIndex, onCorrect, onIncorrect }: Exerc
         return <ListenAndSelect {...props} />;
       case 'listen_and_type':
         return <ListenAndType {...props} />;
+      case 'drag_words':
+        return <DragWords {...newExerciseProps} />;
+      case 'image_match':
+        return <ImageMatch {...newExerciseProps} />;
+      case 'fill_blanks':
+        return <FillBlanks {...newExerciseProps} />;
       default:
         return <div>Unknown exercise type</div>;
     }

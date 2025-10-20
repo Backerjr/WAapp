@@ -2,7 +2,10 @@ export type ExerciseType =
   | 'multiple_choice' 
   | 'type_answer' 
   | 'listen_and_select'
-  | 'listen_and_type';
+  | 'listen_and_type'
+  | 'drag_words'
+  | 'image_match'
+  | 'fill_blanks';
 
 export interface Exercise {
   id: string;
@@ -13,6 +16,11 @@ export interface Exercise {
   correctAnswer: string;
   hint_pl?: string;
   audioText?: string;
+  // New exercise type fields
+  words?: string[];  // For drag_words: words to arrange
+  pairs?: { en: string; pl: string; image?: string }[];  // For image_match
+  sentence?: string;  // For fill_blanks: sentence with ___ placeholders
+  blanks?: string[];  // For fill_blanks: correct words for blanks
 }
 
 export interface Lesson {
@@ -37,6 +45,45 @@ export interface Progress {
   streak: number;
   hearts: number;
   lastActiveDate: string;
+  // Enhanced progression features
+  level: number;
+  dailyGoal: number;
+  dailyXP: number;
+  achievements: string[];
+  weeklyStreak: number;
+}
+
+export interface Achievement {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  requirement: number;
+  type: 'xp' | 'streak' | 'lessons' | 'perfect';
+  unlocked: boolean;
+}
+
+export interface SocialStats {
+  friends: Friend[];
+  leaderboard: LeaderboardEntry[];
+  publicProfile: boolean;
+}
+
+export interface Friend {
+  id: string;
+  name: string;
+  avatar: string;
+  xp: number;
+  streak: number;
+  level: number;
+}
+
+export interface LeaderboardEntry {
+  rank: number;
+  name: string;
+  xp: number;
+  avatar: string;
+  isCurrentUser?: boolean;
 }
 
 export interface UserStats {
