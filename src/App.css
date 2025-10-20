@@ -7,6 +7,48 @@
   position: relative;
 }
 
+/* Navigation */
+.app-navigation {
+  max-width: 600px;
+  margin: 32px auto 0;
+  padding: 0 32px;
+  display: flex;
+  gap: 16px;
+  animation: fade-in 0.6s ease 0.4s both;
+}
+
+.nav-btn {
+  flex: 1;
+  padding: 16px 24px;
+  font-size: 17px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  color: var(--color-text);
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: var(--color-lavender);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-btn.active {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: white;
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md), var(--shadow-glow);
+}
+
 .header {
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
@@ -548,6 +590,16 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .app-navigation {
+    padding: 0 20px;
+    gap: 12px;
+  }
+
+  .nav-btn {
+    padding: 14px 18px;
+    font-size: 15px;
+  }
+
   .header {
     padding: 18px 20px;
   }
