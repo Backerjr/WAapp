@@ -9,6 +9,7 @@ import LessonPlanner from './components/LessonPlanner';
 import RozmowaWall from './components/RozmowaWall';
 import ProgressionDashboard from './components/ProgressionDashboard';
 import SocialHub from './components/SocialHub';
+import ElegantDashboard from './components/ElegantDashboard';
 import './App.css';
 
 const INITIAL_PROGRESS: Progress = {
@@ -30,12 +31,12 @@ const INITIAL_STATS: UserStats = {
   exerciseIndex: 0
 };
 
-type ViewMode = 'learning' | 'planner' | 'wall' | 'progress' | 'social';
+type ViewMode = 'learning' | 'planner' | 'wall' | 'progress' | 'social' | 'elegant';
 
 function App() {
   const [progress, setProgress] = useState<Progress>(INITIAL_PROGRESS);
   const [userStats, setUserStats] = useState<UserStats>(INITIAL_STATS);
-  const [viewMode, setViewMode] = useState<ViewMode>('learning');
+  const [viewMode, setViewMode] = useState<ViewMode>('elegant');
 
   useEffect(() => {
     const savedProgress = localStorage.getItem('progress');
@@ -103,9 +104,11 @@ function App() {
 
   return (
     <div className="app">
-      <Header progress={progress} />
-      
-      {!currentLesson && (
+          <Header 
+            progress={progress} 
+            currentView={viewMode}
+            onViewChange={(view) => setViewMode(view as ViewMode)}
+          />      {!currentLesson && (
         <nav className="app-navigation">
           <button
             className={`nav-btn ${viewMode === 'learning' ? 'active' : ''}`}
@@ -157,6 +160,12 @@ function App() {
           )}
           {viewMode === 'social' && (
             <SocialHub progress={progress} />
+          )}
+          {viewMode === 'elegant' && (
+            <ElegantDashboard 
+              progress={progress}
+              onProgressUpdate={setProgress}
+            />
           )}
           {viewMode === 'planner' && <LessonPlanner />}
           {viewMode === 'wall' && <RozmowaWall />}
