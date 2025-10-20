@@ -5,12 +5,33 @@ on:
 
 permissions:
   contents: write
+  pages: write
 
 jobs:
   set-pages-source:
     runs-on: ubuntu-latest
     steps:
-      - name: Set Pages source to gh-pages root
+      - name: Check if gh-pages branch exists
+        id: check-branch
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            try {
+              await github.rest.repos.getBranch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                branch: 'gh-pages'
+              });
+              core.setOutput('exists', 'true');
+              core.info('gh-pages branch exists');
+            } catch (e) {
+              core.setOutput('exists', 'false');
+              core.warning('gh-pages branch does not exist yet');
+            }
+      
+      - name: Set Pages source to gh-pages root (use PAT if available)
+        if: ${{ steps.check-branch.outputs.exists == 'true' && secrets.GH_PAGES_PAT != '' }}
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GH_PAGES_PAT }}
@@ -18,12 +39,39 @@ jobs:
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             try {
-              await github.request('PATCH /repos/{owner}/{repo}/pages', {
+              await github.rest.repos.updateInformationAboutPagesSite({
                 owner,
                 repo,
                 source: { branch: 'gh-pages', path: '/' }
               });
-              core.info('Pages source set to gh-pages /');
+              core.info('✅ Pages source set to gh-pages / (using PAT)');
             } catch (e) {
               core.setFailed(`Failed to set Pages source: ${e.message}`);
             }
+      
+      - name: Set Pages source to gh-pages root (fallback to GITHUB_TOKEN)
+        if: ${{ steps.check-branch.outputs.exists == 'true' && secrets.GH_PAGES_PAT == '' }}
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            try {
+              await github.rest.repos.updateInformationAboutPagesSite({
+                owner,
+                repo,
+                source: { branch: 'gh-pages', path: '/' }
+              });
+              core.info('✅ Pages source set to gh-pages / (using GITHUB_TOKEN)');
+            } catch (e) {
+              core.setFailed(`Failed to set Pages source: ${e.message}`);
+            }
+      
+      - name: Branch does not exist
+        if: ${{ steps.check-branch.outputs.exists == 'false' }}
+        run: |
+          echo "❌ The gh-pages branch does not exist yet."
+          echo "Please run the 'Build and deploy' workflow first to create the gh-pages branch."
+          exit 1
+
