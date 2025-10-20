@@ -27,6 +27,9 @@ export interface Lesson {
   id: string;
   title_pl: string;
   title_en: string;
+  icon?: string;  // Emoji or icon for the lesson
+  description_pl?: string;  // Poetic description in Polish
+  description_en?: string;  // Poetic description in English
   exercises: Exercise[];
   xp: number;
 }
@@ -36,6 +39,8 @@ export interface Unit {
   title_pl: string;
   title_en: string;
   cefr: string;
+  description_pl?: string;  // Poetic description in Polish
+  description_en?: string;  // Poetic description in English
   lessons: Lesson[];
 }
 
