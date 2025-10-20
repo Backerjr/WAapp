@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Progress, UserStats } from './types';
 import { skillTree } from './data/lessons';
+import { ALL_ACHIEVEMENTS } from './data/achievements';
 import SkillTree from './components/SkillTree';
 import LessonView from './components/LessonView';
 import Header from './components/Header';
 import LessonPlanner from './components/LessonPlanner';
 import RozmowaWall from './components/RozmowaWall';
+import ProgressionDashboard from './components/ProgressionDashboard';
 import './App.css';
 
 const INITIAL_PROGRESS: Progress = {
@@ -27,7 +29,7 @@ const INITIAL_STATS: UserStats = {
   exerciseIndex: 0
 };
 
-type ViewMode = 'learning' | 'planner' | 'wall';
+type ViewMode = 'learning' | 'planner' | 'wall' | 'progress';
 
 function App() {
   const [progress, setProgress] = useState<Progress>(INITIAL_PROGRESS);
@@ -111,6 +113,12 @@ function App() {
             🌙 Learn
           </button>
           <button
+            className={`nav-btn ${viewMode === 'progress' ? 'active' : ''}`}
+            onClick={() => setViewMode('progress')}
+          >
+            📊 Progress
+          </button>
+          <button
             className={`nav-btn ${viewMode === 'planner' ? 'active' : ''}`}
             onClick={() => setViewMode('planner')}
           >
@@ -132,6 +140,12 @@ function App() {
               units={skillTree} 
               progress={progress}
               onStartLesson={startLesson}
+            />
+          )}
+          {viewMode === 'progress' && (
+            <ProgressionDashboard 
+              progress={progress}
+              achievements={ALL_ACHIEVEMENTS}
             />
           )}
           {viewMode === 'planner' && <LessonPlanner />}
