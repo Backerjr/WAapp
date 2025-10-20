@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiHome, FiBookOpen, FiCpu, FiMoon, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import './Sidebar.css';

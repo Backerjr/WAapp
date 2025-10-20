@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Lesson, Exercise, ExerciseType } from '../../types';
 import './AddLessonModal.css';
 

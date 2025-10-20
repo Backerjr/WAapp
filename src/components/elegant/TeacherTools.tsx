@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Progress } from '../../types';
 import AddLessonModal from './AddLessonModal';
 import UploadAudioTool from './UploadAudioTool';
