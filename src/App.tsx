@@ -8,6 +8,7 @@ import Header from './components/Header';
 import LessonPlanner from './components/LessonPlanner';
 import RozmowaWall from './components/RozmowaWall';
 import ProgressionDashboard from './components/ProgressionDashboard';
+import SocialHub from './components/SocialHub';
 import './App.css';
 
 const INITIAL_PROGRESS: Progress = {
@@ -29,7 +30,7 @@ const INITIAL_STATS: UserStats = {
   exerciseIndex: 0
 };
 
-type ViewMode = 'learning' | 'planner' | 'wall' | 'progress';
+type ViewMode = 'learning' | 'planner' | 'wall' | 'progress' | 'social';
 
 function App() {
   const [progress, setProgress] = useState<Progress>(INITIAL_PROGRESS);
@@ -119,6 +120,12 @@ function App() {
             📊 Progress
           </button>
           <button
+            className={`nav-btn ${viewMode === 'social' ? 'active' : ''}`}
+            onClick={() => setViewMode('social')}
+          >
+            👥 Social
+          </button>
+          <button
             className={`nav-btn ${viewMode === 'planner' ? 'active' : ''}`}
             onClick={() => setViewMode('planner')}
           >
@@ -147,6 +154,9 @@ function App() {
               progress={progress}
               achievements={ALL_ACHIEVEMENTS}
             />
+          )}
+          {viewMode === 'social' && (
+            <SocialHub progress={progress} />
           )}
           {viewMode === 'planner' && <LessonPlanner />}
           {viewMode === 'wall' && <RozmowaWall />}
