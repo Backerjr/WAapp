@@ -5,6 +5,7 @@ import SkillTree from './components/SkillTree';
 import LessonView from './components/LessonView';
 import Header from './components/Header';
 import LessonPlanner from './components/LessonPlanner';
+import RozmowaWall from './components/RozmowaWall';
 import './App.css';
 
 const INITIAL_PROGRESS: Progress = {
@@ -20,7 +21,7 @@ const INITIAL_STATS: UserStats = {
   exerciseIndex: 0
 };
 
-type ViewMode = 'learning' | 'planner';
+type ViewMode = 'learning' | 'planner' | 'wall';
 
 function App() {
   const [progress, setProgress] = useState<Progress>(INITIAL_PROGRESS);
@@ -101,28 +102,35 @@ function App() {
             className={`nav-btn ${viewMode === 'learning' ? 'active' : ''}`}
             onClick={() => setViewMode('learning')}
           >
-            🌙 Learn English
+            🌙 Learn
           </button>
           <button
             className={`nav-btn ${viewMode === 'planner' ? 'active' : ''}`}
             onClick={() => setViewMode('planner')}
           >
-            ✨ Lesson Planner
+            ✨ Planner
+          </button>
+          <button
+            className={`nav-btn ${viewMode === 'wall' ? 'active' : ''}`}
+            onClick={() => setViewMode('wall')}
+          >
+            💬 Wall
           </button>
         </nav>
       )}
       
       {!currentLesson ? (
         <>
-          {viewMode === 'learning' ? (
+          {viewMode === 'learning' && (
             <SkillTree 
               units={skillTree} 
               progress={progress}
               onStartLesson={startLesson}
             />
-          ) : (
-            <LessonPlanner />
           )}
+          {viewMode === 'planner' && <LessonPlanner />}
+          {viewMode === 'wall' && <RozmowaWall />}
+          
           <footer className="app-footer">
             <p className="footer-dedication">
               Dedicated to the one who teaches the world how to listen.
