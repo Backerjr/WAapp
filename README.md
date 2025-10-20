@@ -116,3 +116,4 @@ Notes & gotchas
 - Browser-only APIs: some exercises rely on `window.speechSynthesis`. Guard or mock those when running on Node or in SSR environments.
 - Local progress is persisted in `localStorage` keys: `progress` and `userStats`.
 - Data source: add new lessons in `src/data/lessons.ts` following `src/types.ts` shapes.
+# Test
