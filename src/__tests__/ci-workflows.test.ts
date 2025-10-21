@@ -11,7 +11,8 @@ describe('GitHub Workflows Validation', () => {
     'deploy-pages.yml',
     'gh-pages.yml',
     'release-publish.yml',
-    'check-pages-config.yml'
+    'check-pages-config.yml',
+    'set-pages-source.yml'
   ]
 
   beforeAll(() => {

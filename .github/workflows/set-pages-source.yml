@@ -1,0 +1,10 @@
+name: Set Pages Source (Disabled)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  disabled-placeholder:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "This workflow is disabled to prevent 403 errors"
