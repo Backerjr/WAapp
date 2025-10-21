@@ -7,20 +7,19 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  actions: write
-  id-token: write
-  administration: write
+  pages: read
 
 jobs:
-  configure-pages:
+  check-pages-only:
     runs-on: ubuntu-latest
+    # Disable this workflow - Pages is already correctly configured
+    if: false
     steps:
-      - name: Configure Pages Source
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
+      - name: Pages configuration disabled
+        run: |
+          echo "::notice title=Workflow Disabled::This workflow has been disabled because GitHub Pages is already correctly configured."
+          echo "::notice title=Current Configuration::Pages source is set to gh-pages branch with / path."
+          echo "::notice title=Manual Changes::If changes are needed, please use repository Settings > Pages."
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             
