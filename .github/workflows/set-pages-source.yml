@@ -12,10 +12,43 @@ jobs:
   set-pages-source:
     runs-on: ubuntu-latest
     steps:
-      - name: Check if gh-pages branch exists
-        id: check-branch
+      - name: Check current Pages configuration
+        id: check-pages
         uses: actions/github-script@v6
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            try {
+              const response = await github.rest.repos.getPages({
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              });
+              
+              const isCorrectlyConfigured = response.data.source.branch === 'gh-pages' && 
+                                          response.data.source.path === '/';
+              
+              core.info(`Current Pages config: ${JSON.stringify(response.data.source)}`);
+              core.info(`Is correctly configured: ${isCorrectlyConfigured}`);
+              
+              return {
+                exists: true,
+                isCorrect: isCorrectlyConfigured,
+                currentSource: response.data.source
+              };
+            } catch (error) {
+              if (error.status === 404) {
+                core.info('Pages is not configured yet');
+                return { exists: false, isCorrect: false };
+              }
+              throw error;
+            }
+      - name: Check if gh-pages branch exists
+        id: check-branch
+        # Only check if Pages is not correctly configured
+        if: fromJSON(steps.check-pages.outputs.result).isCorrect == false
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             try {
               await github.rest.repos.getBranch({
@@ -32,9 +65,10 @@ jobs:
             }
 
       - name: Configure Pages source to gh-pages branch
-        if: steps.check-branch.outputs.result == 'true'
+        if: fromJSON(steps.check-pages.outputs.result).isCorrect == false && steps.check-branch.outputs.result == 'true'
         uses: actions/github-script@v6
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             await github.rest.repos.updateInformationAboutPagesSite({
               owner: context.repo.owner,
@@ -47,7 +81,7 @@ jobs:
             console.log('✅ Pages source set to gh-pages branch');
 
       - name: Create gh-pages branch if it doesn't exist
-        if: steps.check-branch.outputs.result == 'false'
+        if: fromJSON(steps.check-pages.outputs.result).isCorrect == false && steps.check-branch.outputs.result == 'false'
         uses: actions/github-script@v6
         with:
           script: |
@@ -79,3 +113,15 @@ jobs:
             });
             
             console.log('✅ Pages source set to gh-pages branch');
+
+      - name: Report completion
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pagesInfo = fromJSON('${{ steps.check-pages.outputs.result }}');
+            if (pagesInfo.isCorrect) {
+              core.info('✅ GitHub Pages is already correctly configured with gh-pages branch');
+            } else {
+              core.info('✅ GitHub Pages configuration has been updated');
+            }
