@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from 'vitest'
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import yaml from 'js-yaml'
+import * as yaml from 'js-yaml'
 
 describe('GitHub Workflows Validation', () => {
   const workflowsDir = join(process.cwd(), '.github/workflows')
