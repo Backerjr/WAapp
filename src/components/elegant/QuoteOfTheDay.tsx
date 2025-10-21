@@ -37,6 +37,36 @@ const quotes: Quote[] = [
     text: "Kto nie zna języków obcych, nic nie wie o swoim własnym.",
     author: "Johann Wolfgang von Goethe",
     language: "pl"
+  },
+  {
+    text: "Nauka języka to podróż, nie cel.",
+    author: "Polish Wisdom",
+    language: "pl"
+  },
+  {
+    text: "Słowa mają magiczną moc - mogą przynieść największe szczęście lub najgłębszy rozpacz.",
+    author: "Sigmund Freud",
+    language: "pl"
+  },
+  {
+    text: "Nie ma nic piękniejszego niż język, który śpiewa w sercu.",
+    author: "Polish Poetry",
+    language: "pl"
+  },
+  {
+    text: "Każde słowo niesie w sobie cały świat znaczeń.",
+    author: "Polish Philosophy",
+    language: "pl"
+  },
+  {
+    text: "Language is the dress of thought.",
+    author: "Samuel Johnson",
+    language: "en"
+  },
+  {
+    text: "Piękno języka polskiego leży w jego melodii i głębi.",
+    author: "Polish Literature",
+    language: "pl"
   }
 ];
 

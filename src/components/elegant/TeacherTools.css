@@ -19,40 +19,59 @@
 
 .teacher-tools-window {
   position: absolute;
-  width: 800px;
+  width: 850px;
   max-width: 90vw;
   max-height: 80vh;
   background: linear-gradient(135deg, 
-    rgba(139, 92, 246, 0.15) 0%, 
-    rgba(16, 16, 30, 0.95) 20%,
+    rgba(139, 92, 246, 0.2) 0%, 
+    rgba(16, 16, 30, 0.96) 15%,
     rgba(10, 10, 15, 0.98) 100%);
-  border: 2px solid rgba(139, 92, 246, 0.4);
-  border-radius: 20px;
-  backdrop-filter: blur(25px);
+  border: 2px solid rgba(139, 92, 246, 0.5);
+  border-radius: 24px;
+  backdrop-filter: blur(30px) saturate(180%);
   box-shadow: 
-    0 25px 50px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(139, 92, 246, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 30px 80px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(139, 92, 246, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 0 50px rgba(139, 92, 246, 0.2);
   overflow: hidden;
   pointer-events: all;
-  transition: all 0.3s ease;
-  animation: teacher-tools-entrance 0.5s ease-out;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: teacher-tools-entrance 0.6s ease-out, magical-float 8s ease-in-out infinite;
+}
+
+@keyframes magical-float {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg);
+    box-shadow: 
+      0 30px 80px rgba(0, 0, 0, 0.6),
+      0 0 50px rgba(139, 92, 246, 0.2);
+  }
+  50% { 
+    transform: translateY(-8px) rotate(0.5deg);
+    box-shadow: 
+      0 40px 100px rgba(0, 0, 0, 0.7),
+      0 0 70px rgba(139, 92, 246, 0.3);
+  }
 }
 
 @keyframes teacher-tools-entrance {
   from {
     opacity: 0;
-    transform: scale(0.9) translateY(-20px);
+    transform: scale(0.8) translateY(-30px) rotate(-2deg);
+    filter: blur(10px);
   }
   to {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: scale(1) translateY(0) rotate(0deg);
+    filter: blur(0px);
   }
 }
 
 .teacher-tools-window.minimized {
   height: 80px;
-  width: 300px;
+  width: 320px;
+  animation: none;
 }
 
 .teacher-tools-window::before {
@@ -123,22 +142,48 @@
 
 .magic-sparkles {
   display: flex;
-  gap: 0.3rem;
-  margin-left: 0.5rem;
+  gap: 0.4rem;
+  margin-left: 0.8rem;
 }
 
 .sparkle {
-  font-size: 0.8rem;
-  animation: sparkle-dance 1.5s ease-in-out infinite;
+  font-size: 0.9rem;
+  animation: sparkle-dance 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 5px rgba(139, 92, 246, 0.6));
 }
 
-.sparkle:nth-child(1) { animation-delay: 0s; }
-.sparkle:nth-child(2) { animation-delay: 0.3s; }
-.sparkle:nth-child(3) { animation-delay: 0.6s; }
+.sparkle:nth-child(1) {
+  animation-delay: 0s;
+  animation-duration: 2.5s;
+}
+
+.sparkle:nth-child(2) {
+  animation-delay: 0.5s;
+  animation-duration: 3s;
+}
+
+.sparkle:nth-child(3) {
+  animation-delay: 1s;
+  animation-duration: 2.8s;
+}
 
 @keyframes sparkle-dance {
-  0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
-  50% { transform: translateY(-5px) scale(1.2); opacity: 1; }
+  0%, 100% { 
+    transform: scale(1) rotate(0deg);
+    opacity: 0.6;
+  }
+  25% { 
+    transform: scale(1.3) rotate(90deg);
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(0.8) rotate(180deg);
+    opacity: 0.8;
+  }
+  75% { 
+    transform: scale(1.2) rotate(270deg);
+    opacity: 1;
+  }
 }
 
 .header-controls {
