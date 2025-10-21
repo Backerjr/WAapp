@@ -30,3 +30,51 @@ jobs:
               throw error;
             }
 
+      - name: Configure Pages source to gh-pages branch
+        if: steps.check-branch.outputs.result == 'true'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.repos.updateInformationAboutPagesSite({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              source: {
+                branch: 'gh-pages',
+                path: '/'
+              }
+            });
+            console.log('✅ Pages source set to gh-pages branch');
+
+      - name: Create gh-pages branch if it doesn't exist
+        if: steps.check-branch.outputs.result == 'false'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            // Get the default branch's latest commit
+            const { data: defaultBranch } = await github.rest.repos.getBranch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              branch: context.payload.repository.default_branch
+            });
+            
+            // Create gh-pages branch from default branch
+            await github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/heads/gh-pages',
+              sha: defaultBranch.commit.sha
+            });
+            
+            console.log('✅ Created gh-pages branch');
+            
+            // Configure Pages source
+            await github.rest.repos.updateInformationAboutPagesSite({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              source: {
+                branch: 'gh-pages',
+                path: '/'
+              }
+            });
+            
+            console.log('✅ Pages source set to gh-pages branch');
