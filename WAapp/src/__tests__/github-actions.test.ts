@@ -1,3 +1,5 @@
+import test from "node:test";
+
 test('GitHub Actions workflows validation', async () => {
 	const workflows = await getWorkflows(); // Mock function to retrieve workflows
 	const expectedTriggers = ['push', 'pull_request'];
