@@ -8,11 +8,10 @@ describe('GitHub Workflows Validation', () => {
   
   const workflows = [
     'ci-publish-ghcr.yml',
-    'configure-pages.yml', 
     'deploy-pages.yml',
     'gh-pages.yml',
     'release-publish.yml',
-    'set-pages-source.yml'
+    'check-pages-config.yml'
   ]
 
   beforeAll(() => {
@@ -84,12 +83,12 @@ describe('GitHub Workflows Validation', () => {
   })
 
   describe('GitHub Script Actions Validation', () => {
-    it('should use proper GitHub Script action versions', async () => {
-      const filePath = join(workflowsDir, 'set-pages-source.yml')
+    it('should use proper GitHub Script action versions in check-pages-config', async () => {
+      const filePath = join(workflowsDir, 'check-pages-config.yml')
       const content = await readFile(filePath, 'utf-8')
       const workflow = yaml.load(content) as any
       
-      const job = workflow.jobs['set-pages-source']
+      const job = workflow.jobs['check-pages-config']
       expect(job).toBeDefined()
       
       // Check all steps use actions/github-script@v6 or higher
@@ -102,24 +101,23 @@ describe('GitHub Workflows Validation', () => {
       })
     })
 
-    it('should have proper conditional logic', async () => {
-      const filePath = join(workflowsDir, 'set-pages-source.yml')
+    it('should have read-only operations in check-pages-config', async () => {
+      const filePath = join(workflowsDir, 'check-pages-config.yml')
       const content = await readFile(filePath, 'utf-8')
       const workflow = yaml.load(content) as any
       
-      const job = workflow.jobs['set-pages-source']
-      const conditionalSteps = job.steps.filter((step: any) => step.if)
+      const job = workflow.jobs['check-pages-config']
       
-      conditionalSteps.forEach((step: any) => {
-        // Ensure no secrets in conditional expressions
-        expect(step.if).not.toContain('secrets.')
-        // Ensure proper output reference syntax
-        if (step.if.includes('outputs.result')) {
-          expect(step.if).toMatch(/steps\.[a-zA-Z-]+\.outputs\.result/)
-        }
+      // Ensure only read operations (no mutations)
+      const scriptSteps = job.steps.filter((step: any) => step.uses && step.uses.includes('actions/github-script'))
+      
+      scriptSteps.forEach((step: any) => {
+        const script = step.with?.script || ''
+        expect(script).not.toContain('updateInformationAboutPagesSite')
+        expect(script).not.toContain('createPagesSite')
+        expect(script).not.toContain('repository_dispatch')
+        console.log('✅ Script contains only read operations')
       })
-      
-      console.log('✅ Conditional logic is properly formatted')
     })
   })
 
