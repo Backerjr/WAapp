@@ -48,7 +48,7 @@ const InteractiveAudio: React.FC = () => {
   const [audioProgress, setAudioProgress] = useState(0);
   
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
-  const progressInterval = useRef<number | null>(null);
+  const progressInterval = useRef<number | ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     return () => {
