@@ -1,0 +1,23 @@
+name: Configure GitHub Pages Source (DISABLED)
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [configure-pages]
+
+permissions:
+  contents: read
+  pages: read
+
+jobs:
+  disabled-notice:
+    runs-on: ubuntu-latest
+    # This workflow is disabled because Pages is already correctly configured
+    if: false
+    steps:
+      - name: Pages configuration disabled
+        run: |
+          echo "::notice title=Workflow Disabled::This workflow has been disabled because GitHub Pages is already correctly configured."
+          echo "::notice title=Current Configuration::Pages source is set to gh-pages branch with / path."
+          echo "::notice title=Pages URL::https://backerjr.github.io/WAapp/"
+          echo "::notice title=Manual Changes::If changes are needed, please use repository Settings > Pages."
