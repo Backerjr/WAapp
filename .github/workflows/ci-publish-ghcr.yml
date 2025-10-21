@@ -23,7 +23,7 @@ jobs:
       - name: Install deps
         run: npm ci
       - name: Run tests
-        run: npm test -- --run src/__tests__/ci-workflows.test.ts
+        run: npx vitest run src/__tests__/ci-workflows.test.ts
 
   build-and-push:
     name: Build & push nginx Docker image to GHCR
