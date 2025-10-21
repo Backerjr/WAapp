@@ -88,7 +88,7 @@ describe('GitHub Workflows Validation', () => {
       const content = await readFile(filePath, 'utf-8')
       const workflow = yaml.load(content) as any
       
-      const job = workflow.jobs['check-pages-config']
+      const job = workflow.jobs['check-pages-status']
       expect(job).toBeDefined()
       
       // Check all steps use actions/github-script@v6 or higher
@@ -106,7 +106,7 @@ describe('GitHub Workflows Validation', () => {
       const content = await readFile(filePath, 'utf-8')
       const workflow = yaml.load(content) as any
       
-      const job = workflow.jobs['check-pages-config']
+      const job = workflow.jobs['check-pages-status']
       
       // Ensure only read operations (no mutations)
       const scriptSteps = job.steps.filter((step: any) => step.uses && step.uses.includes('actions/github-script'))
