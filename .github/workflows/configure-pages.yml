@@ -9,6 +9,7 @@ permissions:
   contents: read
   pages: write
   actions: write
+  id-token: write
 
 jobs:
   configure-pages:
