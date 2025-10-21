@@ -168,8 +168,4 @@ jobs:
             } catch (e) {
               core.warning(`Failed to set user package visibility: ${e.message}`);
             }
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Install Octokit and dependencies
-        run: npm install --save-dev @octokit/rest @actions/github dotenv cross-fetch node-fetch
 
