@@ -10,6 +10,7 @@ permissions:
   pages: write
   actions: write
   id-token: write
+  administration: write
 
 jobs:
   configure-pages:
