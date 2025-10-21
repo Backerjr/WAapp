@@ -1,0 +1,92 @@
+name: Configure GitHub Pages Source
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [configure-pages]
+
+permissions:
+  contents: read
+  pages: write
+  actions: write
+
+jobs:
+  configure-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure Pages Source
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            
+            try {
+              // First, try to get current Pages configuration
+              let currentConfig;
+              try {
+                const response = await github.rest.repos.getPages({
+                  owner,
+                  repo
+                });
+                currentConfig = response.data;
+                core.info(`Current Pages config: ${JSON.stringify(currentConfig.source)}`);
+              } catch (getError) {
+                if (getError.status === 404) {
+                  core.info('Pages not yet configured');
+                } else {
+                  throw getError;
+                }
+              }
+
+              // Configure or update Pages source
+              try {
+                await github.rest.repos.createPagesSite({
+                  owner,
+                  repo,
+                  source: {
+                    branch: 'gh-pages',
+                    path: '/'
+                  }
+                });
+                core.info('✅ Pages source configured successfully to gh-pages /');
+              } catch (createError) {
+                if (createError.status === 409) {
+                  // Pages already exists, try to update
+                  core.info('Pages already exists, attempting to update...');
+                  try {
+                    await github.rest.repos.updateInformationAboutPagesSite({
+                      owner,
+                      repo,
+                      source: {
+                        branch: 'gh-pages',
+                        path: '/'
+                      }
+                    });
+                    core.info('✅ Pages source updated successfully to gh-pages /');
+                  } catch (updateError) {
+                    core.warning(`Update failed: ${updateError.message}`);
+                    core.info('Pages might already be correctly configured');
+                  }
+                } else {
+                  throw createError;
+                }
+              }
+
+              // Verify final configuration
+              try {
+                const finalResponse = await github.rest.repos.getPages({
+                  owner,
+                  repo
+                });
+                core.info(`✅ Final Pages configuration: ${JSON.stringify(finalResponse.data.source)}`);
+                core.info(`📄 Pages URL: ${finalResponse.data.html_url}`);
+              } catch (verifyError) {
+                core.warning(`Could not verify configuration: ${verifyError.message}`);
+              }
+
+            } catch (error) {
+              core.setFailed(`Failed to configure Pages: ${error.message}`);
+              core.info(`Error details: ${JSON.stringify(error, null, 2)}`);
+            }
