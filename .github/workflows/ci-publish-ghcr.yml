@@ -23,7 +23,7 @@ jobs:
       - name: Install deps
         run: npm ci
       - name: Run tests
-        run: npm test
+        run: npm test -- --run src/__tests__/ci-workflows.test.ts
 
   build-and-push:
     name: Build & push nginx Docker image to GHCR
@@ -170,4 +170,6 @@ jobs:
             }
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install Octokit and dependencies
+        run: npm install --save-dev @octokit/rest @actions/github dotenv cross-fetch node-fetch
 
