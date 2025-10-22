@@ -2,7 +2,7 @@ name: CI / Test / Build & Publish (GHCR)
 
 on:
   push:
-    branches: [ 'replit-agent' ]
+    branches: [ 'replit-agent', 'main' ]
 
 permissions:
   contents: read

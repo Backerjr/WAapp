@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - replit-agent
+      - main
   workflow_dispatch:
 
 concurrency:
