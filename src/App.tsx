@@ -10,6 +10,7 @@ import RozmowaWall from './components/RozmowaWall';
 import ProgressionDashboard from './components/ProgressionDashboard';
 import SocialHub from './components/SocialHub';
 import ElegantDashboard from './components/ElegantDashboard';
+import WebsiteRouter from './components/WebsiteRouter';
 import './App.css';
 
 const INITIAL_PROGRESS: Progress = {
@@ -31,12 +32,12 @@ const INITIAL_STATS: UserStats = {
   exerciseIndex: 0
 };
 
-type ViewMode = 'learning' | 'planner' | 'wall' | 'progress' | 'social' | 'elegant';
+type ViewMode = 'learning' | 'planner' | 'wall' | 'progress' | 'social' | 'elegant' | 'website';
 
 function App() {
   const [progress, setProgress] = useState<Progress>(INITIAL_PROGRESS);
   const [userStats, setUserStats] = useState<UserStats>(INITIAL_STATS);
-  const [viewMode, setViewMode] = useState<ViewMode>('elegant');
+  const [viewMode, setViewMode] = useState<ViewMode>('website');
 
   useEffect(() => {
     const savedProgress = localStorage.getItem('progress');
@@ -102,14 +103,25 @@ function App() {
         .find(lesson => lesson.id === userStats.currentLesson)
     : null;
 
+  // Website mode - show landing pages instead of app
+  if (viewMode === 'website') {
+    return <WebsiteRouter onStartApp={() => setViewMode('elegant')} />;
+  }
+
   return (
     <div className="app">
           <Header 
             progress={progress} 
-            currentView={viewMode}
+            currentView={viewMode as string}
             onViewChange={(view) => setViewMode(view as ViewMode)}
           />      {!currentLesson && (
         <nav className="app-navigation">
+          <button
+            className={`nav-btn ${(viewMode as string) === 'website' ? 'active' : ''}`}
+            onClick={() => setViewMode('website')}
+          >
+            🏠 Home
+          </button>
           <button
             className={`nav-btn ${viewMode === 'learning' ? 'active' : ''}`}
             onClick={() => setViewMode('learning')}
