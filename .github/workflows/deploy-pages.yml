@@ -17,10 +17,16 @@ jobs:
         with:
           persist-credentials: true
 
+ fix/gh-pages-permissions
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
+      - uses: actions/setup-node@v4
+        with:
+            node-version: '20'
+ replit-agent
 
       - name: Install dependencies
         run: npm ci
