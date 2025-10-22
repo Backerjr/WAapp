@@ -2,7 +2,13 @@ name: Build and deploy
 
 on:
   push:
-    branches: [ 'replit-agent' ]
+    branches:
+      - replit-agent
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 permissions:
   contents: write
