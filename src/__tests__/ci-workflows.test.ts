@@ -172,30 +172,66 @@ describe('GitHub Workflows Validation', () => {
   describe('Node.js Configuration', () => {
     it('should use consistent Node.js version across workflows', async () => {
       const nodeVersions = new Set<string>()
+      const normalizedVersions = new Set<number>()
+      
+      // Helper function to normalize version strings to major version numbers
+      const normalizeVersion = (version: any): number | null => {
+        if (typeof version === 'number') {
+          return Math.floor(version)
+        }
+        
+        if (Array.isArray(version)) {
+          // Take the first version from array
+          version = version[0]
+        }
+        
+        if (typeof version === 'string') {
+          // Handle various formats: "20", "20.x", ">=20", "~20.1.0", "^20.0.0"
+          const match = version.match(/(\d+)/)
+          if (match) {
+            return parseInt(match[1], 10)
+          }
+        }
+        
+        return null
+      }
       
       for (const workflowFile of workflows) {
         const filePath = join(workflowsDir, workflowFile)
         const content = await readFile(filePath, 'utf-8')
         const workflow = yaml.load(content) as any
         
-        // Extract Node.js versions
+        // Extract Node.js versions using regex for setup-node actions
         Object.values(workflow.jobs || {}).forEach((job: any) => {
           (job.steps || []).forEach((step: any) => {
-            if (step.uses === 'actions/setup-node@v4' && step.with?.['node-version']) {
-              nodeVersions.add(step.with['node-version'])
+            // Match any setup-node action (different versions, publishers)
+            if (step.uses && /setup-node@/.test(step.uses) && step.with?.['node-version']) {
+              const rawVersion = step.with['node-version']
+              nodeVersions.add(String(rawVersion))
+              
+              const normalized = normalizeVersion(rawVersion)
+              if (normalized !== null) {
+                normalizedVersions.add(normalized)
+              }
             }
           })
         })
       }
       
-      console.log('Node.js versions found:', Array.from(nodeVersions))
+      console.log('Raw Node.js versions found:', Array.from(nodeVersions).sort())
+      console.log('Normalized major versions:', Array.from(normalizedVersions).sort())
       
-      // Should use consistent version (preferably 20)
-      if (nodeVersions.size > 1) {
-        console.warn('⚠️  Multiple Node.js versions detected:', Array.from(nodeVersions))
+      // Check for consistency using normalized major versions
+      if (normalizedVersions.size > 1) {
+        console.warn('⚠️  Multiple Node.js major versions detected:', Array.from(normalizedVersions).sort())
+        console.warn('⚠️  Raw versions were:', Array.from(nodeVersions).sort())
+      } else if (normalizedVersions.size === 1) {
+        const majorVersion = Array.from(normalizedVersions)[0]
+        console.log(`✅ Consistent Node.js major version: ${majorVersion}`)
       }
       
       expect(nodeVersions.size).toBeGreaterThan(0)
+      expect(normalizedVersions.size).toBeGreaterThan(0)
     })
   })
 })
