@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WAANGIELSKI - Szkoła Językowa</title>
+    <title>RozmoWA - Language is not learned — it's lived</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,24 +15,25 @@
         }
 
         :root {
-            --primary: #7A6B93;
-            --accent: #D9B9D8;
-            --text: #2B2430;
-            --background: #FFFFFF;
-            --light-gray: #F5F5F5;
-            --radius: 14px;
+            --primary: #ffffff;
+            --accent: #9c6ae1;
+            --text: #1a1a1a;
+            --background: #ffffff;
+            --light-gray: #f8f9fa;
+            --radius: 12px;
         }
 
         body {
-            font-family: 'Inter', 'Poppins', sans-serif;
-            line-height: 1.6;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
             color: var(--text);
             background: var(--background);
         }
 
         h1, h2, h3 {
-            font-weight: 800;
-            line-height: 1.2;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            line-height: 1.3;
         }
 
         /* Navigation */
@@ -40,11 +41,11 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
             z-index: 1000;
-            padding: 1.2rem 0;
+            padding: 1rem 0;
         }
 
         .nav-container {
@@ -57,10 +58,11 @@
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary);
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--accent);
             text-decoration: none;
+            font-family: 'Inter', sans-serif;
         }
 
         .nav-links {
@@ -72,78 +74,41 @@
         .nav-links a {
             color: var(--text);
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 500;
             transition: color 0.3s;
+            font-size: 0.95rem;
         }
 
         .nav-links a:hover {
-            color: var(--primary);
+            color: var(--accent);
         }
 
         /* Hero Section */
         .hero {
-            margin-top: 80px;
-            padding: 8rem 2rem;
+            margin-top: 70px;
+            padding: 8rem 2rem 6rem;
             text-align: center;
-            background: linear-gradient(135deg, #f8f5ff 0%, #ffffff 50%, #fff5f8 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(217, 185, 216, 0.3) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: float 20s infinite ease-in-out;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: -50%;
-            left: -20%;
-            width: 700px;
-            height: 700px;
-            background: radial-gradient(circle, rgba(122, 107, 147, 0.2) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: float 25s infinite ease-in-out reverse;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(50px, 50px); }
+            background: linear-gradient(180deg, #faf9fc 0%, #ffffff 100%);
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            background: linear-gradient(135deg, var(--primary) 0%, #9d87b8 50%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--text);
             margin-bottom: 1.5rem;
-            max-width: 1000px;
+            max-width: 900px;
             margin-left: auto;
             margin-right: auto;
-            position: relative;
-            z-index: 1;
             letter-spacing: -0.02em;
         }
 
         .hero p {
-            font-size: 1.35rem;
+            font-size: 1.25rem;
             color: var(--text);
-            opacity: 0.85;
-            max-width: 750px;
+            opacity: 0.75;
+            max-width: 700px;
             margin: 0 auto 3rem;
-            position: relative;
-            z-index: 1;
             line-height: 1.8;
-            font-weight: 500;
+            font-weight: 400;
         }
 
         .cta-buttons {
@@ -154,59 +119,45 @@
         }
 
         .btn {
-            padding: 1.2rem 3rem;
+            padding: 1rem 2rem;
             border-radius: var(--radius);
             font-weight: 600;
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             text-decoration: none;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             cursor: pointer;
             border: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .btn:hover::before {
-            width: 300px;
-            height: 300px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, #9d87b8 100%);
+            background: var(--accent);
             color: white;
-            box-shadow: 0 4px 15px rgba(122, 107, 147, 0.3);
+            box-shadow: 0 4px 12px rgba(156, 106, 225, 0.25);
         }
 
         .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(122, 107, 147, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(156, 106, 225, 0.35);
         }
 
         .btn-secondary {
             background: white;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-            box-shadow: 0 4px 15px rgba(122, 107, 147, 0.15);
+            color: var(--accent);
+            border: 2px solid var(--accent);
         }
 
         .btn-secondary:hover {
-            background: var(--primary);
+            background: var(--accent);
             color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(122, 107, 147, 0.3);
+        }
+
+        .btn-tertiary {
+            background: var(--text);
+            color: white;
+        }
+
+        .btn-tertiary:hover {
+            background: #333;
         }
 
         /* Container */
@@ -216,131 +167,129 @@
             padding: 0 2rem;
         }
 
-        /* Image Row */
-        .image-row {
+        /* Content Sections */
+        .content-section {
             padding: 5rem 0;
-            background: var(--background);
         }
 
-        .image-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2.5rem;
+        .content-section:nth-child(even) {
+            background: var(--light-gray);
         }
 
-        .image-card {
-            aspect-ratio: 4/3;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
-            border-radius: var(--radius);
-            overflow: hidden;
-            position: relative;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 25px rgba(122, 107, 147, 0.15);
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            text-align: center;
         }
 
-        .image-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 45px rgba(122, 107, 147, 0.25);
+        .section-content {
+            font-size: 1.125rem;
+            color: var(--text);
+            opacity: 0.8;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            text-align: center;
+            line-height: 1.8;
         }
 
-        .image-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .section-cta {
+            text-align: center;
+            margin-top: 2rem;
         }
 
-        .image-placeholder {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 600;
-            height: 100%;
-        }
-
-        /* About Section */
-        .about {
+        /* Poster Section */
+        .poster-section {
             padding: 6rem 0;
             background: var(--light-gray);
         }
 
-        .split-section {
+        .poster-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
             align-items: center;
         }
 
-        .split-content h2 {
+        .poster-image {
+            text-align: center;
+        }
+
+        .poster-image img {
+            max-width: 100%;
+            height: auto;
+            max-height: 600px;
+            border-radius: var(--radius);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .poster-placeholder {
+            width: 100%;
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, var(--accent) 0%, #b89adb 100%);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            box-shadow: 0 10px 40px rgba(156, 106, 225, 0.2);
+        }
+
+        .poster-content h2 {
             font-size: 2.5rem;
-            color: var(--primary);
+            color: var(--text);
             margin-bottom: 1.5rem;
         }
 
-        .split-content p {
+        .poster-content p {
             font-size: 1.125rem;
             color: var(--text);
-            opacity: 0.9;
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
             line-height: 1.8;
         }
 
-        .split-image {
-            aspect-ratio: 4/3;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
-            border-radius: var(--radius);
-            overflow: hidden;
+        .poster-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
         }
 
-        .split-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Offer Section */
-        .offer {
-            padding: 6rem 0;
+        /* Testimonials Section */
+        .testimonials {
+            padding: 5rem 0;
             background: var(--background);
         }
 
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 3rem;
-        }
-
-        .cards-grid {
+        .testimonial-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
+            margin-top: 3rem;
         }
 
-        .card {
+        .testimonial-card {
             background: white;
-            padding: 3rem;
+            padding: 2.5rem;
             border-radius: var(--radius);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(122, 107, 147, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(156, 106, 225, 0.1);
         }
 
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 60px rgba(122, 107, 147, 0.2);
-            border-color: var(--accent);
-        }
-
-        .card h3 {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .card p {
+        .testimonial-card p {
+            font-style: italic;
             color: var(--text);
-            opacity: 0.8;
+            opacity: 0.85;
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--accent);
         }
 
         /* Contact Section */
@@ -355,7 +304,7 @@
             background: white;
             padding: 3rem;
             border-radius: var(--radius);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
         }
 
         .form-group {
@@ -383,7 +332,7 @@
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: var(--primary);
+            border-color: var(--accent);
         }
 
         .form-group textarea {
@@ -393,14 +342,29 @@
 
         /* Footer */
         footer {
-            padding: 3rem 0;
-            background: var(--primary);
+            padding: 4rem 0;
+            background: var(--text);
             color: white;
             text-align: center;
         }
 
-        footer p {
+        .footer-quote {
+            font-size: 1.25rem;
+            font-style: italic;
             opacity: 0.9;
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .footer-signature {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links {
+            opacity: 0.7;
+            font-size: 0.9rem;
         }
 
         /* Responsive */
@@ -448,74 +412,93 @@
     <!-- Navigation -->
     <nav id="header">
         <div class="nav-container">
-            <a href="#" class="logo">WAANGIELSKI</a>
+            <a href="#" class="logo">rozmoWA-App</a>
             <ul class="nav-links">
-                <li><a href="#hero">Strona Główna</a></li>
-                <li><a href="#about">O nas</a></li>
-                <li><a href="#offer">Oferta</a></li>
-                <li><a href="#contact">Kontakt</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#offer">Offer</a></li>
+                <li><a href="#contact">Contact</a></li>
             </ul>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section class="hero" id="hero">
-        <h1>SZKOŁA JĘZYKOWA, W KTÓREJ ZACZYNASZ NAPRAWDĘ ROZMAWIAĆ.</h1>
-        <p>Uczymy języka używanego na co dzień — stawiamy na praktykę, kreatywność i relacje.</p>
+        <h1>Language is not learned — it's lived.</h1>
+        <p>Discover RozmoWA's modern language approach — practical, inspiring, and human.</p>
         <div class="cta-buttons">
-            <a href="#offer" class="btn btn-primary">Poznaj ofertę</a>
-            <a href="#contact" class="btn btn-secondary">Skontaktuj się</a>
+            <a href="#offer" class="btn btn-primary">Explore Our Classes</a>
+            <a href="#app" class="btn btn-secondary">Download the App</a>
+            <a href="#contact" class="btn btn-tertiary">Start Learning Today</a>
         </div>
     </section>
 
-    <!-- Photo Row -->
-    <section class="image-row" id="photos">
+    <!-- Mission Section -->
+    <section class="content-section" id="mission">
         <div class="container">
-            <div class="image-grid">
-                <div class="image-card">
-                    <div class="image-placeholder">Praktyczne zajęcia</div>
+            <h2 class="section-title">Our Mission</h2>
+            <p class="section-content">RozmoWA redefines language learning by blending authentic communication with cultural understanding.</p>
+        </div>
+    </section>
+
+    <!-- Lessons Section -->
+    <section class="content-section" id="offer">
+        <div class="container">
+            <h2 class="section-title">Our Lessons</h2>
+            <p class="section-content">Preview structured courses and personalized sessions designed for all levels.</p>
+            <div class="section-cta">
+                <a href="#contact" class="btn btn-primary">View Full Offer</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Poster Section -->
+    <section class="poster-section" id="poster">
+        <div class="container">
+            <div class="poster-grid">
+                <div class="poster-image">
+                    <div class="poster-placeholder">RozmoWA Poster</div>
                 </div>
-                <div class="image-card">
-                    <div class="image-placeholder">Małe grupy</div>
-                </div>
-                <div class="image-card">
-                    <div class="image-placeholder">Przyjazna atmosfera</div>
+                <div class="poster-content">
+                    <h2>Speak English Without Stress</h2>
+                    <p>RozmoWA teaches languages that help you express yourself and explore the world.</p>
+                    <p>Our creative and practical approach makes learning enjoyable and natural.</p>
+                    <div class="poster-buttons">
+                        <a href="#offer" class="btn btn-primary">View Our Classes</a>
+                        <a href="#about" class="btn btn-secondary">Meet Our Teachers</a>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section class="about" id="about">
+    <!-- App Section -->
+    <section class="content-section" id="app">
         <div class="container">
-            <div class="split-section">
-                <div class="split-content">
-                    <h2>O nas</h2>
-                    <p>Tworzymy przestrzeń pełną wsparcia, gdzie uczymy praktycznie i po ludzku. Naszym celem jest sprawić, aby nauka języka była naturalnym procesem, pełnym radości i prawdziwych rozmów.</p>
-                </div>
-                <div class="split-image">
-                    <div class="image-placeholder">O nas</div>
-                </div>
+            <h2 class="section-title">RozmoWA App</h2>
+            <p class="section-content">Learn anytime, anywhere. Interactive exercises, audio lessons, and progress tracking.</p>
+            <div class="section-cta">
+                <a href="index-app.html" class="btn btn-primary">Launch App</a>
             </div>
         </div>
     </section>
 
-    <!-- Offer Section -->
-    <section class="offer" id="offer">
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
         <div class="container">
-            <h2 class="section-title">Oferta</h2>
-            <div class="cards-grid">
-                <div class="card">
-                    <h3>Angielski: Konwersacje</h3>
-                    <p>Małe grupy, dużo mówienia.</p>
+            <h2 class="section-title">Testimonials</h2>
+            <p class="section-content">Hear from our students about their learning journeys and results.</p>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p>"RozmoWA transformed the way I approach language learning. Now I actually enjoy speaking!"</p>
+                    <div class="testimonial-author">— Anna K.</div>
                 </div>
-                <div class="card">
-                    <h3>Indywidualne 1-na-1</h3>
-                    <p>Plan szyty na miarę.</p>
+                <div class="testimonial-card">
+                    <p>"The app makes it so easy to practice daily. I've never been more consistent with learning."</p>
+                    <div class="testimonial-author">— Marcin P.</div>
                 </div>
-                <div class="card">
-                    <h3>Warsztaty tematyczne</h3>
-                    <p>Kawiarniane rozmowy, autorskie materiały.</p>
+                <div class="testimonial-card">
+                    <p>"Finally, a method that focuses on real conversations, not just grammar rules."</p>
+                    <div class="testimonial-author">— Kasia W.</div>
                 </div>
             </div>
         </div>
@@ -524,10 +507,11 @@
     <!-- Contact Section -->
     <section class="contact" id="contact">
         <div class="container">
-            <h2 class="section-title">Kontakt</h2>
+            <h2 class="section-title">Join Us</h2>
+            <p class="section-content">Ready to start? Contact our team to find your perfect learning path.</p>
             <form class="contact-form">
                 <div class="form-group">
-                    <label for="name">Imię i nazwisko</label>
+                    <label for="name">Name</label>
                     <input type="text" id="name" name="name" required>
                 </div>
                 <div class="form-group">
@@ -535,10 +519,10 @@
                     <input type="email" id="email" name="email" required>
                 </div>
                 <div class="form-group">
-                    <label for="message">Wiadomość</label>
+                    <label for="message">Message</label>
                     <textarea id="message" name="message" required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Wyślij</button>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
             </form>
         </div>
     </section>
@@ -546,19 +530,19 @@
     <!-- Footer -->
     <footer id="footer">
         <div class="container">
-            <p>© WAANGIELSKI 2025 • Regulamin sklepu • Polityka prywatności</p>
+            <div class="footer-quote">"The grass isn't greener on the other side — it's greener when you water it."</div>
+            <div class="footer-signature">— Wiktoria</div>
+            <div class="footer-links">© RozmoWA 2025 • Privacy Policy • Terms of Service</div>
         </div>
     </footer>
 
     <script>
-        // Form submission handling
         document.querySelector('.contact-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('Dziękujemy za wiadomość! Odpowiemy wkrótce.');
+            alert('Thank you for your message! We will respond soon.');
             this.reset();
         });
 
-        // Smooth scroll for navigation
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
