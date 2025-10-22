@@ -146,6 +146,7 @@ jobs:
         with:
           github-token: ${{ secrets.GH_PAGES_PAT }}
           script: |
+            # ...
             const owner = context.repo.owner;
             const pkg = 'rozmowa';
             // Detect if owner is an org
