@@ -144,7 +144,7 @@ jobs:
       - name: Try to set package visibility (detect org vs user)
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_PAGES_PAT }}
           script: |
             const owner = context.repo.owner;
             const pkg = 'rozmowa';
