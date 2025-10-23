@@ -15,7 +15,7 @@ type ViewModeType = 'elegant' | 'standard'; // Example view modes
 
 export default function WebsiteRouter({ onStartApp }: WebsiteRouterProps) {
   const [currentPage, setCurrentPage] = useState<PageType>('home');
-  const [viewMode, setViewMode] = useState<ViewModeType>('standard'); // Added state for viewMode
+  const [viewMode, setViewMode] = useState<'elegant' | 'default'>('default');
 
   const handleNavigation = (page: string) => {
     setCurrentPage(page as PageType);
