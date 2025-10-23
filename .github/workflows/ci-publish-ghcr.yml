@@ -11,9 +11,9 @@ permissions:
   id-token: write
   actions: read
 
-# Use a single source for the image name, derived from the repository name
+# Convert the image name to lowercase
 env:
-  IMAGE_NAME: ${{ github.event.repository.name }} # original
+  IMAGE_NAME: ${{ github.event.repository.name | lower }} # lowercase version
 
 jobs:
   test:
@@ -28,14 +28,12 @@ jobs:
       - name: Install deps
         run: npm ci
       - name: Run tests
-        # This command only runs one test file. Consider 'npm test' to run all tests.
         run: npx vitest run src/__tests__/ci-workflows.test.ts
 
   build-and-push:
     name: Build & push Docker images to GHCR
     runs-on: ubuntu-latest
     needs: test
-    # Only run on main repository, not forks. This is more portable than a hardcoded name.
     if: github.repository_owner == 'Backerjr' && github.event_name == 'push'
     outputs:
       repo_owner_lower: ${{ steps.lowercase.outputs.repository_owner }}
@@ -52,18 +50,11 @@ jobs:
           npm ci
           npm run build
       
-      # Add the missing step to convert repository owner to lowercase
       - name: Convert repository owner to lowercase
         id: lowercase
         run: |
           echo "repository_owner=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
       
-      # Add the missing step to get repository name in lowercase
-      - name: Get repo name in lowercase
-        id: repo_name_lowercase
-        run: |
-          echo "repo_name=$(echo ${{ github.event.repository.name }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
-          
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
         
@@ -142,7 +133,6 @@ jobs:
       - name: Try to set package visibility
         uses: actions/github-script@v6
         with:
-          # Consider using GITHUB_TOKEN if the PAT is only for visibility settings
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const owner = context.repo.owner;
