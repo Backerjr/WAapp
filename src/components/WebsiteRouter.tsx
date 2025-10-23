@@ -44,5 +44,15 @@ export default function WebsiteRouter({ onStartApp }: WebsiteRouterProps) {
     }
   };
 
-  return <div className="website-router">{renderPage()}</div>;
+  return (
+    <div className="website-router">
+      {renderPage()}
+      <button
+        className={`nav-btn ${viewMode === 'elegant' ? 'active' : ''}`}
+        onClick={() => setViewMode('elegant')}
+      >
+        ✨ Elegant
+      </button>
+    </div>
+  );
 }
