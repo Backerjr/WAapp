@@ -11,9 +11,9 @@ permissions:
   id-token: write
   actions: read
 
-# Convert the image name to lowercase
+# Define the original image name, we'll convert it to lowercase in the steps
 env:
-  IMAGE_NAME: ${{ github.event.repository.name | lower }} # lowercase version
+  IMAGE_NAME_ORIG: ${{ github.event.repository.name }}
 
 jobs:
   test:
@@ -34,9 +34,10 @@ jobs:
     name: Build & push Docker images to GHCR
     runs-on: ubuntu-latest
     needs: test
-    if: github.repository_owner == 'Backerjr' && github.event_name == 'push'
+    if: github.repository_owner == 'backerjr' && github.event_name == 'push'
     outputs:
-      repo_owner_lower: ${{ steps.lowercase.outputs.repository_owner }}
+      repo_owner_lower: ${{ steps.lowercase_owner.outputs.repository_owner }}
+      repo_name_lower: ${{ steps.lowercase_repo.outputs.repository_name }}
     steps:
       - uses: actions/checkout@v4
       
@@ -51,9 +52,14 @@ jobs:
           npm run build
       
       - name: Convert repository owner to lowercase
-        id: lowercase
+        id: lowercase_owner
         run: |
           echo "repository_owner=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+      
+      - name: Convert repository name to lowercase
+        id: lowercase_repo
+        run: |
+          echo "repository_name=$(echo ${{ env.IMAGE_NAME_ORIG }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
       
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -76,8 +82,8 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: |
-            ghcr.io/${{ steps.lowercase.outputs.repository_owner }}/${{ env.IMAGE_NAME }}:nginx-latest
-            ghcr.io/${{ steps.lowercase.outputs.repository_owner }}/${{ env.IMAGE_NAME }}:nginx-${{ github.sha }}
+            ghcr.io/${{ steps.lowercase_owner.outputs.repository_owner }}/${{ steps.lowercase_repo.outputs.repository_name }}:nginx-latest
+            ghcr.io/${{ steps.lowercase_owner.outputs.repository_owner }}/${{ steps.lowercase_repo.outputs.repository_name }}:nginx-${{ github.sha }}
 
       - name: Build and push caddy image
         uses: docker/build-push-action@v4
@@ -87,14 +93,14 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: |
-            ghcr.io/${{ steps.lowercase.outputs.repository_owner }}/${{ env.IMAGE_NAME }}:caddy-latest
-            ghcr.io/${{ steps.lowercase.outputs.repository_owner }}/${{ env.IMAGE_NAME }}:caddy-${{ github.sha }}
+            ghcr.io/${{ steps.lowercase_owner.outputs.repository_owner }}/${{ steps.lowercase_repo.outputs.repository_name }}:caddy-latest
+            ghcr.io/${{ steps.lowercase_owner.outputs.repository_owner }}/${{ steps.lowercase_repo.outputs.repository_name }}:caddy-${{ github.sha }}
 
   test-images:
     name: Pull and smoke-test pushed images (nginx & caddy)
     runs-on: ubuntu-latest
     needs: build-and-push
-    if: github.repository_owner == 'Backerjr' && github.event_name == 'push'
+    if: github.repository_owner == 'backerjr' && github.event_name == 'push'
     steps:
       - name: Login to GHCR
         uses: docker/login-action@v2
@@ -105,7 +111,7 @@ jobs:
 
       - name: Pull and run nginx image
         env:
-          IMAGE_NGINX: ghcr.io/${{ needs.build-and-push.outputs.repo_owner_lower }}/${{ env.IMAGE_NAME }}:nginx-latest
+          IMAGE_NGINX: ghcr.io/${{ needs.build-and-push.outputs.repo_owner_lower }}/${{ needs.build-and-push.outputs.repo_name_lower }}:nginx-latest
         run: |
           docker pull "$IMAGE_NGINX"
           docker run -d --name waapp-nginx-ci -p 8080:80 "$IMAGE_NGINX"
@@ -116,7 +122,7 @@ jobs:
 
       - name: Pull and run caddy image
         env:
-          IMAGE_CADDY: ghcr.io/${{ needs.build-and-push.outputs.repo_owner_lower }}/${{ env.IMAGE_NAME }}:caddy-latest
+          IMAGE_CADDY: ghcr.io/${{ needs.build-and-push.outputs.repo_owner_lower }}/${{ needs.build-and-push.outputs.repo_name_lower }}:caddy-latest
         run: |
           docker pull "$IMAGE_CADDY"
           docker run -d --name waapp-caddy-ci -p 8081:80 "$IMAGE_CADDY"
@@ -128,7 +134,7 @@ jobs:
     name: Attempt to make GHCR package public
     runs-on: ubuntu-latest
     needs: build-and-push
-    if: always() && github.repository_owner == 'Backerjr'
+    if: always() && github.repository_owner == 'backerjr'
     steps:
       - name: Try to set package visibility
         uses: actions/github-script@v6
@@ -136,7 +142,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const owner = context.repo.owner;
-            const pkg = '${{ env.IMAGE_NAME }}';
+            const pkg = '${{ needs.build-and-push.outputs.repo_name_lower }}';
             try {
               await github.rest.packages.setAccessibilityForPackageOwnedByUser({
                 package_type: 'container',
