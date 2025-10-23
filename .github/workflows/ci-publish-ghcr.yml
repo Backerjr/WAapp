@@ -41,26 +41,42 @@ jobs:
       repo_owner_lower: ${{ steps.lowercase.outputs.repository_owner }}
     steps:
       - uses: actions/checkout@v4
+      
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          
       - name: Install deps & Build
         run: |
           npm ci
           npm run build
-              
-  ghcr.io/${{ steps.lowercase.outputs.repository_owner }}/${{ steps.repo_name_lowercase.outputs.repo_name }}:nginx-latest
-  ghcr.io/${{ steps.lowercase.outputs.repository_owner }}/${{ steps.repo_name_lowercase.outputs.repo_name }}:nginx-${{ github.sha }}      - name: Set up QEMU
+      
+      # Add the missing step to convert repository owner to lowercase
+      - name: Convert repository owner to lowercase
+        id: lowercase
+        run: |
+          echo "repository_owner=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+      
+      # Add the missing step to get repository name in lowercase
+      - name: Get repo name in lowercase
+        id: repo_name_lowercase
+        run: |
+          echo "repo_name=$(echo ${{ github.event.repository.name }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+          
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
+        
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        
       - name: Login to GHCR
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Build and push nginx image
         uses: docker/build-push-action@v4
         with:
