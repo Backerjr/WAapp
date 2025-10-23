@@ -11,11 +11,9 @@ interface WebsiteRouterProps {
 }
 
 type PageType = 'home' | 'about' | 'offer' | 'contact' | 'app' | 'poster';
-type ViewModeType = 'elegant' | 'standard'; // Example view modes
 
 export default function WebsiteRouter({ onStartApp }: WebsiteRouterProps) {
   const [currentPage, setCurrentPage] = useState<PageType>('home');
-  const [viewMode, setViewMode] = useState<'elegant' | 'default'>('default');
 
   const handleNavigation = (page: string) => {
     setCurrentPage(page as PageType);
@@ -46,15 +44,5 @@ export default function WebsiteRouter({ onStartApp }: WebsiteRouterProps) {
     }
   };
 
-  return (
-    <div className="website-router">
-      {renderPage()}
-      <button
-        className={`nav-btn ${viewMode === 'elegant' ? 'active' : ''}`}
-        onClick={() => setViewMode('elegant')}
-      >
-        ✨ Elegant
-      </button>
-    </div>
-  );
+  return <div className="website-router">{renderPage()}</div>;
 }
