@@ -1,4 +1,4 @@
-import './PosterSection.css';
+import './Website.css';
 
 interface PosterSectionProps {
   onNavigate?: (page: string) => void;
@@ -7,37 +7,44 @@ interface PosterSectionProps {
 export default function PosterSection({ onNavigate }: PosterSectionProps) {
   return (
     <section className="poster-section">
+      {/* TWO-COLUMN LAYOUT */}
       <div className="poster-container">
-        <div className="poster-image">
-          <img 
-            src="/assets/rozmowa-poster.png" 
-            alt="RozmoWA - Speak English Without Stress" 
-            className="poster-img"
-          />
+        {/* LEFT: POSTER IMAGE (600x800) */}
+        <div className="poster-image-container">
+          <div className="poster-image">
+            <span>RozmoWA</span>
+          </div>
         </div>
-        <div className="poster-text">
-          <h2 className="poster-title">Speak English Without Stress</h2>
-          <p className="poster-paragraph">
-            RozmoWA teaches languages that help you express yourself and explore the world.
+
+        {/* RIGHT: CONTENT */}
+        <div className="poster-content">
+          <h2>Speak English Without Stress</h2>
+          <p>
+            RozmoWA teaches languages through authentic conversations and cultural immersion. 
+            We don't just teach words — we teach confidence, connection, and real-world communication.
           </p>
-          <p className="poster-paragraph">
-            Our creative and practical approach makes learning enjoyable and natural.
+          <p>
+            Whether you're starting from scratch or refining advanced skills, our approach 
+            meets you where you are and takes you where you want to go.
           </p>
           <div className="poster-buttons">
-            <button onClick={() => onNavigate?.('offer')} className="btn-poster-primary">
-              View Our Classes
+            <button onClick={() => onNavigate?.('offer')} className="btn-primary">
+              View Classes
             </button>
-            <button onClick={() => onNavigate?.('about')} className="btn-poster-secondary">
-              Meet Our Teachers
+            <button onClick={() => onNavigate?.('about')} className="btn-secondary">
+              Meet Team
             </button>
           </div>
         </div>
       </div>
-      <div className="poster-footer-quote">
-        <blockquote className="quote-text">
-          "The grass isn't greener on the other side — it's greener when you water it."
+
+      {/* QUOTE BOX */}
+      <div className="poster-quote-box">
+        <blockquote>
+          "The grass isn't greener on the other side — it's greener where you water it 
+          with words, patience, and presence."
         </blockquote>
-        <p className="quote-signature">— Wiktoria</p>
+        <p className="footer-signature">— Wiktoria</p>
       </div>
     </section>
   );
