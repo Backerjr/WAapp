@@ -7,8 +7,8 @@ on:
 permissions:
   contents: read
   packages: write
-  # pages: write - This permission is not used in the workflow.
-  # id-token: write - This permission is not used in the workflow.
+  pages: write
+  id-token: write
   actions: read
 
 # Use a single source for the image name, derived from the repository name
