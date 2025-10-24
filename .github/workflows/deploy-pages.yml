@@ -54,7 +54,7 @@ jobs:
           ls -lah dist/
 
       - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@3671e3da6d92bdc50ca0b71ac3580af1fa351f53 # v4.0.0
+        uses: peaceiris/actions-gh-pages@4b09552dca4cd84bf1761447bcc0ebbfc9a5a5bb # v3.9.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
