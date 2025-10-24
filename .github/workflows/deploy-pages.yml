@@ -1,4 +1,4 @@
-name: Build and deploy
+name: Build and Deploy to GitHub Pages
 
 on:
   push:
@@ -7,8 +7,9 @@ on:
       - main
   workflow_dispatch:
 
+# Prevent concurrent page deployments
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: false
 
 permissions:
@@ -17,17 +18,20 @@ permissions:
 
 jobs:
   build-and-deploy:
+    name: Build and deploy to gh-pages
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - name: Checkout (use GITHUB_TOKEN)
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
           persist-credentials: true
 
-      - name: Use Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
@@ -35,9 +39,25 @@ jobs:
       - name: Build
         run: npm run build
 
-                  - name: Deploy to gh-pages
+      - name: Verify build output
+        run: |
+          if [ ! -d "dist" ]; then
+            echo "ERROR: dist directory not found"
+            exit 1
+          fi
+          if [ ! -f "dist/index.html" ]; then
+            echo "ERROR: dist/index.html not found"
+            exit 1
+          fi
+          echo "✅ Build output verified successfully"
+          ls -lah dist/
+
+      - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           publish_branch: gh-pages
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+
