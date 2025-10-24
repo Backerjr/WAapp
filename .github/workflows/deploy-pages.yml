@@ -31,7 +31,7 @@ jobs:
           cache: 'npm'
 
       - name: Setup Pages
-        uses: actions/configure-pages@983d7736ba67fde120ad4d219642b65d8d19c5c5 # v4.0.1
+        uses: actions/configure-pages@5646ecc5a3f88a7ad2eac0fa3a3b067bb95323e7 # v4.0.1
 
       - name: Install dependencies
         run: npm ci
@@ -53,7 +53,7 @@ jobs:
           ls -lah dist/
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
+        uses: actions/upload-pages-artifact@7b1f4a7e2ee7b2af0b2dc088d5a081f74ee9fa88 # v3.0.1
         with:
           path: ./dist
 
@@ -66,4 +66,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@decdde0ac072f6e15e236a1f3462c88e43b5b0bf # v4.0.5
+        uses: actions/deploy-pages@854d7aa8a2dd79a6c920fe3420c013c3769a4456 # v4.0.5
