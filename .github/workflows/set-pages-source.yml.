@@ -1,0 +1,25 @@
+# .github/workflows/set-pages-source.yml
+ needed):
+
+```yaml
+name: Set Pages Source
+
+on:
+  workflowname: Deploy to GitHub Pages
+
+on:
+  push:
+   _dispatch:
+
+jobs:
+  set-pages-source:
+    runs-on: branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-l ubuntu-latest
+    steps:
+      - name: Checkout
+       atest
+    steps:
+      - uses: actions/checkout@v uses: actions/checkout@v4
