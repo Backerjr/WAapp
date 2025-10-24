@@ -1,0 +1,157 @@
+.poster-section {
+  padding: 4rem 2rem;
+  background: #ffffff;
+}
+
+.poster-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.poster-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.poster-img {
+  max-width: 600px;
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.poster-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.poster-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.2;
+  font-family: 'Playfair Display', serif;
+  margin: 0;
+}
+
+.poster-paragraph {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: #4a4a4a;
+  margin: 0;
+}
+
+.poster-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-poster-primary,
+.btn-poster-secondary {
+  padding: 0.875rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-poster-primary {
+  background: #9c6ae1;
+  color: #ffffff;
+}
+
+.btn-poster-primary:hover {
+  background: #8554d1;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(156, 106, 225, 0.4);
+}
+
+.btn-poster-secondary {
+  background: #ffffff;
+  color: #9c6ae1;
+  border: 2px solid #9c6ae1;
+}
+
+.btn-poster-secondary:hover {
+  background: #9c6ae1;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.poster-footer-quote {
+  max-width: 800px;
+  margin: 4rem auto 0;
+  text-align: center;
+  padding: 3rem 2rem;
+  background: #f8f5ff;
+  border-radius: 12px;
+}
+
+.quote-text {
+  font-size: 1.5rem;
+  font-style: italic;
+  color: #4a4a4a;
+  margin: 0 0 1rem;
+  font-family: 'Playfair Display', serif;
+  line-height: 1.6;
+}
+
+.quote-signature {
+  font-size: 1rem;
+  color: #9c6ae1;
+  font-weight: 600;
+  margin: 0;
+}
+
+@media (max-width: 968px) {
+  .poster-container {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .poster-title {
+    font-size: 2rem;
+  }
+
+  .poster-img {
+    max-width: 100%;
+  }
+
+  .poster-buttons {
+    flex-direction: column;
+  }
+
+  .btn-poster-primary,
+  .btn-poster-secondary {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .poster-section {
+    padding: 2rem 1rem;
+  }
+
+  .poster-title {
+    font-size: 1.75rem;
+  }
+
+  .poster-paragraph {
+    font-size: 1rem;
+  }
+
+  .quote-text {
+    font-size: 1.25rem;
+  }
+}

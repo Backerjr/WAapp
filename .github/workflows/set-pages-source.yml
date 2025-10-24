@@ -1,10 +1,78 @@
-name: Set Pages Source (Disabled)
+name: Set GitHub Pages Source
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+      - 'public/**'
+      - '.github/workflows/set-pages-source.yml'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Ensure only one deployment happens at a time
+concurrency:
+  group: "pages-${{ github.ref }}"
+  cancel-in-progress: true
 
 jobs:
-  disabled-placeholder:
+  set-pages-source:
     runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == github.actor || github.event_name == 'workflow_dispatch' }}
     steps:
-      - run: echo "This workflow is disabled to prevent 403 errors"
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          
+      - name: Configure GitHub Pages
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const response = await github.rest.repos.getPages({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            }).catch(e => {
+              if (e.status === 404) {
+                console.log('GitHub Pages not configured yet');
+                return { data: null };
+              }
+              throw e;
+            });
+
+            if (!response.data || response.data.source.branch !== 'gh-pages') {
+              console.log('Setting GitHub Pages source to gh-pages branch');
+              await github.rest.repos.createPagesSite({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                source: {
+                  branch: 'gh-pages',
+                  path: '/'
+                }
+              }).catch(e => {
+                if (e.status === 409) {
+                  console.log('GitHub Pages already exists, updating source');
+                  return github.rest.repos.updateInformationAboutPagesSite({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    source: {
+                      branch: 'gh-pages',
+                      path: '/'
+                    }
+                  });
+                }
+                throw e;
+              });
+              console.log('GitHub Pages source set to gh-pages branch');
+            } else {
+              console.log('GitHub Pages already configured correctly');
+            }

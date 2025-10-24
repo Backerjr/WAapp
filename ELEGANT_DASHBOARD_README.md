@@ -4,7 +4,7 @@
 
 This project delivers an elegant, dark-themed React + TypeScript front end for WAapp, featuring a sophisticated cosmic design with interactive learning components and hidden teacher tools.
 
-## ✨ Key Features
+## ✨ Key Featurespkill -f "node.*copilot"
 
 ### 🌌 Elegant Dashboard
 - **Cosmic Dark Theme**: Deep purple gradients with starfield animations and nebula effects
