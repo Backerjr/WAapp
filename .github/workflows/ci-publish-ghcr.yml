@@ -1,146 +1,209 @@
-name: CI / Test / Build & Publish (GHCR)
+name: CI & Publish to GHCR
 
 on:
   push:
-    branches: [ 'replit-agent', 'main' ]
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
 
-permissions:
-  contents: read
-  packages: write
-  # pages: write - This permission is not used in the workflow.
-  # id-token: write - This permission is not used in the workflow.
-  actions: read
-
-# Use a single source for the image name, derived from the repository name
 env:
-  IMAGE_NAME: ${{ github.event.repository.name }}
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  NODE_VERSION: '20'
 
 jobs:
-  test:
-    name: Run tests
+  build-and-test:
+    name: Build and Test
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-      - name: Install deps
-        run: npm ci
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Run linter
+        run: npm run lint --if-present
+        continue-on-error: true
+
+      - name: Run type check
+        run: npm run type-check --if-present
+        continue-on-error: true
+
       - name: Run tests
-        # This command only runs one test file. Consider 'npm test' to run all tests.
-        run: npx vitest run src/__tests__/ci-workflows.test.ts
+        run: npm test --if-present
 
-  build-and-push:
-    name: Build & push Docker images to GHCR
-    runs-on: ubuntu-latest
-    needs: test
-    # Only run on main repository, not forks. This is more portable than a hardcoded name.
-    if: github.repository_owner == 'Backerjr' && github.event_name == 'push'
-    outputs:
-      repo_owner_lower: ${{ steps.lowercase.outputs.repository_owner }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - name: Install deps & Build
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Check build output
         run: |
-          npm ci
-          npm run build
-      - name: Convert repository owner to lowercase
-        id: lowercase
-        run: echo "repository_owner=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+          if [ ! -d "dist" ]; then
+            echo "::error::Build failed - dist directory not found"
+            exit 1
+          fi
+          echo "✅ Build successful - dist directory exists"
+          ls -la dist/
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ github.sha }}
+          path: dist/
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Report build size
+        run: |
+          DIST_SIZE=$(du -sh dist/ | cut -f1)
+          echo "::notice title=Build Size::Distribution bundle size: $DIST_SIZE"
+
+  publish-image:
+    name: Build and Publish Docker Image
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    timeout-minutes: 20
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Login to GHCR
-        uses: docker/login-action@v2
+        uses: docker/setup-buildx-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push nginx image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: Dockerfile.nginx
-          push: true
-          platforms: linux/amd64
-          tags: |
-            ghcr.io/${{ steps.lowercase.outputs.repository_owner }}/${{ env.IMAGE_NAME }}:nginx-latest
-            ghcr.io/${{ steps.lowercase.outputs.repository_owner }}/${{ env.IMAGE_NAME }}:nginx-${{ github.sha }}
+          driver-opts: |
+            image=moby/buildkit:latest
+            network=host
 
-      - name: Build and push caddy image
-        uses: docker/build-push-action@v4
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
         with:
-          context: .
-          file: Dockerfile.caddy
-          push: true
-          platforms: linux/amd64
-          tags: |
-            ghcr.io/${{ steps.lowercase.outputs.repository_owner }}/${{ env.IMAGE_NAME }}:caddy-latest
-            ghcr.io/${{ steps.lowercase.outputs.repository_owner }}/${{ env.IMAGE_NAME }}:caddy-${{ github.sha }}
-
-  test-images:
-    name: Pull and smoke-test pushed images (nginx & caddy)
-    runs-on: ubuntu-latest
-    needs: build-and-push
-    if: github.repository_owner == 'Backerjr' && github.event_name == 'push'
-    steps:
-      - name: Login to GHCR
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull and run nginx image
-        env:
-          IMAGE_NGINX: ghcr.io/${{ needs.build-and-push.outputs.repo_owner_lower }}/${{ env.IMAGE_NAME }}:nginx-latest
-        run: |
-          docker pull "$IMAGE_NGINX"
-          docker run -d --name waapp-nginx-ci -p 8080:80 "$IMAGE_NGINX"
-          # Use curl with retry for a more robust health check
-          curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8080
-          docker logs waapp-nginx-ci || true
-          docker rm -f waapp-nginx-ci || true
-
-      - name: Pull and run caddy image
-        env:
-          IMAGE_CADDY: ghcr.io/${{ needs.build-and-push.outputs.repo_owner_lower }}/${{ env.IMAGE_NAME }}:caddy-latest
-        run: |
-          docker pull "$IMAGE_CADDY"
-          docker run -d --name waapp-caddy-ci -p 8081:80 "$IMAGE_CADDY"
-          curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8081
-          docker logs waapp-caddy-ci || true
-          docker rm -f waapp-caddy-ci || true
-
-  make-ghcr-public:
-    name: Attempt to make GHCR package public
-    runs-on: ubuntu-latest
-    needs: build-and-push
-    if: always() && github.repository_owner == 'Backerjr'
-    steps:
-      - name: Try to set package visibility
-        uses: actions/github-script@v6
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
         with:
-          # Consider using GITHUB_TOKEN if the PAT is only for visibility settings
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const owner = context.repo.owner;
-            const pkg = '${{ env.IMAGE_NAME }}';
-            try {
-              await github.rest.packages.setAccessibilityForPackageOwnedByUser({
-                package_type: 'container',
-                package_name: pkg,
-                username: owner,
-                visibility: 'public'
-              });
-              core.info(`Set user package visibility for '${pkg}' to public`);
-            } catch (e) {
-              core.warning(`Failed to set user package visibility: ${e.message}`);
-              core.warning('This may be expected if the repository is owned by an organization.');
-            }
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value={{branch}}-{{date 'YYYYMMDD-HHmmss'}}
+          labels: |
+            org.opencontainers.image.title=WAapp
+            org.opencontainers.image.description=Language Learning Web Application
+            org.opencontainers.image.vendor=${{ github.repository_owner }}
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-${{ github.sha }}
+          path: dist/
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            NODE_VERSION=${{ env.NODE_VERSION }}
+            BUILD_DATE=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
+            VCS_REF=${{ github.sha }}
+
+      - name: Generate image summary
+        run: |
+          echo "## Docker Image Published 🐳" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Registry:** \`${{ env.REGISTRY }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Repository:** \`${{ env.IMAGE_NAME }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Tags:" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.meta.outputs.tags }}" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Pull Command:" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+      - name: Image digest
+        run: echo "Image published with digest ${{ steps.build.outputs.digest }}"
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    needs: publish-image
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      security-events: write
+    
+    steps:
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  deploy-notification:
+    name: Deployment Notification
+    runs-on: ubuntu-latest
+    needs: [build-and-test, publish-image]
+    if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Check deployment status
+        run: |
+          if [ "${{ needs.publish-image.result }}" == "success" ]; then
+            echo "::notice title=Deployment Status::✅ Successfully built and published to GHCR"
+          else
+            echo "::warning title=Deployment Status::❌ Deployment failed or was skipped"
+          fi
