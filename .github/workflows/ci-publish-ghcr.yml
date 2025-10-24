@@ -117,7 +117,13 @@ jobs:
           docker run -d --name waapp-nginx-ci -p 8080:80 "$IMAGE_NGINX"
           # Use curl with retry for a more robust health check
           119|           sleep 5  # Give the container time to start
-          curl --retry 20 --retry-delay 2 --retry-connrefused http://localhost:8080
+          for i in {1..30}; do
+  if curl --fail http://localhost:8080; then
+    break
+  fi
+  echo "Waiting for nginx to be ready..."
+  sleep 2
+done
           docker logs waapp-nginx-ci || true
           docker rm -f waapp-nginx-ci || true
 
