@@ -11,7 +11,6 @@ permissions:
   id-token: write
   actions: read
 
-# Define the original image name, we'll convert it to lowercase in the steps
 env:
   IMAGE_NAME_ORIG: ${{ github.event.repository.name }}
 
@@ -126,7 +125,6 @@ jobs:
             sleep 2
           done
 
-          # If still not ready, print a helpful message and exit non-zero
           if ! curl --fail --silent http://localhost:8080; then
             echo "ERROR: nginx did not respond on http://localhost:8080" >&2
             docker logs waapp-nginx-ci || true
@@ -143,7 +141,28 @@ jobs:
         run: |
           docker pull "$IMAGE_CADDY"
           docker run -d --name waapp-caddy-ci -p 8081:80 "$IMAGE_CADDY"
-          curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:8081
+
+          # Retry until caddy responds (use --retry-connrefused and check headers)
+          for i in {1..30}; do
+            if curl --fail --silent --show-error --retry 3 --retry-delay 1 --retry-connrefused http://localhost:8081/; then
+              echo "caddy is ready"
+              break
+            fi
+            echo "Waiting for caddy to be ready... ($i/30)"
+            sleep 2
+          done
+
+          # If still not ready, dump container logs and fail
+          if ! curl --fail --silent http://localhost:8081/; then
+            echo "ERROR: caddy did not respond on http://localhost:8081" >&2
+            echo "Container status:"
+            docker ps -a --filter "name=waapp-caddy-ci"
+            echo "Container logs:"
+            docker logs waapp-caddy-ci || true
+            docker rm -f waapp-caddy-ci || true
+            exit 1
+          fi
+
           docker logs waapp-caddy-ci || true
           docker rm -f waapp-caddy-ci || true
 
