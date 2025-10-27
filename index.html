@@ -105,15 +105,15 @@
   <div class="stats-container container">
     <div class="stat-item">
       <div class="stat-number" id="lessons-count">0</div>
-      <div class="stat-label">Lessons Imagined</div>
+      <div class="stat-label">Lessons Created</div>
     </div>
     <div class="stat-item">
       <div class="stat-number" id="components-count">0</div>
-      <div class="stat-label">UI Elements Crafted</div>
+      <div class="stat-label">Components Built</div>
     </div>
     <div class="stat-item">
       <div class="stat-number" id="commits-count">0</div>
-      <div class="stat-label">Moments of Creation</div>
+      <div class="stat-label">Commits Made</div>
     </div>
   </div>
 </section>
@@ -124,22 +124,22 @@
     <div class="component-grid">
       <div class="component-card">
         <span class="component-icon">▶️</span>
-        <h4>Exercise Player</h4>
+        <h4>Exercise Card System</h4>
         <p>The stage for learning. Adapts fluidly to quizzes, ordering tasks, and listening challenges.</p>
       </div>
       <div class="component-card">
         <span class="component-icon">🎤</span>
-        <h4>ASR Hook (useAsr)</h4>
-        <p>Listens intently. Bridges your voice to the digital realm via WebSockets for instant feedback.</p>
+        <h4>Interactive Audio</h4>
+        <p>Speaks clearly. Uses browser speech synthesis for authentic pronunciation practice and listening exercises.</p>
       </div>
       <div class="component-card">
         <span class="component-icon">📊</span>
-        <h4>Status Beacon</h4>
-        <p>A gentle pulse check, ensuring all systems flow harmoniously – API, Database, and Speech Proxy.</p>
+        <h4>Progress Tracker</h4>
+        <p>Tracks your journey with streaks, XP, and achievements. All progress saved locally for privacy.</p>
       </div>
       <div class="component-card">
         <span class="component-icon">🎨</span>
-        <h4>UI Harmonics</h4>
+        <h4>Delightful Interactions</h4>
         <p>Buttons that invite, inputs that respond. Crafted for intuitive touch and visual peace.</p>
       </div>
     </div>
@@ -267,9 +267,9 @@
     };
 
     document.addEventListener('DOMContentLoaded', () => {
-      animateCounter(document.getElementById('lessons-count'), 3);
-      animateCounter(document.getElementById('components-count'), 4);
-      animateCounter(document.getElementById('commits-count'), 50);
+      animateCounter(document.getElementById('lessons-count'), 7);
+      animateCounter(document.getElementById('components-count'), 30);
+      animateCounter(document.getElementById('commits-count'), 100);
 
       const obs = new IntersectionObserver((entries)=> {
         entries.forEach(e=>{ 
