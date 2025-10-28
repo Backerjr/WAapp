@@ -18,17 +18,41 @@ function Header({ progress, currentView, onViewChange }: HeaderProps) {
         
         {onViewChange && (
           <nav className="view-nav">
-            <button 
-              className={`nav-button ${currentView === 'elegant' ? 'active' : ''}`}
-              onClick={() => onViewChange('elegant')}
+            <button
+              className={`nav-button ${currentView === 'website' ? 'active' : ''}`}
+              onClick={() => onViewChange('website')}
             >
-              ✨ Dashboard
+              🏠 Home
             </button>
-            <button 
+            <button
               className={`nav-button ${currentView === 'learning' ? 'active' : ''}`}
               onClick={() => onViewChange('learning')}
             >
-              📚 Learn
+              🌙 Learn
+            </button>
+            <button
+              className={`nav-button ${currentView === 'progress' ? 'active' : ''}`}
+              onClick={() => onViewChange('progress')}
+            >
+              📊 Progress
+            </button>
+            <button
+              className={`nav-button ${currentView === 'social' ? 'active' : ''}`}
+              onClick={() => onViewChange('social')}
+            >
+              👥 Social
+            </button>
+            <button
+              className={`nav-button ${currentView === 'planner' ? 'active' : ''}`}
+              onClick={() => onViewChange('planner')}
+            >
+              ✨ Planner
+            </button>
+            <button
+              className={`nav-button ${currentView === 'wall' ? 'active' : ''}`}
+              onClick={() => onViewChange('wall')}
+            >
+              💬 Wall
             </button>
           </nav>
         )}
