@@ -31,25 +31,30 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
         </div>
       </header>
 
-      {/* HERO SECTION */}
-      <section className="hero-section">
-        <div className="hero-content">
-          <h2 className="hero-headline">
-            Language is not learned — it's lived.
-          </h2>
-          <p className="hero-subtext">
-            Discover RozmoWA's modern language approach — practical, inspiring, and human.
-          </p>
-          <div className="hero-buttons">
-            <button onClick={() => handleNavigation('offer')} className="btn-primary">
-              Explore Our Classes
-            </button>
-            <button onClick={() => handleNavigation('app')} className="btn-secondary">
-              Download App
-            </button>
-            <button onClick={() => handleNavigation('contact')} className="btn-accent">
-              Start Learning Today
-            </button>
+      {/* HERO SECTION - REDESIGNED */}
+      <section className="hero-section-redesigned">
+        <div className="hero-container-redesigned">
+          <div className="hero-text-content">
+            <h2 className="hero-headline">
+              Language is not learned—it's lived.
+            </h2>
+            <p className="hero-subtext">
+              Discover RozmoWA's modern language approach—practical, inspiring, and human.
+            </p>
+            <div className="hero-buttons">
+              <button onClick={() => handleNavigation('offer')} className="btn-primary">
+                Explore Our Classes
+              </button>
+              <button onClick={() => handleNavigation('app')} className="btn-secondary">
+                Try The App
+              </button>
+            </div>
+          </div>
+          <div className="hero-image-placeholder">
+            <div className="decorative-shape shape-1"></div>
+            <div className="decorative-shape shape-2"></div>
+            <div className="decorative-shape shape-3"></div>
+            <span className="image-text">rozmoWA</span>
           </div>
         </div>
       </section>

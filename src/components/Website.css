@@ -190,6 +190,79 @@ button {
   transform: translateY(-4px);
 }
 
+/* Redesigned Hero Section */
+.hero-section-redesigned {
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%);
+  padding: 6rem 2rem;
+}
+
+.hero-container-redesigned {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 4rem;
+}
+
+.hero-text-content {
+  text-align: left;
+}
+
+.hero-image-placeholder {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-hover) 100%);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.decorative-shape {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transition: transform 0.8s ease-in-out;
+}
+
+.shape-1 {
+  width: 200px;
+  height: 200px;
+  top: -50px;
+  left: -50px;
+}
+
+.shape-2 {
+  width: 120px;
+  height: 120px;
+  bottom: -30px;
+  right: -30px;
+}
+
+.shape-3 {
+  width: 60px;
+  height: 60px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hero-image-placeholder:hover .decorative-shape {
+  transform: scale(1.2) rotate(45deg);
+}
+
+.image-text {
+  font-size: 3rem;
+  font-weight: 700;
+  color: white;
+  font-family: 'Playfair Display', serif;
+  z-index: 1;
+}
+
 /* Content Sections */
 .content-sections {
   max-width: 1200px;
