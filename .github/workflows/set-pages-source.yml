@@ -92,9 +92,3 @@ jobs:
             } else {
               console.log('✅ GitHub Pages already configured correctly');
             }
-      
-      - name: Configure Pages
-        if: fromJSON(steps.check-branch.outputs.result)
-        uses: actions/configure-pages@v4
-        with:
-          enablement: true
