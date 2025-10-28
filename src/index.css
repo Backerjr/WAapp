@@ -1,11 +1,27 @@
 :root {
-  /* Ivory Moonlight Theme - Enhanced */
+  /* Enhanced Gradient Palette - Purple, Teal, Ivory, Deep Midnight */
   --color-ivory: #FFFEF7;
+  --color-midnight: #0F172A;
+  --color-midnight-light: #1E293B;
+  --color-midnight-deep: #020617;
+  
+  /* Purple Accent (Primary) */
   --color-lavender-50: #F5F3FF;
   --color-lavender: #E9D5FF;
   --color-lavender-light: #F3E8FF;
   --color-lavender-dark: #C4B5FD;
   --color-lavender-deeper: #A78BFA;
+  --color-purple: #9333EA;
+  --color-purple-light: #C084FC;
+  --color-purple-dark: #7C3AED;
+  
+  /* Teal Complement */
+  --color-teal: #14B8A6;
+  --color-teal-light: #5EEAD4;
+  --color-teal-dark: #0D9488;
+  --color-teal-deeper: #0F766E;
+  
+  /* Gold/Accent */
   --color-gold: #D4AF37;
   --color-gold-light: #E8C547;
   --color-gold-pale: #F5E6A3;
@@ -15,9 +31,16 @@
   /* Glass Effect Colors */
   --glass-white: rgba(255, 255, 255, 0.25);
   --glass-lavender: rgba(233, 213, 255, 0.15);
+  --glass-teal: rgba(20, 184, 166, 0.15);
   --glass-gold: rgba(212, 175, 55, 0.1);
   --glass-border: rgba(255, 255, 255, 0.2);
   --glass-shadow: rgba(139, 92, 246, 0.1);
+  
+  /* Dynamic Gradients */
+  --gradient-purple-teal: linear-gradient(135deg, var(--color-purple) 0%, var(--color-teal) 100%);
+  --gradient-midnight: linear-gradient(180deg, var(--color-midnight-deep) 0%, var(--color-midnight) 100%);
+  --gradient-ivory: linear-gradient(180deg, var(--color-ivory) 0%, var(--color-lavender-50) 100%);
+  --gradient-cosmic: linear-gradient(135deg, var(--color-purple-dark) 0%, var(--color-midnight) 50%, var(--color-teal-dark) 100%);
   
   /* Semantic Colors */
   --color-primary: var(--color-lavender-dark);
