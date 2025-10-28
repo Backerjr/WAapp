@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import Header from '../components/Header';
 import { Progress } from '../types';
 import { describe, it, expect } from 'vitest';
