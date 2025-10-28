@@ -16,46 +16,25 @@ permissions:
 
 # Ensure only one deployment happens at a time
 concurrency:
- fix/yaml-indentation-deploy-pages
-  group: "pages-${{ github.ref }}"
-
   group: "pages-config-${{ github.ref }}"
- replit-agent
   cancel-in-progress: true
 
 jobs:
   set-pages-source:
- fix/yaml-indentation-deploy-pages
-    runs-on: ubuntu-latest
-    if: ${{ github.repository_owner == github.actor || github.event_name == 'workflow_dispatch' }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: 'npm'
-          
-      - name: Configure GitHub Pages
-        uses: actions/github-script@v6
-
     name: Configure GitHub Pages source
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    if: ${{ github.repository_owner == github.actor || github.event_name == 'workflow_dispatch' }}
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       
-        if: fromJSON(steps.check-branch.outputs.result)
+      - name: Check if gh-pages branch exists
         id: check-branch
         uses: actions/github-script@v7
- replit-agent
         with:
           script: |
- codespace-orange-space-memory-5g5vqq9w695g2vwp6
             try {
               await github.rest.repos.getBranch({
                 owner: context.repo.owner,
@@ -68,28 +47,26 @@ jobs:
                 return false;
               }
               throw error;
-
+            }
+      
+      - name: Configure GitHub Pages
+        if: fromJSON(steps.check-branch.outputs.result)
+        uses: actions/github-script@v7
+        with:
+          script: |
             const response = await github.rest.repos.getPages({
               owner: context.repo.owner,
               repo: context.repo.repo
             }).catch(e => {
               if (e.status === 404) {
- fix/yaml-indentation-deploy-pages
-                console.log('GitHub Pages not configured yet');
-
                 console.log('ℹ️ GitHub Pages not configured yet');
- replit-agent
                 return { data: null };
               }
               throw e;
             });
 
             if (!response.data || response.data.source.branch !== 'gh-pages') {
- fix/yaml-indentation-deploy-pages
-              console.log('Setting GitHub Pages source to gh-pages branch');
-
               console.log('🔧 Setting GitHub Pages source to gh-pages branch');
- replit-agent
               await github.rest.repos.createPagesSite({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -99,11 +76,7 @@ jobs:
                 }
               }).catch(e => {
                 if (e.status === 409) {
- fix/yaml-indentation-deploy-pages
-                  console.log('GitHub Pages already exists, updating source');
-
                   console.log('ℹ️ GitHub Pages already exists, updating source');
- replit-agent
                   return github.rest.repos.updateInformationAboutPagesSite({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
@@ -115,20 +88,13 @@ jobs:
                 }
                 throw e;
               });
- fix/yaml-indentation-deploy-pages
-              console.log('GitHub Pages source set to gh-pages branch');
-            } else {
-              console.log('GitHub Pages already configured correctly');
-
               console.log('✅ GitHub Pages source set to gh-pages branch');
             } else {
               console.log('✅ GitHub Pages already configured correctly');
- replit-agent
- replit-agent
             }
       
       - name: Configure Pages
-        if: steps.check-branch.outputs.result == 'true'
+        if: fromJSON(steps.check-branch.outputs.result)
         uses: actions/configure-pages@v4
         with:
           enablement: true
