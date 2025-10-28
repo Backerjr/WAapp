@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import LandingPage from './LandingPage';
+import LandingPage from './LandingPage.tsx';
 import AboutPage from './AboutPage';
 import OfferPage from './OfferPage';
 import ContactPage from './ContactPage';
