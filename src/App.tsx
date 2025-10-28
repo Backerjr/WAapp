@@ -114,46 +114,7 @@ function App() {
             progress={progress} 
             currentView={viewMode as string}
             onViewChange={(view) => setViewMode(view as ViewMode)}
-          />      {!currentLesson && (
-        <nav className="app-navigation">
-          <button
-            className={`nav-btn ${(viewMode as string) === 'website' ? 'active' : ''}`}
-            onClick={() => setViewMode('website')}
-          >
-            🏠 Home
-          </button>
-          <button
-            className={`nav-btn ${viewMode === 'learning' ? 'active' : ''}`}
-            onClick={() => setViewMode('learning')}
-          >
-            🌙 Learn
-          </button>
-          <button
-            className={`nav-btn ${viewMode === 'progress' ? 'active' : ''}`}
-            onClick={() => setViewMode('progress')}
-          >
-            📊 Progress
-          </button>
-          <button
-            className={`nav-btn ${viewMode === 'social' ? 'active' : ''}`}
-            onClick={() => setViewMode('social')}
-          >
-            👥 Social
-          </button>
-          <button
-            className={`nav-btn ${viewMode === 'planner' ? 'active' : ''}`}
-            onClick={() => setViewMode('planner')}
-          >
-            ✨ Planner
-          </button>
-          <button
-            className={`nav-btn ${viewMode === 'wall' ? 'active' : ''}`}
-            onClick={() => setViewMode('wall')}
-          >
-            💬 Wall
-          </button>
-        </nav>
-      )}
+          />
       
       {!currentLesson ? (
         <>
