@@ -1,8 +1,16 @@
-name: Build and deploy
+name: Build and Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ 'replit-agent' ]
+    branches:
+      - replit-agent
+      - main
+  workflow_dispatch:
+
+# Prevent concurrent page deployments
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -10,33 +18,59 @@ permissions:
 
 jobs:
   build-and-deploy:
+    name: Build and deploy to gh-pages
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - name: Checkout (use GITHUB_TOKEN)
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
           persist-credentials: true
 
- fix/gh-pages-permissions
-      - name: Use Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - uses: actions/setup-node@v4
-        with:
-            node-version: '20'
- replit-agent
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
+      - name: Build application
         run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Verify build output
+        run: |
+          if [ ! -d "dist" ]; then
+            echo "ERROR: dist directory not found"
+            exit 1
+          fi
+          if [ ! -f "dist/index.html" ]; then
+            echo "ERROR: dist/index.html not found"
+            exit 1
+          fi
+          echo "✅ Build output verified successfully"
+          ls -lah dist/
+
+ fix/yaml-indentation-deploy-pages
+                  - name: Deploy to gh-pages
 
       - name: Deploy to gh-pages
+ fix/gh-pages-permissions
+
+ replit-agent
+ replit-agent
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+ fix/gh-pages-permissions
           publish_branch: gh-pages
+
+          publish_branch: gh-pages
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+
+ replit-agent

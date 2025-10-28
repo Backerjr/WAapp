@@ -1,0 +1,64 @@
+{
+  "nav": {
+    "home": "Home",
+    "learn": "Learn",
+    "progress": "Progress",
+    "social": "Social",
+    "planner": "Planner",
+    "wall": "Wall",
+    "elegant": "Elegant"
+  },
+  "header": {
+    "hearts": "Hearts",
+    "streak": "Streak",
+    "xp": "XP",
+    "level": "Level"
+  },
+  "dashboard": {
+    "welcome": "Welcome to WAapp",
+    "subtitle": "Your elegant language learning journey",
+    "dailyGoal": "Daily Goal",
+    "weeklyStreak": "Weekly Streak",
+    "achievements": "Achievements"
+  },
+  "lessons": {
+    "start": "Start Lesson",
+    "continue": "Continue",
+    "completed": "Completed",
+    "locked": "Locked"
+  },
+  "exercises": {
+    "check": "Check",
+    "continue": "Continue",
+    "skip": "Skip",
+    "correct": "Correct!",
+    "incorrect": "Try again",
+    "hint": "Hint"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "notifications": "Notifications",
+    "sound": "Sound Effects",
+    "theme": "Theme"
+  },
+  "profile": {
+    "title": "Profile",
+    "stats": "Statistics",
+    "achievements": "Achievements",
+    "friends": "Friends"
+  },
+  "analytics": {
+    "title": "Analytics",
+    "overview": "Overview",
+    "performance": "Performance",
+    "timeSpent": "Time Spent",
+    "accuracy": "Accuracy"
+  },
+  "upload": {
+    "title": "Upload Image",
+    "dropzone": "Drag & drop or click to upload",
+    "preview": "Preview",
+    "remove": "Remove"
+  }
+}
