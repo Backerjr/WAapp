@@ -28,6 +28,9 @@
   "devDependencies": {
     "@actions/github": "^6.0.1",
     "@octokit/rest": "^22.0.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^24.9.1",
     "cross-fetch": "^4.1.0",
