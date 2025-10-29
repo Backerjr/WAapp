@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import LandingPage from './LandingPage';
+import LandingPage from './LandingPage.tsx';
 import AboutPage from './AboutPage';
 import OfferPage from './OfferPage';
 import ContactPage from './ContactPage';
@@ -12,37 +12,56 @@ interface WebsiteRouterProps {
 
 type PageType = 'home' | 'about' | 'offer' | 'contact' | 'app' | 'poster';
 
-export default function WebsiteRouter({ onStartApp }: WebsiteRouterProps) {
+/**
+ * WebsiteRouter component that manages navigation between different pages of the website.
+ * 
+ * This component implements client-side routing by maintaining the current page state
+ * and rendering the appropriate page component based on the current route. It handles
+ * navigation between home, about, offer, contact, app, and poster pages. Navigation
+ * automatically scrolls to the top of the page with smooth behavior.
+ * 
+ * @param props - The component props
+ * @param props.onStartApp - Callback function to start the application, passed down to AppPage
+ * 
+ * @returns A div container with the currently active page component
+ * 
+ * @example
+ * ```tsx
+ * <WebsiteRouter onStartApp={() => setViewMode('elegant')} />
+ * ```
+ */
+function WebsiteRouter({ onStartApp }: WebsiteRouterProps) {
   const [currentPage, setCurrentPage] = useState<PageType>('home');
 
-  const handleNavigation = (page: string) => {
+  const navigateTo = (page: string) => {
     setCurrentPage(page as PageType);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const renderPage = () => {
+  const renderCurrentPage = () => {
     switch (currentPage) {
       case 'home':
-        return (
-          <>
-            <LandingPage onNavigate={handleNavigation} />
-            <PosterSection onNavigate={handleNavigation} />
-          </>
-        );
+        return <LandingPage onNavigate={navigateTo} />;
       case 'about':
-        return <AboutPage onNavigate={handleNavigation} />;
+        return <AboutPage onNavigate={navigateTo} />;
       case 'offer':
-        return <OfferPage onNavigate={handleNavigation} />;
+        return <OfferPage onNavigate={navigateTo} />;
       case 'contact':
-        return <ContactPage onNavigate={handleNavigation} />;
+        return <ContactPage onNavigate={navigateTo} />;
       case 'app':
-        return <AppPage onNavigate={handleNavigation} onStartApp={onStartApp} />;
+        return <AppPage onStartApp={onStartApp} onNavigate={navigateTo} />;
       case 'poster':
-        return <PosterSection onNavigate={handleNavigation} />;
+        return <PosterSection onNavigate={navigateTo} />;
       default:
-        return <LandingPage onNavigate={handleNavigation} />;
+        return <LandingPage onNavigate={navigateTo} />;
     }
   };
 
-  return <div className="website-router">{renderPage()}</div>;
+  return (
+    <div>
+      {renderCurrentPage()}
+    </div>
+  );
 }
+
+export default WebsiteRouter;
