@@ -1,114 +1,92 @@
 import './Website.css';
 
 interface LandingPageProps {
-  onNavigate?: (page: string) => void;
+  onNavigate: (page: string) => void;
 }
 
 export default function LandingPage({ onNavigate }: LandingPageProps) {
-  const handleNavigation = (page: string) => {
-    if (onNavigate) {
-      onNavigate(page);
-    }
-  };
-
   return (
     <div className="landing-page">
-      {/* HEADER */}
-      <header className="landing-header">
-        <div className="header-container">
-          <h1 className="brand">rozmoWA-App</h1>
-          <nav className="main-nav">
-            <button onClick={() => handleNavigation('about')} className="nav-link">
-              About Us
-            </button>
-            <button onClick={() => handleNavigation('offer')} className="nav-link">
-              Offer
-            </button>
-            <button onClick={() => handleNavigation('contact')} className="nav-link">
-              Contact
-            </button>
-          </nav>
-        </div>
-      </header>
-
-      {/* HERO SECTION */}
       <section className="hero-section">
-        <div className="hero-content">
-          <h2 className="hero-headline">
-            Language is not learned — it's lived.
+        <div className="hero-content" style={{
+          textAlign: 'center',
+          padding: '6rem 2rem',
+          background: 'linear-gradient(135deg, #3b0066 0%, #ffcc70 100%)',
+          color: 'white',
+          borderRadius: '12px',
+          boxShadow: '0 0 40px rgba(0,0,0,0.2)',
+          transition: 'all 0.5s ease'
+        }}>
+          <h2 className="hero-headline" style={{
+            fontSize: '3rem',
+            marginBottom: '1rem',
+            fontWeight: 700,
+            letterSpacing: '1px',
+            background: 'linear-gradient(90deg, #fff, #ffe6b3)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent'
+          }}>
+            Speak beautifully.<br />Learn fearlessly.
           </h2>
-          <p className="hero-subtext">
-            Discover RozmoWA's modern language approach — practical, inspiring, and human.
+
+          <p className="hero-subtext" style={{
+            fontSize: '1.25rem',
+            maxWidth: '700px',
+            margin: '0 auto 2rem',
+            opacity: 0.9
+          }}>
+            Step into a world where language feels natural, emotional, and alive.
+            <br />
+            RozmoWA blends human connection with elegant technology — designed by teachers, powered by passion.
           </p>
-          <div className="hero-buttons">
-            <button onClick={() => handleNavigation('offer')} className="btn-primary">
-              Explore Our Classes
+
+          <div className="hero-buttons" style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '1rem'
+          }}>
+            <button onClick={() => onNavigate('offer')} className="btn-primary" style={{
+              backgroundColor: '#fff',
+              color: '#3b0066',
+              padding: '0.9rem 2rem',
+              borderRadius: '8px',
+              border: 'none',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'transform 0.3s ease'
+            }}>
+              Explore Courses
             </button>
-            <button onClick={() => handleNavigation('app')} className="btn-secondary">
-              Download App
+
+            <button onClick={() => onNavigate('app')} className="btn-secondary" style={{
+              backgroundColor: 'transparent',
+              border: '2px solid #fff',
+              color: '#fff',
+              padding: '0.9rem 2rem',
+              borderRadius: '8px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'background 0.3s ease'
+            }}>
+              Launch App
             </button>
-            <button onClick={() => handleNavigation('contact')} className="btn-accent">
-              Start Learning Today
+
+            <button onClick={() => onNavigate('contact')} className="btn-accent" style={{
+              backgroundColor: '#ffcc70',
+              color: '#3b0066',
+              padding: '0.9rem 2rem',
+              borderRadius: '8px',
+              border: 'none',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'transform 0.3s ease'
+            }}>
+              Get Started Today
             </button>
           </div>
         </div>
       </section>
-
-      {/* CONTENT SECTIONS - 5 Cards */}
-      <section className="content-sections">
-        <div className="section-card">
-          <h3>Our Mission</h3>
-          <p>
-            RozmoWA redefines language learning by blending authentic communication 
-            with cultural understanding. We believe language is more than vocabulary — 
-            it's connection, expression, and exploration.
-          </p>
-        </div>
-
-        <div className="section-card clickable" onClick={() => handleNavigation('offer')}>
-          <h3>Our Lessons</h3>
-          <p>
-            Structured courses and personalized sessions designed for all levels. 
-            From beginner foundations to advanced fluency, we meet you where you are.
-          </p>
-          <span className="link-arrow">→</span>
-        </div>
-
-        <div className="section-card clickable" onClick={() => handleNavigation('app')}>
-          <h3>RozmoWA App</h3>
-          <p>
-            Learn anytime, anywhere with interactive exercises, audio lessons, 
-            and real-time progress tracking. Your language journey in your pocket.
-          </p>
-          <span className="link-arrow">→</span>
-        </div>
-
-        <div className="section-card">
-          <h3>Testimonials</h3>
-          <p>
-            "RozmoWA transformed my learning. I went from textbook Polish to real 
-            conversations in just three months. The teachers truly care about your progress."
-          </p>
-        </div>
-
-        <div className="section-card clickable" onClick={() => handleNavigation('contact')}>
-          <h3>Join Us</h3>
-          <p>
-            Ready to start your language journey? Contact our team to find your 
-            perfect learning path. First consultation is always free.
-          </p>
-          <span className="link-arrow">→</span>
-        </div>
-      </section>
-
-      {/* FOOTER QUOTE */}
-      <footer className="landing-footer">
-        <blockquote className="footer-quote">
-          "The grass isn't greener on the other side — it's greener where you water it 
-          with words, patience, and presence."
-        </blockquote>
-        <p className="footer-signature">— Wiktoria</p>
-      </footer>
     </div>
   );
 }
