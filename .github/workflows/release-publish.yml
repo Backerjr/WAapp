@@ -100,3 +100,17 @@ jobs:
           echo "✅ Published Docker images:"
           echo "  Nginx: ghcr.io/${{ steps.lowercase.outputs.repository_owner }}/rozmowa:nginx-${{ steps.version.outputs.version }}"
           echo "  Caddy: ghcr.io/${{ steps.lowercase.outputs.repository_owner }}/rozmowa:caddy-${{ steps.version.outputs.version }}"
+// ...existing code...
+      - name: Build and push caddy image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile.caddy
+          push: true
+          platforms: linux/amd64
+          cache-from: type=gha,scope=caddy-release
+          cache-to: type=gha,mode=max,scope=caddy-release
+          tags: |
+            ghcr.io/${{ steps.lowercase.outputs.repository_owner }}/rozmowa:caddy-latest
+            ghcr.io/${{ steps.lowercase.outputs.repository_owner }}/rozmowa:caddy-${{ steps.version.outputs.version }}
+// ...existing code...
