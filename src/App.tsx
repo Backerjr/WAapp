@@ -11,6 +11,11 @@ import ProgressionDashboard from './components/ProgressionDashboard';
 import SocialHub from './components/SocialHub';
 import ElegantDashboard from './components/ElegantDashboard';
 import './App.css';
+import AboutPage from './components/AboutPage';
+import AppPage from './components/AppPage';
+import ContactPage from './components/ContactPage';
+import LandingPage from './components/LandingPage';
+import OfferPage from './components/OfferPage';
 import LandingPage from './components/LandingPage';
 import AboutPage from './components/AboutPage';
 import OfferPage from './components/OfferPage';
@@ -39,10 +44,14 @@ const INITIAL_STATS: UserStats = {
 type WebsiteView = 'home' | 'about' | 'offer' | 'contact' | 'app';
 type AppView = 'learning' | 'planner' | 'wall' | 'progress' | 'social' | 'elegant';
 type ViewMode = WebsiteView | AppView;
+type WebsiteView = 'home' | 'about' | 'offer' | 'contact' | 'app';
+type AppView = 'learning' | 'planner' | 'wall' | 'progress' | 'social' | 'elegant';
+type ViewMode = WebsiteView | AppView;
 
 function App() {
   const [progress, setProgress] = useState<Progress>(INITIAL_PROGRESS);
   const [userStats, setUserStats] = useState<UserStats>(INITIAL_STATS);
+  const [viewMode, setViewMode] = useState<ViewMode>('home');
   const [viewMode, setViewMode] = useState<ViewMode>('home');
 
   useEffect(() => {
@@ -113,6 +122,10 @@ function App() {
     setViewMode(page as ViewMode);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+  const handleNavigation = (page: string) => {
+    setViewMode(page as ViewMode);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div className="app">
@@ -148,6 +161,14 @@ function App() {
           )}
           {viewMode === 'planner' && <LessonPlanner />}
           {viewMode === 'wall' && <RozmowaWall />}
+          
+          {/* Website Pages */}
+          {viewMode === 'home' && <LandingPage onNavigate={handleNavigation} />}
+          {viewMode === 'about' && <AboutPage onNavigate={handleNavigation} />}
+          {viewMode === 'offer' && <OfferPage onNavigate={handleNavigation} />}
+          {viewMode === 'contact' && <ContactPage onNavigate={handleNavigation} />}
+          {viewMode === 'app' && <AppPage onNavigate={handleNavigation} onStartApp={() => setViewMode('elegant')} />}
+
           
           {/* Website Pages */}
           {viewMode === 'home' && <LandingPage onNavigate={handleNavigation} />}
