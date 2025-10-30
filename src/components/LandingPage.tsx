@@ -1,5 +1,8 @@
 import './LandingPage.css';
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3bf8f18b09c61b038da4c14df8ad6d3814c31269
 interface LandingPageProps {
   onNavigate: (page: string) => void;
 }
