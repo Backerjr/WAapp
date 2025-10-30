@@ -1,0 +1,21 @@
+name: Run WAapp Agent Tasks
+on:
+  agent:
+    types: [message]
+
+jobs:
+  respond:
+    name: Execute WAapp Agent
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run GitHub Agent
+        uses: actions/github-agent@v1
+
+      - name: Confirm task success
+        run: echo "✅ WAapp Build & Deploy Assistant is active and ready for homepage audits."
+
+ 
