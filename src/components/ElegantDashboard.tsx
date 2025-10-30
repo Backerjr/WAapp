@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Progress } from '../types';
-import { skillTree } from '../data/lessons';
 import QuoteOfTheDay from './elegant/QuoteOfTheDay.tsx';
 import InteractiveAudio from './elegant/InteractiveAudio.tsx';
 import ConversationStarter from './elegant/ConversationStarter.tsx';
 import TeacherTools from './elegant/TeacherTools.tsx';
 import GlowingProgress from './elegant/GlowingProgress.tsx';
-import Playground from './elegant/Playground.tsx';
 import './elegant/ElegantDashboard.css';
 
 interface ElegantDashboardProps {
@@ -76,7 +74,6 @@ const ElegantDashboard: React.FC<ElegantDashboardProps> = ({
               <InteractiveAudio />
               <ConversationStarter />
             </div>
-            <Playground exercises={skillTree[0].lessons[0].exercises} />
           </section>
 
           {/* Progress Sidebar */}

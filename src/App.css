@@ -139,7 +139,7 @@
   background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 20px 32px;
+  padding: 24px 32px;
   box-shadow: 0 8px 32px rgba(139, 92, 246, 0.08);
   position: sticky;
   top: 0;
@@ -148,26 +148,22 @@
 }
 
 .header-content {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
   animation: slide-in-up 0.8s ease 0.1s both;
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 16px;
 }
 
 .logo {
   font-family: 'Playfair Display', serif;
-  font-size: 28px;
+  font-size: 36px;
   font-weight: 700;
-  background: var(--gradient-purple-teal);
+  background: linear-gradient(135deg, 
+    var(--color-primary) 0%, 
+    var(--color-gold) 50%,
+    var(--color-lavender-deeper) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -177,41 +173,11 @@
   position: relative;
   cursor: pointer;
   transition: var(--transition-smooth);
-  white-space: nowrap;
 }
 
-.view-nav {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.nav-button {
-  padding: 10px 20px;
-  font-size: 15px;
-  font-weight: 600;
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(12px);
-  color: var(--color-text);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: var(--transition-smooth);
-  white-space: nowrap;
-}
-
-.nav-button:hover {
-  background: rgba(255, 255, 255, 0.6);
-  border-color: var(--color-purple);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-sm);
-}
-
-.nav-button.active {
-  background: var(--gradient-purple-teal);
-  color: white;
-  border-color: var(--color-purple);
-  box-shadow: var(--shadow-md);
+.logo:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 8px rgba(233, 213, 255, 0.5));
 }
 
 .stats {
@@ -273,43 +239,14 @@
 }
 
 /* Enhanced Header Responsive Design */
-@media (max-width: 1024px) {
-  .header-content {
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-  
-  .view-nav {
-    order: 3;
-    width: 100%;
-    justify-content: center;
-  }
-}
-
 @media (max-width: 768px) {
   .header {
-    padding: 16px;
+    padding: 20px 16px;
   }
   
   .header-content {
     flex-direction: column;
-    gap: 12px;
-  }
-  
-  .logo {
-    font-size: 24px;
-  }
-  
-  .view-nav {
-    width: 100%;
-    flex-direction: row;
-    gap: 8px;
-  }
-  
-  .nav-button {
-    flex: 1;
-    padding: 10px 16px;
-    font-size: 14px;
+    gap: 16px;
   }
   
   .logo {

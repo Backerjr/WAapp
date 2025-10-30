@@ -71,7 +71,7 @@ Border:    #e5e5e5  (Light gray)
 
 ### Start Development Server
 ```bash
-
+npm run dev
 ```
 Visit: `http://localhost:5000/WAapp/`
 

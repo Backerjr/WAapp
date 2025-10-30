@@ -1,5 +1,4 @@
 import { Progress } from '../types';
-import StatusBeacon from './StatusBeacon';
 
 interface HeaderProps {
   progress: Progress;
@@ -11,70 +10,37 @@ function Header({ progress, currentView, onViewChange }: HeaderProps) {
   return (
     <header className="header">
       <div className="header-content">
-        <div className="header-left">
-          <h1 className="logo">🌙 Rozmowa</h1>
-          <StatusBeacon position="inline" showLabel={false} />
-        </div>
+        <h1 className="logo">WA</h1>
         
         {onViewChange && (
           <nav className="view-nav">
-            <button
-              className={`nav-button ${currentView === 'home' ? 'active' : ''}`}
-              onClick={() => onViewChange('home')}
-            >
-              🏠 Home
-            </button>
-            <button
-              className={`nav-button ${currentView === 'about' ? 'active' : ''}`}
-              onClick={() => onViewChange('about')}
-            >
-              About Us
-            </button>
-            <button
-              className={`nav-button ${currentView === 'offer' ? 'active' : ''}`}
-              onClick={() => onViewChange('offer')}
-            >
-              Classes
-            </button>
-            <button
-              className={`nav-button ${currentView === 'contact' ? 'active' : ''}`}
-              onClick={() => onViewChange('contact')}
-            >
-              Contact
-            </button>
-            <button
-              className={`nav-button ${currentView === 'app' ? 'active' : ''}`}
-              onClick={() => onViewChange('app')}
-            >
-              🚀 App
-            </button>
-            <button
-              className={`nav-button ${currentView === 'learning' ? 'active' : ''}`}
-              onClick={() => onViewChange('learning')}
-            >
-              🌙 Learn
-            </button>
-            <button
+            <button 
               className={`nav-button ${currentView === 'elegant' ? 'active' : ''}`}
               onClick={() => onViewChange('elegant')}
             >
-              Dashboard
+              ✨ Elegant
+            </button>
+            <button 
+              className={`nav-button ${currentView === 'learning' ? 'active' : ''}`}
+              onClick={() => onViewChange('learning')}
+            >
+              📚 Learning
             </button>
           </nav>
         )}
         
         <div className="stats">
-          <div className="stat-item" title="Day Streak">
+          <div className="stat-item">
             <span className="stat-icon">🔥</span>
             <span className="stat-value">{progress.streak}</span>
           </div>
           
-          <div className="stat-item" title="Total XP">
+          <div className="stat-item">
             <span className="stat-icon">✨</span>
-            <span className="stat-value">{progress.xp}</span>
+            <span className="stat-value">{progress.xp} XP</span>
           </div>
           
-          <div className="stat-item" title="Hearts Remaining">
+          <div className="stat-item">
             <span className="stat-icon">💜</span>
             <span className="stat-value">{progress.hearts}</span>
           </div>

@@ -270,37 +270,3 @@
     gap: 1.5rem;
   }
 }
-
-/* Playground */
-.playground {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  padding: 2rem;
-  margin-top: 2rem;
-  backdrop-filter: blur(10px);
-}
-
-.playground-nav {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-}
-
-.playground-nav button {
-  background-color: #4c4c7c;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.playground-nav button:disabled {
-  background-color: #2c2c4c;
-  cursor: not-allowed;
-}
-
-.playground-nav button:hover:not(:disabled) {
-  background-color: #6a6aff;
-}
