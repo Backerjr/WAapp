@@ -19,8 +19,6 @@ const mockProgress: Progress = {
 
 describe('Header', () => {
   it('should render all navigation buttons', () => {
-describe('Header', () => {
-  it('should render all navigation buttons', () => {
     render(<Header progress={mockProgress} onViewChange={() => {}} />);
 
     expect(screen.getByText('🏠 Home')).toBeInTheDocument();
