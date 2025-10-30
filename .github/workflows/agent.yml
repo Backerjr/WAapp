@@ -1,7 +1,6 @@
 name: Run WAapp Agent Tasks
 on:
-  agent:
-    types: [message]
+  workflow_dispatch:
 
 jobs:
   respond:
@@ -12,8 +11,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run GitHub Agent
-        uses: actions/github-agent@v1
+      - name: Run GitHub Agent (placeholder using github-script)
+        uses: actions/github-script@v6
+        with:
+          script: |
+            console.log("✅ WAapp Build & Deploy Assistant placeholder executed via github-script.");
 
       - name: Confirm task success
         run: echo "✅ WAapp Build & Deploy Assistant is active and ready for homepage audits."

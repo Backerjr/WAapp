@@ -10,10 +10,10 @@ permissions:
   packages: write
 
 jobs:
-  build-and-push:
-    name: Build and push release images
+  publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    env:
+      HAS_GHCR_PAT: ${{ secrets.GHCR_PAT != '' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -100,4 +100,4 @@ jobs:
           echo "✅ Published Docker images:"
           echo "  Nginx: ghcr.io/${{ steps.lowercase.outputs.repository_owner }}/rozmowa:nginx-${{ steps.version.outputs.version }}"
           echo "  Caddy: ghcr.io/${{ steps.lowercase.outputs.repository_owner }}/rozmowa:caddy-${{ steps.version.outputs.version }}"
-        if: secrets.GHCR_PAT != ''
+        if: env.HAS_GHCR_PAT == 'true'
