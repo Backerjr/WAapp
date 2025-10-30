@@ -32,12 +32,14 @@ const INITIAL_STATS: UserStats = {
   exerciseIndex: 0
 };
 
-type ViewMode = 'learning' | 'planner' | 'wall' | 'progress' | 'social' | 'elegant' | 'website';
+type WebsiteView = 'home' | 'about' | 'offer' | 'contact' | 'app';
+type AppView = 'learning' | 'planner' | 'wall' | 'progress' | 'social' | 'elegant';
+type ViewMode = WebsiteView | AppView;
 
 function App() {
   const [progress, setProgress] = useState<Progress>(INITIAL_PROGRESS);
   const [userStats, setUserStats] = useState<UserStats>(INITIAL_STATS);
-  const [viewMode, setViewMode] = useState<ViewMode>('website');
+  const [viewMode, setViewMode] = useState<ViewMode>('home');
 
   useEffect(() => {
     const savedProgress = localStorage.getItem('progress');
@@ -103,10 +105,10 @@ function App() {
         .find(lesson => lesson.id === userStats.currentLesson)
     : null;
 
-  // Website mode - show landing pages instead of app
-  if (viewMode === 'website') {
-    return <WebsiteRouter onStartApp={() => setViewMode('elegant')} />;
-  }
+  const handleNavigation = (page: string) => {
+    setViewMode(page as ViewMode);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div className="app">
@@ -143,6 +145,13 @@ function App() {
           {viewMode === 'planner' && <LessonPlanner />}
           {viewMode === 'wall' && <RozmowaWall />}
           
+          {/* Website Pages */}
+          {viewMode === 'home' && <LandingPage onNavigate={handleNavigation} />}
+          {viewMode === 'about' && <AboutPage onNavigate={handleNavigation} />}
+          {viewMode === 'offer' && <OfferPage onNavigate={handleNavigation} />}
+          {viewMode === 'contact' && <ContactPage onNavigate={handleNavigation} />}
+          {viewMode === 'app' && <AppPage onNavigate={handleNavigation} onStartApp={() => setViewMode('elegant')} />}
+
           <footer className="app-footer">
             <p className="footer-dedication">
               Dedicated to the one who teaches the world how to listen.
