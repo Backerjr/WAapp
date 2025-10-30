@@ -36,7 +36,9 @@ const INITIAL_STATS: UserStats = {
   exerciseIndex: 0
 };
 
-type ViewMode = 'learning' | 'planner' | 'wall' | 'progress' | 'social' | 'elegant' | 'home' | 'about' | 'offer' | 'contact' | 'app';
+type WebsiteView = 'home' | 'about' | 'offer' | 'contact' | 'app';
+type AppView = 'learning' | 'planner' | 'wall' | 'progress' | 'social' | 'elegant';
+type ViewMode = WebsiteView | AppView;
 
 function App() {
   const [progress, setProgress] = useState<Progress>(INITIAL_PROGRESS);
