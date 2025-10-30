@@ -4,12 +4,14 @@ description: Helps debug, build, and deploy the RozmoWA App with Vite + TypeScri
 permissions:
   issues: write
   pull_requests: write
-  contents: read
+  contents: write
+  actions: read
+  repository-projects: read
 tools:
   - actions: run
   - npm: run
   - shell: bash
----
+  - repo: read
 
 # WAapp Build & Deploy Assistant
 
