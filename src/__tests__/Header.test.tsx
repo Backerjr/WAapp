@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import Header from '../components/Header';
 import { Progress } from '../types';
@@ -16,6 +17,8 @@ const mockProgress: Progress = {
   weeklyStreak: 1,
 };
 
+describe('Header', () => {
+  it('should render all navigation buttons', () => {
 describe('Header', () => {
   it('should render all navigation buttons', () => {
     render(<Header progress={mockProgress} onViewChange={() => {}} />);

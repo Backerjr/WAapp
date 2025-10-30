@@ -1,4 +1,12 @@
 {
+  // ...existing code...
+  "scripts": {
+    // ...existing code...
+    "test": "vitest",
+    "test:ui": "vitest --ui"
+  }
+  // ...existing code...
+}
   "name": "rozmowa",
   "version": "1.0.0",
   "type": "module",
