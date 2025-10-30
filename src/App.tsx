@@ -11,11 +11,11 @@ import ProgressionDashboard from './components/ProgressionDashboard';
 import SocialHub from './components/SocialHub';
 import ElegantDashboard from './components/ElegantDashboard';
 import './App.css';
-import LandingPage from './components/LandingPage';
 import AboutPage from './components/AboutPage';
-import OfferPage from './components/OfferPage';
-import ContactPage from './components/ContactPage';
 import AppPage from './components/AppPage';
+import ContactPage from './components/ContactPage';
+import LandingPage from './components/LandingPage';
+import OfferPage from './components/OfferPage';
 
 const INITIAL_PROGRESS: Progress = {
   completedLessons: [],
@@ -36,7 +36,7 @@ const INITIAL_STATS: UserStats = {
   exerciseIndex: 0
 };
 
-type ViewMode = 'learning' | 'planner' | 'wall' | 'progress' | 'social' | 'elegant' | 'home' | 'about' | 'offer' | 'contact' | 'app';
+type ViewMode = 'home' | 'about' | 'offer' | 'contact' | 'app' | 'learning' | 'planner' | 'wall' | 'progress' | 'social' | 'elegant';
 
 function App() {
   const [progress, setProgress] = useState<Progress>(INITIAL_PROGRESS);
