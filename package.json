@@ -1,22 +1,15 @@
 {
-  // ...existing code...
-  "scripts": {
-    // ...existing code...
-    "test": "vitest",
-    "test:ui": "vitest --ui"
-  }
-  // ...existing code...
-}
   "name": "rozmowa",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "test": "vitest --run",
+    "test": "vitest",
     "preview": "vite preview",
     "start": "npm run build && node server.js",
-    "vercel-build": "npm run build"
+    "vercel-build": "npm run build",
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "@types/react": "^19.2.2",
