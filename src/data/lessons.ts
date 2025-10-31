@@ -312,5 +312,150 @@ export const skillTree: Unit[] = [
         ]
       }
     ]
+  },
+  {
+    id: 'unit-3',
+    title_pl: 'Życie codzienne',
+    title_en: 'Daily Life',
+    cefr: 'A1',
+    description_pl: 'W codzienności kryje się piękno prostoty.',
+    description_en: 'In daily life hides the beauty of simplicity.',
+    lessons: [
+      {
+        id: 'lesson-3-1',
+        title_pl: 'Czas',
+        title_en: 'Time',
+        icon: '🕐',
+        description_pl: 'Każda chwila to skarb ukryty w czasie.',
+        description_en: 'Every moment is a treasure hidden in time.',
+        xp: 15,
+        exercises: [
+          {
+            id: 'ex-3-1-1',
+            type: 'multiple_choice',
+            prompt_en: 'What time is it? (3:00 PM)',
+            prompt_pl: 'Która jest godzina? (15:00)',
+            options: ["Three o'clock", 'Three PM', 'Fifteen hundred', 'All correct'],
+            correctAnswer: 'All correct',
+            hint_pl: 'Wszystkie odpowiedzi oznaczają tę samą godzinę'
+          },
+          {
+            id: 'ex-3-1-2',
+            type: 'listen_and_select',
+            prompt_en: 'Listen and select the correct time',
+            prompt_pl: 'Posłuchaj i wybierz właściwą godzinę',
+            audioText: 'half past two',
+            options: ['2:30', '2:15', '2:45', '3:30'],
+            correctAnswer: '2:30',
+            hint_pl: 'Half past oznacza pół godziny po'
+          },
+          {
+            id: 'ex-3-1-3',
+            type: 'type_answer',
+            prompt_en: 'How do you say "Która godzina?" in English?',
+            prompt_pl: 'Jak powiedzieć "Która godzina?" po angielsku?',
+            correctAnswer: 'what time is it',
+            hint_pl: 'Pytanie o aktualną godzinę'
+          },
+          {
+            id: 'ex-3-1-4',
+            type: 'drag_words',
+            prompt_en: 'Arrange: "I wake up at seven in the morning"',
+            prompt_pl: 'Ułóż: "Budzę się o siódmej rano"',
+            words: ['I', 'wake', 'up', 'at', 'seven', 'in', 'the', 'morning'],
+            correctAnswer: 'I wake up at seven in the morning',
+            hint_pl: 'Opis codziennej czynności rano'
+          }
+        ]
+      },
+      {
+        id: 'lesson-3-2',
+        title_pl: 'Codzienne czynności',
+        title_en: 'Daily Activities',
+        icon: '🏃',
+        description_pl: 'W rutynie znajdziemy rytm życia.',
+        description_en: 'In routine we find the rhythm of life.',
+        xp: 15,
+        exercises: [
+          {
+            id: 'ex-3-2-1',
+            type: 'multiple_choice',
+            prompt_en: 'What do you do first in the morning?',
+            prompt_pl: 'Co robisz jako pierwsze rano?',
+            options: ['Brush teeth', 'Have breakfast', 'Wake up', 'Take a shower'],
+            correctAnswer: 'Wake up',
+            hint_pl: 'Pierwsza czynność po śnie'
+          },
+          {
+            id: 'ex-3-2-2',
+            type: 'listen_and_type',
+            prompt_en: 'Listen and type what you hear',
+            prompt_pl: 'Posłuchaj i wpisz to, co słyszysz',
+            audioText: 'I have breakfast at eight',
+            correctAnswer: 'I have breakfast at eight',
+            hint_pl: 'Opis porannego posiłku'
+          },
+          {
+            id: 'ex-3-2-3',
+            type: 'fill_blanks',
+            prompt_en: 'Fill in: "I ___ my teeth every morning"',
+            prompt_pl: 'Uzupełnij: "I ___ my teeth every morning"',
+            sentence: 'I ___ my teeth every morning',
+            blanks: ['brush'],
+            correctAnswer: 'brush',
+            hint_pl: 'Czynność higieniczna z zębami'
+          },
+          {
+            id: 'ex-3-2-4',
+            type: 'type_answer',
+            prompt_en: 'Translate: "Idę do szkoły"',
+            prompt_pl: 'Przetłumacz: "Idę do szkoły"',
+            correctAnswer: 'I go to school',
+            hint_pl: 'Codzienne przemieszczenie się do miejsca nauki'
+          }
+        ]
+      },
+      {
+        id: 'lesson-3-3',
+        title_pl: 'W domu',
+        title_en: 'At Home',
+        icon: '🏠',
+        description_pl: 'Dom to miejsce, gdzie serce znajduje spokój.',
+        description_en: 'Home is where the heart finds peace.',
+        xp: 15,
+        exercises: [
+          {
+            id: 'ex-3-3-1',
+            type: 'multiple_choice',
+            prompt_en: 'Where do you sleep?',
+            prompt_pl: 'Gdzie śpisz?',
+            options: ['Kitchen', 'Bedroom', 'Bathroom', 'Living room'],
+            correctAnswer: 'Bedroom',
+            hint_pl: 'Pokój przeznaczony do spania'
+          },
+          {
+            id: 'ex-3-3-2',
+            type: 'image_match',
+            prompt_en: 'Match the room with its function',
+            prompt_pl: 'Dopasuj pokój do jego funkcji',
+            pairs: [
+              { en: 'Kitchen', pl: 'Kuchnia' },
+              { en: 'Bathroom', pl: 'Łazienka' },
+              { en: 'Living room', pl: 'Salon' }
+            ],
+            correctAnswer: 'Kitchen',
+            hint_pl: 'Każdy pokój ma swoją główną funkcję'
+          },
+          {
+            id: 'ex-3-3-3',
+            type: 'type_answer',
+            prompt_en: 'Translate: "Jestem w kuchni"',
+            prompt_pl: 'Przetłumacz: "Jestem w kuchni"',
+            correctAnswer: 'I am in the kitchen',
+            hint_pl: 'Określenie miejsca pobytu w domu'
+          }
+        ]
+      }
+    ]
   }
 ];
