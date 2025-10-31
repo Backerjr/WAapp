@@ -12,8 +12,6 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    env:
-      HAS_GHCR_PAT: ${{ secrets.GHCR_PAT != '' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -100,4 +98,3 @@ jobs:
           echo "✅ Published Docker images:"
           echo "  Nginx: ghcr.io/${{ steps.lowercase.outputs.repository_owner }}/rozmowa:nginx-${{ steps.version.outputs.version }}"
           echo "  Caddy: ghcr.io/${{ steps.lowercase.outputs.repository_owner }}/rozmowa:caddy-${{ steps.version.outputs.version }}"
-        if: env.HAS_GHCR_PAT == 'true'
