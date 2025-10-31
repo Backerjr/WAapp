@@ -335,7 +335,7 @@ export const skillTree: Unit[] = [
             type: 'multiple_choice',
             prompt_en: 'What time is it? (3:00 PM)',
             prompt_pl: 'Która jest godzina? (15:00)',
-            options: ['Three o\'clock', 'Three PM', 'Fifteen hundred', 'All correct'],
+            options: ["Three o'clock", 'Three PM', 'Fifteen hundred', 'All correct'],
             correctAnswer: 'All correct',
             hint_pl: 'Wszystkie odpowiedzi oznaczają tę samą godzinę'
           },
@@ -443,6 +443,8 @@ export const skillTree: Unit[] = [
               { en: 'Bathroom', pl: 'Łazienka' },
               { en: 'Living room', pl: 'Salon' }
             ],
+            // Note: correctAnswer is required by Exercise interface but not used by ImageMatch component
+            // The component validates matches by comparing pairs directly
             correctAnswer: 'Kitchen,Bathroom,Living room',
             hint_pl: 'Każdy pokój ma swoją główną funkcję'
           },
