@@ -443,11 +443,7 @@ export const skillTree: Unit[] = [
               { en: 'Bathroom', pl: 'Łazienka' },
               { en: 'Living room', pl: 'Salon' }
             ],
- copilot/sub-pr-58-again
-            correctAnswer: 'Kitchen,Bathroom,Living room',
-
             correctAnswer: 'Kitchen',
- bugfix-consolidate-navigation
             hint_pl: 'Każdy pokój ma swoją główną funkcję'
           },
           {
