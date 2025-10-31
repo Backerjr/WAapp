@@ -120,7 +120,7 @@ function App() {
         onViewChange={(view) => setViewMode(view as ViewMode)}
       />
       
-      {!currentLesson && (
+      {!currentLesson && !['home', 'about', 'offer', 'contact', 'app'].includes(viewMode) && (
         <nav className="app-navigation">
           <button
             className={`nav-btn ${(viewMode as string) === 'home' ? 'active' : ''}`}
