@@ -114,15 +114,17 @@ function App() {
 
   return (
     <div className="app">
-          <Header 
-            progress={progress} 
-            currentView={viewMode as string}
-            onViewChange={(view) => setViewMode(view as ViewMode)}
-          />      {!currentLesson && (
+      <Header 
+        progress={progress} 
+        currentView={viewMode as string}
+        onViewChange={(view) => setViewMode(view as ViewMode)}
+      />
+      
+      {!currentLesson && (
         <nav className="app-navigation">
           <button
-            className={`nav-btn ${(viewMode as string) === 'website' ? 'active' : ''}`}
-            onClick={() => setViewMode('website')}
+            className={`nav-btn ${(viewMode as string) === 'home' ? 'active' : ''}`}
+            onClick={() => setViewMode('home')}
           >
             🏠 Home
           </button>
