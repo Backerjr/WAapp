@@ -192,20 +192,39 @@ jobs:
     if: needs.publish-image.result == 'success'
     
     steps:
-      - name: Verify image digest
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get image digest from latest tag
+        id: get-digest
         run: |
-          DIGEST="${{ needs.publish-image.outputs.image-digest }}"
+          # Get the digest of the latest image we just published
+          LATEST_IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
+          echo "Pulling latest image to get digest: $LATEST_IMAGE"
+          
+          # Pull the image to ensure we have it locally
+          docker pull $LATEST_IMAGE
+          
+          # Get the full digest
+          DIGEST=$(docker inspect $LATEST_IMAGE --format='{{index .RepoDigests 0}}' | cut -d'@' -f2)
+          
           if [ -z "$DIGEST" ]; then
-            echo "::error::No image digest received from publish-image job"
+            echo "::error::Could not extract digest from image"
             exit 1
           fi
-          echo "Using image digest: $DIGEST"
-          echo "Full image reference: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@$DIGEST"
+          
+          echo "Full digest extracted: $DIGEST"
+          echo "digest=$DIGEST" >> $GITHUB_OUTPUT
+          echo "image-ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@$DIGEST" >> $GITHUB_OUTPUT
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ needs.publish-image.outputs.image-digest }}
+          image-ref: ${{ steps.get-digest.outputs.image-ref }}
           format: 'sarif'
           output: 'trivy-results.sarif'
 
