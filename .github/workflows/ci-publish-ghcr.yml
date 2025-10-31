@@ -96,7 +96,7 @@ jobs:
     timeout-minutes: 20
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     outputs:
-      image-digest: ${{ steps.build.outputs.digest }}
+      image-digest: ${{ steps.capture-digest.outputs.digest }}
       image-tags: ${{ steps.meta.outputs.tags }}
     permissions:
       contents: read
@@ -156,8 +156,17 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Output image digest
-        run: echo "Image digest - ${{ steps.build.outputs.digest }}"
+      - name: Validate image digest
+        id: capture-digest
+        run: |
+          if [ -z "${{ steps.build.outputs.digest }}" ]; then
+            echo "::error::No image digest was produced. Docker build or push may have failed."
+            exit 1
+          else
+            echo "digest=${{ steps.build.outputs.digest }}" >> $GITHUB_OUTPUT
+            echo "Captured digest=${{ steps.build.outputs.digest }}"
+            echo "Image digest - ${{ steps.build.outputs.digest }}"
+          fi
 
       - name: Generate image summary
         run: |
@@ -177,7 +186,7 @@ jobs:
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
 
       - name: Image digest
-        run: echo "Image published with digest ${{ steps.docker_build.outputs.digest }}"
+        run: echo "Image published with digest ${{ steps.build.outputs.digest }}"
 
   security-scan:
     name: Security Scan
@@ -187,6 +196,16 @@ jobs:
     if: needs.publish-image.result == 'success'
     
     steps:
+      - name: Verify image digest
+        run: |
+          DIGEST="${{ needs.publish-image.outputs.image-digest }}"
+          if [ -z "$DIGEST" ]; then
+            echo "::error::No image digest received from publish-image job"
+            exit 1
+          fi
+          echo "Using image digest: $DIGEST"
+          echo "Full image reference: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@$DIGEST"
+
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.28.0
         with:
