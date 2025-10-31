@@ -121,8 +121,9 @@ function App() {
           />      {!currentLesson && (
         <nav className="app-navigation">
           <button
-            className={`nav-btn ${(viewMode as string) === 'website' ? 'active' : ''}`}
-            onClick={() => setViewMode('website')}
+            className={`nav-btn ${(viewMode as string) === 'home' ? 'active' : ''}`}
+onClick={() => setViewMode('home')}
+
           >
             🏠 Home
           </button>
