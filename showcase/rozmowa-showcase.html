@@ -272,7 +272,7 @@
       animateCounter(document.getElementById('commits-count'), 50);
 
       const obs = new IntersectionObserver((entries)=> {
-        entries.forEach(e=>{ 
+        entries.forEach(e=>{
           if(e.isIntersecting) {
             e.target.classList.add('visible');
             if(e.target.id === 'dashboard') {
@@ -293,8 +293,8 @@
           if(!sec) return;
           const r = sec.getBoundingClientRect();
           const absTop = window.scrollY + r.top;
-          if(center >= absTop && center < absTop + r.height){ 
-            navLinks.forEach(n=>n.classList.remove('active')); 
+          if(center >= absTop && center < absTop + r.height){
+            navLinks.forEach(n=>n.classList.remove('active'));
             navLinks[i].classList.add('active');
           }
         });
@@ -306,12 +306,12 @@
         btn.addEventListener('click', (e)=>{
           const ans = e.target.getAttribute('data-answer');
           const res = e.target.closest('.demo-exercise').querySelector('.result');
-          if(ans === 'an'){ 
-            res.textContent = '✓ Correct — gentle win!'; 
-            res.style.color = 'green'; 
-          } else { 
-            res.textContent = '✗ Try again — listen for vowel sounds.'; 
-            res.style.color = 'crimson'; 
+          if(ans === 'an'){
+            res.textContent = '✓ Correct — gentle win!';
+            res.style.color = 'green';
+          } else {
+            res.textContent = '✗ Try again — listen for vowel sounds.';
+            res.style.color = 'crimson';
           }
         });
       });
@@ -328,11 +328,11 @@
           }
         });
       });
-      document.getElementById('reset-order').addEventListener('click', ()=>{ 
-        chosen.length = 0; 
-        chosenEl.textContent = ''; 
+      document.getElementById('reset-order').addEventListener('click', ()=>{
+        chosen.length = 0;
+        chosenEl.textContent = '';
         wordButtons.forEach(b => b.disabled = false);
-        document.querySelector('[data-demo="order"] .result').textContent = ''; 
+        document.querySelector('[data-demo="order"] .result').textContent = '';
       });
       document.getElementById('check-order').addEventListener('click', ()=>{
         const ok = chosen.join(' ') === 'I am from Poland';
@@ -351,10 +351,10 @@
       document.getElementById('listen-submit').addEventListener('click', ()=>{
         const val = (document.getElementById('listen-input').value||'').trim().toLowerCase();
         const out = document.getElementById('listen-result');
-        if(!val) { 
-          out.textContent = 'Please type what you heard.'; 
-          out.style.color='crimson'; 
-          return; 
+        if(!val) {
+          out.textContent = 'Please type what you heard.';
+          out.style.color='crimson';
+          return;
         }
         out.textContent = val === 'three' ? '✓ Correct — echo captured.' : `Heard "${val}" — try again if needed.`;
         out.style.color = (val === 'three') ? 'green' : 'crimson';

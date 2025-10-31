@@ -10,8 +10,12 @@ import RozmowaWall from './components/RozmowaWall';
 import ProgressionDashboard from './components/ProgressionDashboard';
 import SocialHub from './components/SocialHub';
 import ElegantDashboard from './components/ElegantDashboard';
-import WebsiteRouter from './components/WebsiteRouter';
 import './App.css';
+import LandingPage from './components/LandingPage';
+import AboutPage from './components/AboutPage';
+import OfferPage from './components/OfferPage';
+import ContactPage from './components/ContactPage';
+import AppPage from './components/AppPage';
 
 const INITIAL_PROGRESS: Progress = {
   completedLessons: [],
@@ -32,12 +36,12 @@ const INITIAL_STATS: UserStats = {
   exerciseIndex: 0
 };
 
-type ViewMode = 'learning' | 'planner' | 'wall' | 'progress' | 'social' | 'elegant' | 'website';
+type ViewMode = 'learning' | 'planner' | 'wall' | 'progress' | 'social' | 'elegant' | 'home' | 'about' | 'offer' | 'contact' | 'app';
 
 function App() {
   const [progress, setProgress] = useState<Progress>(INITIAL_PROGRESS);
   const [userStats, setUserStats] = useState<UserStats>(INITIAL_STATS);
-  const [viewMode, setViewMode] = useState<ViewMode>('website');
+  const [viewMode, setViewMode] = useState<ViewMode>('home');
 
   useEffect(() => {
     const savedProgress = localStorage.getItem('progress');
@@ -103,18 +107,18 @@ function App() {
         .find(lesson => lesson.id === userStats.currentLesson)
     : null;
 
-  // Website mode - show landing pages instead of app
-  if (viewMode === 'website') {
-    return <WebsiteRouter onStartApp={() => setViewMode('elegant')} />;
-  }
+  const handleNavigation = (page: string) => {
+    setViewMode(page as ViewMode);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div className="app">
-          <Header 
-            progress={progress} 
-            currentView={viewMode as string}
-            onViewChange={(view) => setViewMode(view as ViewMode)}
-          />
+      <Header
+        progress={progress}
+        currentView={viewMode as string}
+        onViewChange={(view) => setViewMode(view as ViewMode)}
+      />
       
       {!currentLesson ? (
         <>
@@ -143,6 +147,13 @@ function App() {
           {viewMode === 'planner' && <LessonPlanner />}
           {viewMode === 'wall' && <RozmowaWall />}
           
+          {/* Website Pages */}
+          {viewMode === 'home' && <LandingPage onNavigate={handleNavigation} />}
+          {viewMode === 'about' && <AboutPage onNavigate={handleNavigation} />}
+          {viewMode === 'offer' && <OfferPage onNavigate={handleNavigation} />}
+          {viewMode === 'contact' && <ContactPage onNavigate={handleNavigation} />}
+          {viewMode === 'app' && <AppPage onNavigate={handleNavigation} onStartApp={() => setViewMode('elegant')} />}
+
           <footer className="app-footer">
             <p className="footer-dedication">
               Dedicated to the one who teaches the world how to listen.

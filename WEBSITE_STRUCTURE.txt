@@ -181,4 +181,3 @@ Border:    #e5e5e5 (Light Gray)   ────────
 ✓ Fast loading times
 ✓ Touch-friendly buttons
 ✓ Consistent branding throughout
-

@@ -37,7 +37,7 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
-          
+
       - name: Configure GitHub Pages
         uses: actions/github-script@v6
 
@@ -126,7 +126,7 @@ jobs:
  replit-agent
  replit-agent
             }
-      
+
       - name: Configure Pages
         if: steps.check-branch.outputs.result == 'true'
         uses: actions/configure-pages@v4

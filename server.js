@@ -38,12 +38,12 @@ const server = createServer(async (req, res) => {
 
   try {
     const url = req.url ? req.url.split('?')[0] : '/';
-    
+
     // Health check endpoint
     if (url === '/health' || url === '/status') {
-      res.writeHead(200, { 
+      res.writeHead(200, {
         'Content-Type': 'application/json',
-        ...corsHeaders 
+        ...corsHeaders
       });
       res.end(JSON.stringify({
         status: 'ok',
@@ -66,7 +66,7 @@ const server = createServer(async (req, res) => {
 
     const ext = path.extname(filePath).toLowerCase();
     const mimeType = mimeTypes[ext] || 'application/octet-stream';
-    res.writeHead(200, { 
+    res.writeHead(200, {
       'Content-Type': mimeType,
       ...corsHeaders
     });
@@ -75,14 +75,14 @@ const server = createServer(async (req, res) => {
     const fallback = path.join(distPath, 'index.html');
     try {
       await fs.access(fallback);
-      res.writeHead(200, { 
+      res.writeHead(200, {
         'Content-Type': 'text/html; charset=utf-8',
         ...corsHeaders
       });
       createReadStream(fallback).pipe(res);
     } catch (fallbackError) {
       console.error('Server error:', error);
-      res.writeHead(500, { 
+      res.writeHead(500, {
         'Content-Type': 'application/json',
         ...corsHeaders
       });

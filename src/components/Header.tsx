@@ -19,10 +19,34 @@ function Header({ progress, currentView, onViewChange }: HeaderProps) {
         {onViewChange && (
           <nav className="view-nav">
             <button
-              className={`nav-button ${currentView === 'website' ? 'active' : ''}`}
-              onClick={() => onViewChange('website')}
+              className={`nav-button ${currentView === 'home' ? 'active' : ''}`}
+              onClick={() => onViewChange('home')}
             >
               🏠 Home
+            </button>
+            <button
+              className={`nav-button ${currentView === 'about' ? 'active' : ''}`}
+              onClick={() => onViewChange('about')}
+            >
+              About Us
+            </button>
+            <button
+              className={`nav-button ${currentView === 'offer' ? 'active' : ''}`}
+              onClick={() => onViewChange('offer')}
+            >
+              Classes
+            </button>
+            <button
+              className={`nav-button ${currentView === 'contact' ? 'active' : ''}`}
+              onClick={() => onViewChange('contact')}
+            >
+              Contact
+            </button>
+            <button
+              className={`nav-button ${currentView === 'app' ? 'active' : ''}`}
+              onClick={() => onViewChange('app')}
+            >
+              🚀 App
             </button>
             <button
               className={`nav-button ${currentView === 'learning' ? 'active' : ''}`}
@@ -31,28 +55,10 @@ function Header({ progress, currentView, onViewChange }: HeaderProps) {
               🌙 Learn
             </button>
             <button
-              className={`nav-button ${currentView === 'progress' ? 'active' : ''}`}
-              onClick={() => onViewChange('progress')}
+              className={`nav-button ${currentView === 'elegant' ? 'active' : ''}`}
+              onClick={() => onViewChange('elegant')}
             >
-              📊 Progress
-            </button>
-            <button
-              className={`nav-button ${currentView === 'social' ? 'active' : ''}`}
-              onClick={() => onViewChange('social')}
-            >
-              👥 Social
-            </button>
-            <button
-              className={`nav-button ${currentView === 'planner' ? 'active' : ''}`}
-              onClick={() => onViewChange('planner')}
-            >
-              ✨ Planner
-            </button>
-            <button
-              className={`nav-button ${currentView === 'wall' ? 'active' : ''}`}
-              onClick={() => onViewChange('wall')}
-            >
-              💬 Wall
+              Dashboard
             </button>
           </nav>
         )}

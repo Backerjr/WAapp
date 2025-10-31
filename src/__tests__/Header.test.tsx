@@ -21,10 +21,11 @@ describe('Header', () => {
     render(<Header progress={mockProgress} onViewChange={() => {}} />);
 
     expect(screen.getByText('🏠 Home')).toBeInTheDocument();
+    expect(screen.getByText('About Us')).toBeInTheDocument();
+    expect(screen.getByText('Classes')).toBeInTheDocument();
+    expect(screen.getByText('Contact')).toBeInTheDocument();
+    expect(screen.getByText('🚀 App')).toBeInTheDocument();
     expect(screen.getByText('🌙 Learn')).toBeInTheDocument();
-    expect(screen.getByText('📊 Progress')).toBeInTheDocument();
-    expect(screen.getByText('👥 Social')).toBeInTheDocument();
-    expect(screen.getByText('✨ Planner')).toBeInTheDocument();
-    expect(screen.getByText('💬 Wall')).toBeInTheDocument();
+    expect(screen.getByText('Dashboard')).toBeInTheDocument();
   });
 });

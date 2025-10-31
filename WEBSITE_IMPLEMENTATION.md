@@ -7,7 +7,7 @@ Successfully created a complete website layout for RozmoWA that integrates seaml
 
 ### 1. Landing Page (`src/components/LandingPage.tsx`)
 - **Header**: Brand logo + navigation (About Us, Offer, Contact)
-- **Hero Section**: 
+- **Hero Section**:
   - Headline: "Language is not learned — it's lived."
   - Call-to-action buttons: Explore Classes, Download App, Start Learning
 - **Content Sections**: Mission, Lessons, App, Testimonials, Join Us
