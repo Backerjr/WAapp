@@ -310,12 +310,98 @@ export const skillTree: Unit[] = [
             hint_pl: 'Wyrażenie uczuć do rodziny'
           }
         ]
+      },
+      {
+        id: 'lesson-2-2',
+        title_pl: 'Opisy Ludzi',
+        title_en: 'Describing People',
+        icon: '👤',
+        description_pl: 'Słowa malują portrety dusz.',
+        description_en: 'Words paint portraits of souls.',
+        xp: 15,
+        exercises: [
+          {
+            id: 'ex-2-2-1',
+            type: 'multiple_choice',
+            prompt_en: 'How do you say "wysoki" in English?',
+            prompt_pl: 'Jak powiedzieć "wysoki" po angielsku?',
+            options: ['Tall', 'Short', 'Big', 'Small'],
+            correctAnswer: 'Tall',
+            hint_pl: 'Przeciwieństwo "short"'
+          },
+          {
+            id: 'ex-2-2-2',
+            type: 'listen_and_select',
+            prompt_en: 'Listen and select the description',
+            prompt_pl: 'Posłuchaj i wybierz opis',
+            audioText: 'She has blue eyes',
+            options: ['She has blue eyes', 'He has brown hair', 'They are tall', 'We are friends'],
+            correctAnswer: 'She has blue eyes',
+            hint_pl: 'Opis koloru oczu kobiety'
+          },
+          {
+            id: 'ex-2-2-3',
+            type: 'drag_words',
+            prompt_en: 'Arrange: "My sister is very beautiful"',
+            prompt_pl: 'Ułóż: "Moja siostra jest bardzo piękna"',
+            words: ['My', 'sister', 'is', 'very', 'beautiful'],
+            correctAnswer: 'My sister is very beautiful',
+            hint_pl: 'Opis urody siostry'
+          },
+          {
+            id: 'ex-2-2-4',
+            type: 'fill_blanks',
+            prompt_en: 'Fill in: "He has ___ hair and ___ eyes"',
+            prompt_pl: 'Uzupełnij: "On ma ___ włosy i ___ oczy"',
+            sentence: 'He has ___ hair and ___ eyes',
+            blanks: ['brown', 'green'],
+            correctAnswer: 'brown green',
+            hint_pl: 'Kolory włosów i oczu'
+          }
+        ]
+      },
+      {
+        id: 'lesson-2-3',
+        title_pl: 'Przyjaciele',
+        title_en: 'Friends',
+        icon: '🤝',
+        description_pl: 'Przyjaźń to język, który rozumie każde serce.',
+        description_en: 'Friendship is a language every heart understands.',
+        xp: 15,
+        exercises: [
+          {
+            id: 'ex-2-3-1',
+            type: 'multiple_choice',
+            prompt_en: 'What does "przyjaciel" mean?',
+            prompt_pl: 'Co oznacza "przyjaciel"?',
+            options: ['Friend', 'Enemy', 'Stranger', 'Teacher'],
+            correctAnswer: 'Friend',
+            hint_pl: 'Osoba, która cię wspiera'
+          },
+          {
+            id: 'ex-2-3-2',
+            type: 'type_answer',
+            prompt_en: 'Translate: "moja najlepsza przyjaciółka"',
+            prompt_pl: 'Przetłumacz: "moja najlepsza przyjaciółka"',
+            correctAnswer: 'my best friend',
+            hint_pl: 'Najbliższa osoba płci żeńskiej'
+          },
+          {
+            id: 'ex-2-3-3',
+            type: 'listen_and_type',
+            prompt_en: 'Listen and type what you hear',
+            prompt_pl: 'Posłuchaj i wpisz co słyszysz',
+            audioText: 'We are good friends',
+            correctAnswer: 'we are good friends',
+            hint_pl: 'Stwierdzenie o przyjaźni'
+          }
+        ]
       }
     ]
   },
   {
     id: 'unit-3',
-    title_pl: 'Życie codzienne',
+    title_pl: 'Codzienne Życie',
     title_en: 'Daily Life',
     cefr: 'A1',
     description_pl: 'W codzienności kryje się piękno prostoty.',
@@ -325,99 +411,100 @@ export const skillTree: Unit[] = [
         id: 'lesson-3-1',
         title_pl: 'Czas',
         title_en: 'Time',
-        icon: '🕐',
-        description_pl: 'Każda chwila to skarb ukryty w czasie.',
-        description_en: 'Every moment is a treasure hidden in time.',
+        icon: '⏰',
+        description_pl: 'Czas to most między wczoraj a jutro.',
+        description_en: 'Time is the bridge between yesterday and tomorrow.',
         xp: 15,
         exercises: [
           {
             id: 'ex-3-1-1',
             type: 'multiple_choice',
-            prompt_en: 'What time is it? (3:00 PM)',
-            prompt_pl: 'Która jest godzina? (15:00)',
-            options: ["Three o'clock", 'Three PM', 'Fifteen hundred', 'All correct'],
-            correctAnswer: 'All correct',
-            hint_pl: 'Wszystkie odpowiedzi oznaczają tę samą godzinę'
+            prompt_en: 'What time is "dziesięta rano"?',
+            prompt_pl: 'Która godzina to "dziesięta rano"?',
+            options: ['Ten AM', 'Ten PM', 'Two AM', 'Twelve PM'],
+            correctAnswer: 'Ten AM',
+            hint_pl: 'Godzina przed południem'
           },
           {
             id: 'ex-3-1-2',
             type: 'listen_and_select',
-            prompt_en: 'Listen and select the correct time',
-            prompt_pl: 'Posłuchaj i wybierz właściwą godzinę',
-            audioText: 'half past two',
-            options: ['2:30', '2:15', '2:45', '3:30'],
-            correctAnswer: '2:30',
-            hint_pl: 'Half past oznacza pół godziny po'
+            prompt_en: 'Listen and select the time',
+            prompt_pl: 'Posłuchaj i wybierz czas',
+            audioText: 'Half past three',
+            options: ['Half past three', 'Quarter to four', 'Three oclock', 'Four thirty'],
+            correctAnswer: 'Half past three',
+            hint_pl: 'Trzydzieści minut po trzeciej'
           },
           {
             id: 'ex-3-1-3',
             type: 'type_answer',
-            prompt_en: 'How do you say "Która godzina?" in English?',
-            prompt_pl: 'Jak powiedzieć "Która godzina?" po angielsku?',
+            prompt_en: 'Translate: "Która godzina?"',
+            prompt_pl: 'Przetłumacz: "Która godzina?"',
             correctAnswer: 'what time is it',
             hint_pl: 'Pytanie o aktualną godzinę'
           },
           {
             id: 'ex-3-1-4',
             type: 'drag_words',
-            prompt_en: 'Arrange: "I wake up at seven in the morning"',
-            prompt_pl: 'Ułóż: "Budzę się o siódmej rano"',
-            words: ['I', 'wake', 'up', 'at', 'seven', 'in', 'the', 'morning'],
-            correctAnswer: 'I wake up at seven in the morning',
-            hint_pl: 'Opis codziennej czynności rano'
+            prompt_en: 'Arrange: "It is five oclock"',
+            prompt_pl: 'Ułóż: "Jest piąta"',
+            words: ['It', 'is', 'five', 'oclock'],
+            correctAnswer: 'It is five oclock',
+            hint_pl: 'Odpowiedź na pytanie o godzinę'
           }
         ]
       },
       {
         id: 'lesson-3-2',
-        title_pl: 'Codzienne czynności',
+        title_pl: 'Codzienne Czynności',
         title_en: 'Daily Activities',
         icon: '🏃',
-        description_pl: 'W rutynie znajdziemy rytm życia.',
-        description_en: 'In routine we find the rhythm of life.',
+        description_pl: 'Każda czynność to nuta w symfonii dnia.',
+        description_en: 'Each action is a note in the symphony of the day.',
         xp: 15,
         exercises: [
           {
             id: 'ex-3-2-1',
             type: 'multiple_choice',
-            prompt_en: 'What do you do first in the morning?',
-            prompt_pl: 'Co robisz jako pierwsze rano?',
-            options: ['Brush teeth', 'Have breakfast', 'Wake up', 'Take a shower'],
-            correctAnswer: 'Wake up',
-            hint_pl: 'Pierwsza czynność po śnie'
+            prompt_en: 'What does "jeść śniadanie" mean?',
+            prompt_pl: 'Co oznacza "jeść śniadanie"?',
+            options: ['Have breakfast', 'Have lunch', 'Have dinner', 'Have snack'],
+            correctAnswer: 'Have breakfast',
+            hint_pl: 'Posiłek jedzony rano'
           },
           {
             id: 'ex-3-2-2',
-            type: 'listen_and_type',
-            prompt_en: 'Listen and type what you hear',
-            prompt_pl: 'Posłuchaj i wpisz to, co słyszysz',
-            audioText: 'I have breakfast at eight',
-            correctAnswer: 'I have breakfast at eight',
-            hint_pl: 'Opis porannego posiłku'
+            type: 'listen_and_select',
+            prompt_en: 'Listen and select the activity',
+            prompt_pl: 'Posłuchaj i wybierz czynność',
+            audioText: 'I brush my teeth',
+            options: ['I brush my teeth', 'I wash my face', 'I comb my hair', 'I take a shower'],
+            correctAnswer: 'I brush my teeth',
+            hint_pl: 'Higiena jamy ustnej'
           },
           {
             id: 'ex-3-2-3',
-            type: 'fill_blanks',
-            prompt_en: 'Fill in: "I ___ my teeth every morning"',
-            prompt_pl: 'Uzupełnij: "I ___ my teeth every morning"',
-            sentence: 'I ___ my teeth every morning',
-            blanks: ['brush'],
-            correctAnswer: 'brush',
-            hint_pl: 'Czynność higieniczna z zębami'
+            type: 'type_answer',
+            prompt_en: 'Translate: "idę do szkoły"',
+            prompt_pl: 'Przetłumacz: "idę do szkoły"',
+            correctAnswer: 'i go to school',
+            hint_pl: 'Czynność uczniów rano'
           },
           {
             id: 'ex-3-2-4',
-            type: 'type_answer',
-            prompt_en: 'Translate: "Idę do szkoły"',
-            prompt_pl: 'Przetłumacz: "Idę do szkoły"',
-            correctAnswer: 'I go to school',
-            hint_pl: 'Codzienne przemieszczenie się do miejsca nauki'
+            type: 'fill_blanks',
+            prompt_en: 'Fill in: "Every morning I ___ up early"',
+            prompt_pl: 'Uzupełnij: "Każdego ranka ___ wcześnie"',
+            sentence: 'Every morning I ___ up early',
+            blanks: ['wake'],
+            correctAnswer: 'wake',
+            hint_pl: 'Przeciwieństwo zasypiania'
           }
         ]
       },
       {
         id: 'lesson-3-3',
-        title_pl: 'W domu',
+        title_pl: 'W Domu',
         title_en: 'At Home',
         icon: '🏠',
         description_pl: 'Dom to miejsce, gdzie serce znajduje spokój.',
@@ -427,32 +514,29 @@ export const skillTree: Unit[] = [
           {
             id: 'ex-3-3-1',
             type: 'multiple_choice',
-            prompt_en: 'Where do you sleep?',
-            prompt_pl: 'Gdzie śpisz?',
+            prompt_en: 'What is "kuchnia"?',
+            prompt_pl: 'Co to jest "kuchnia"?',
             options: ['Kitchen', 'Bedroom', 'Bathroom', 'Living room'],
-            correctAnswer: 'Bedroom',
-            hint_pl: 'Pokój przeznaczony do spania'
+            correctAnswer: 'Kitchen',
+            hint_pl: 'Miejsce, gdzie gotujemy'
           },
           {
             id: 'ex-3-3-2',
-            type: 'image_match',
-            prompt_en: 'Match the room with its function',
-            prompt_pl: 'Dopasuj pokój do jego funkcji',
-            pairs: [
-              { en: 'Kitchen', pl: 'Kuchnia' },
-              { en: 'Bathroom', pl: 'Łazienka' },
-              { en: 'Living room', pl: 'Salon' }
-            ],
-            correctAnswer: 'Kitchen',
-            hint_pl: 'Każdy pokój ma swoją główną funkcję'
+            type: 'listen_and_type',
+            prompt_en: 'Listen and type what you hear',
+            prompt_pl: 'Posłuchaj i wpisz co słyszysz',
+            audioText: 'The bedroom is upstairs',
+            correctAnswer: 'the bedroom is upstairs',
+            hint_pl: 'Lokalizacja sypialni'
           },
           {
             id: 'ex-3-3-3',
-            type: 'type_answer',
-            prompt_en: 'Translate: "Jestem w kuchni"',
-            prompt_pl: 'Przetłumacz: "Jestem w kuchni"',
-            correctAnswer: 'I am in the kitchen',
-            hint_pl: 'Określenie miejsca pobytu w domu'
+            type: 'drag_words',
+            prompt_en: 'Arrange: "I watch TV in the living room"',
+            prompt_pl: 'Ułóż: "Oglądam TV w salonie"',
+            words: ['I', 'watch', 'TV', 'in', 'the', 'living', 'room'],
+            correctAnswer: 'I watch TV in the living room',
+            hint_pl: 'Czynność w głównym pokoju'
           }
         ]
       }

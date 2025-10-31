@@ -11,11 +11,11 @@ import ProgressionDashboard from './components/ProgressionDashboard';
 import SocialHub from './components/SocialHub';
 import ElegantDashboard from './components/ElegantDashboard';
 import './App.css';
-import AboutPage from './components/AboutPage';
-import AppPage from './components/AppPage';
-import ContactPage from './components/ContactPage';
 import LandingPage from './components/LandingPage';
+import AboutPage from './components/AboutPage';
 import OfferPage from './components/OfferPage';
+import ContactPage from './components/ContactPage';
+import AppPage from './components/AppPage';
 
 const INITIAL_PROGRESS: Progress = {
   completedLessons: [],
@@ -36,7 +36,7 @@ const INITIAL_STATS: UserStats = {
   exerciseIndex: 0
 };
 
-type ViewMode = 'home' | 'about' | 'offer' | 'contact' | 'app' | 'learning' | 'planner' | 'wall' | 'progress' | 'social' | 'elegant';
+type ViewMode = 'learning' | 'planner' | 'wall' | 'progress' | 'social' | 'elegant' | 'home' | 'about' | 'offer' | 'contact' | 'app';
 
 function App() {
   const [progress, setProgress] = useState<Progress>(INITIAL_PROGRESS);
@@ -114,53 +114,11 @@ function App() {
 
   return (
     <div className="app">
-      <Header 
-        progress={progress} 
-        currentView={viewMode as string}
-        onViewChange={(view) => setViewMode(view as ViewMode)}
-      />
-      
-      {!currentLesson && (
-        <nav className="app-navigation">
-          <button
-            className={`nav-btn ${(viewMode as string) === 'home' ? 'active' : ''}`}
-onClick={() => setViewMode('home')}
-
-          >
-            🏠 Home
-          </button>
-          <button
-            className={`nav-btn ${viewMode === 'learning' ? 'active' : ''}`}
-            onClick={() => setViewMode('learning')}
-          >
-            🌙 Learn
-          </button>
-          <button
-            className={`nav-btn ${viewMode === 'progress' ? 'active' : ''}`}
-            onClick={() => setViewMode('progress')}
-          >
-            📊 Progress
-          </button>
-          <button
-            className={`nav-btn ${viewMode === 'social' ? 'active' : ''}`}
-            onClick={() => setViewMode('social')}
-          >
-            👥 Social
-          </button>
-          <button
-            className={`nav-btn ${viewMode === 'planner' ? 'active' : ''}`}
-            onClick={() => setViewMode('planner')}
-          >
-            ✨ Planner
-          </button>
-          <button
-            className={`nav-btn ${viewMode === 'wall' ? 'active' : ''}`}
-            onClick={() => setViewMode('wall')}
-          >
-            💬 Wall
-          </button>
-        </nav>
-      )}
+          <Header
+            progress={progress}
+            currentView={viewMode as string}
+            onViewChange={(view) => setViewMode(view as ViewMode)}
+          />
       
       {!currentLesson ? (
         <>

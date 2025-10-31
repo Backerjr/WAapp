@@ -1,560 +1,367 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RozmoWA - Language is not learned — it's lived</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>RozmoWA - Digital Soul</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #ffffff;
-            --accent: #9c6ae1;
-            --text: #1a1a1a;
-            --background: #ffffff;
-            --light-gray: #f8f9fa;
-            --radius: 12px;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            line-height: 1.7;
-            color: var(--text);
-            background: var(--background);
-        }
-
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            line-height: 1.3;
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-            z-index: 1000;
-            padding: 1rem 0;
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: var(--accent);
-            text-decoration: none;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-            font-size: 0.95rem;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-
-        /* Hero Section */
-        .hero {
-            margin-top: 70px;
-            padding: 8rem 2rem 6rem;
-            text-align: center;
-            background: linear-gradient(180deg, #faf9fc 0%, #ffffff 100%);
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            color: var(--text);
-            margin-bottom: 1.5rem;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-            letter-spacing: -0.02em;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--text);
-            opacity: 0.75;
-            max-width: 700px;
-            margin: 0 auto 3rem;
-            line-height: 1.8;
-            font-weight: 400;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border-radius: var(--radius);
-            font-weight: 600;
-            font-size: 0.95rem;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-            box-shadow: 0 4px 12px rgba(156, 106, 225, 0.25);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(156, 106, 225, 0.35);
-        }
-
-        .btn-secondary {
-            background: white;
-            color: var(--accent);
-            border: 2px solid var(--accent);
-        }
-
-        .btn-secondary:hover {
-            background: var(--accent);
-            color: white;
-        }
-
-        .btn-tertiary {
-            background: var(--text);
-            color: white;
-        }
-
-        .btn-tertiary:hover {
-            background: #333;
-        }
-
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        /* Content Sections */
-        .content-section {
-            padding: 5rem 0;
-        }
-
-        .content-section:nth-child(even) {
-            background: var(--light-gray);
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            color: var(--text);
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-
-        .section-content {
-            font-size: 1.125rem;
-            color: var(--text);
-            opacity: 0.8;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-            text-align: center;
-            line-height: 1.8;
-        }
-
-        .section-cta {
-            text-align: center;
-            margin-top: 2rem;
-        }
-
-        /* Poster Section */
-        .poster-section {
-            padding: 6rem 0;
-            background: var(--light-gray);
-        }
-
-        .poster-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .poster-image {
-            text-align: center;
-        }
-
-        .poster-image img {
-            max-width: 100%;
-            height: auto;
-            max-height: 600px;
-            border-radius: var(--radius);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .poster-placeholder {
-            width: 100%;
-            aspect-ratio: 3/4;
-            background: linear-gradient(135deg, var(--accent) 0%, #b89adb 100%);
-            border-radius: var(--radius);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 600;
-            box-shadow: 0 10px 40px rgba(156, 106, 225, 0.2);
-        }
-
-        .poster-content h2 {
-            font-size: 2.5rem;
-            color: var(--text);
-            margin-bottom: 1.5rem;
-        }
-
-        .poster-content p {
-            font-size: 1.125rem;
-            color: var(--text);
-            opacity: 0.8;
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-        }
-
-        .poster-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-top: 2rem;
-        }
-
-        /* Testimonials Section */
-        .testimonials {
-            padding: 5rem 0;
-            background: var(--background);
-        }
-
-        .testimonial-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .testimonial-card {
-            background: white;
-            padding: 2.5rem;
-            border-radius: var(--radius);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            border: 1px solid rgba(156, 106, 225, 0.1);
-        }
-
-        .testimonial-card p {
-            font-style: italic;
-            color: var(--text);
-            opacity: 0.85;
-            margin-bottom: 1rem;
-            line-height: 1.7;
-        }
-
-        .testimonial-author {
-            font-weight: 600;
-            color: var(--accent);
-        }
-
-        /* Contact Section */
-        .contact {
-            padding: 6rem 0;
-            background: var(--light-gray);
-        }
-
-        .contact-form {
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            padding: 3rem;
-            border-radius: var(--radius);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid var(--light-gray);
-            border-radius: var(--radius);
-            font-family: inherit;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-
-        .form-group textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-
-        /* Footer */
-        footer {
-            padding: 4rem 0;
-            background: var(--text);
-            color: white;
-            text-align: center;
-        }
-
-        .footer-quote {
-            font-size: 1.25rem;
-            font-style: italic;
-            opacity: 0.9;
-            margin-bottom: 1rem;
-            font-family: 'Playfair Display', serif;
-        }
-
-        .footer-signature {
-            font-size: 1rem;
-            opacity: 0.8;
-            margin-bottom: 2rem;
-        }
-
-        .footer-links {
-            opacity: 0.7;
-            font-size: 0.9rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .split-section {
-                grid-template-columns: 1fr;
-            }
-
-            .hero {
-                padding: 4rem 1rem;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-            }
-
-            .contact-form {
-                padding: 2rem;
-            }
-        }
-
-        /* Smooth Scroll */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        section {
-            scroll-margin-top: 80px;
-        }
+    :root{--lavender:#e6e6fa;--soft-gold:#fff8e7;--deep-charcoal:#343a40;--ivory-white:#fffefc;--accent-lavender:#b19cd9;--accent-gold:#ffe0b3;--text-main:#343a40;--text-subtle:#6c757d;--font-body:'Poppins',sans-serif;--font-heading:'Playfair Display',serif;--shadow-soft:0 4px 15px rgba(177,156,217,0.1);--shadow-medium:0 6px 25px rgba(177,156,217,0.15);--border-radius:15px;--transition-main:all .4s cubic-bezier(.25,.8,.25,1)}*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:var(--font-body);background-color:var(--ivory-white);color:var(--text-main);line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+    .floating-nav{position:fixed;top:50%;right:25px;transform:translateY(-50%);display:flex;flex-direction:column;gap:18px;z-index:1000}
+    .floating-nav a{display:block;width:10px;height:10px;background-color:transparent;border:1.5px solid var(--accent-lavender);border-radius:50%;transition:var(--transition-main);position:relative;cursor:pointer}
+    .floating-nav a:hover,.floating-nav a.active{background-color:var(--accent-lavender);transform:scale(1.5);border-color:transparent}
+    .floating-nav a::after{content:attr(data-tooltip);position:absolute;top:50%;right:180%;transform:translateY(-50%) scale(.8);background-color:var(--deep-charcoal);color:var(--ivory-white);padding:5px 10px;border-radius:5px;font-size:11px;font-weight:300;white-space:nowrap;opacity:0;visibility:hidden;transition:all .3s ease;pointer-events:none}
+    .floating-nav a:hover::after{opacity:1;visibility:visible;transform:translateY(-50%) scale(1)}
+    .container{max-width:1100px;margin:0 auto;padding:0 25px}
+    section{padding:100px 0;opacity:0;transform:translateY(30px);transition:opacity 1s ease-out,transform 1s ease-out;position:relative}
+    section.visible{opacity:1;transform:translateY(0)}
+    h1,h2,h3{font-family:var(--font-heading);color:var(--deep-charcoal);margin-bottom:.8em;font-weight:700}
+    h2{font-size:2.8rem;text-align:center;margin-bottom:60px;position:relative;letter-spacing:.5px}
+    h2::after{content:'';display:block;width:80px;height:2px;background:linear-gradient(90deg,var(--accent-lavender),var(--accent-gold));margin:15px auto 0;border-radius:2px;opacity:.7}
+    h3{font-size:2rem;margin-bottom:25px}
+    p{font-weight:300;color:var(--text-subtle)}
+    #hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;background:linear-gradient(145deg,var(--soft-gold) 0%,var(--lavender) 100%);color:var(--deep-charcoal);padding:40px 20px;opacity:1;transform:none;position:relative;overflow:hidden}
+    #hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background-image:radial-gradient(var(--accent-lavender) 1px, transparent 1px);background-size:30px 30px;opacity:.05;pointer-events:none}
+    .hero-content{max-width:750px;animation:fadeInHero 1.8s cubic-bezier(.165,.84,.44,1) forwards;position:relative;z-index:1}
+    #hero h1{font-size:4rem;margin-bottom:25px;line-height:1.1;letter-spacing:1px;text-shadow:0 2px 10px rgba(0,0,0,.05)}
+    #hero p{font-size:1.3rem;color:var(--text-subtle);font-weight:300;max-width:550px;margin:0 auto 35px}
+    .scroll-down{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);font-size:13px;color:var(--text-subtle);animation:bounce 2.5s infinite ease-in-out;text-decoration:none;opacity:.7;transition:opacity .3s ease}
+    .scroll-down:hover{opacity:1}
+    .scroll-down::after{content:'↓';display:block;margin-top:8px;font-size:1.2em}
+    #components .component-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:35px}
+    .component-card{background-color:var(--ivory-white);border-radius:var(--border-radius);padding:30px;box-shadow:var(--shadow-soft);transition:var(--transition-main);border:1px solid transparent;overflow:hidden;position:relative}
+    .component-card:hover{transform:translateY(-8px) scale(1.02);box-shadow:var(--shadow-medium);border-color:var(--accent-lavender)}
+    .component-card h4{font-family:var(--font-body);font-weight:600;font-size:1.4rem;color:var(--accent-lavender);margin-bottom:12px}
+    .component-icon{font-size:2.2rem;margin-bottom:18px;display:inline-block;background:linear-gradient(135deg,var(--accent-lavender),var(--accent-gold));background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;transition:transform .3s ease}
+    .component-card:hover .component-icon{transform:rotate(-10deg) scale(1.1)}
+    #lessons{background-color:var(--soft-gold);border-top:1px solid rgba(0,0,0,.03);border-bottom:1px solid rgba(0,0,0,.03)}
+    .lesson-list{display:flex;flex-direction:column;gap:25px;max-width:800px;margin:0 auto}
+    .lesson-item{background-color:var(--ivory-white);border-radius:var(--border-radius);padding:25px 30px;box-shadow:var(--shadow-soft);display:flex;align-items:center;gap:25px;transition:var(--transition-main);cursor:default}
+    .lesson-item:hover{transform:translateX(10px);box-shadow:var(--shadow-medium)}
+    .lesson-icon{font-size:2rem;min-width:45px;text-align:center;color:var(--accent-gold)}
+    .lesson-details h4{font-family:var(--font-body);font-weight:600;font-size:1.2rem;margin-bottom:5px;color:var(--text-main)}
+    .lesson-details p{font-size:.95rem;color:var(--text-subtle)}
+    .dashboard-mockup{background:var(--ivory-white);border-radius:var(--border-radius);padding:40px 50px;max-width:750px;margin:0 auto;box-shadow:var(--shadow-medium);border:1px solid #eee}
+    .dashboard-mockup h3{font-size:1.6rem;font-family:var(--font-body);font-weight:600;color:var(--text-subtle);text-align:left;margin-bottom:30px}
+    .progress-bar-mock{height:12px;background-color:#f0f0f0;border-radius:6px;overflow:hidden;margin-bottom:20px}
+    .progress-bar-mock div{height:100%;width:0%;background:linear-gradient(90deg,var(--accent-lavender),var(--accent-gold));border-radius:6px;transition:width 1.2s ease-out}
+    .progress-bar-mock.animate div{width:42%}
+    .dashboard-stats-mock{display:flex;justify-content:space-around;margin-top:30px;text-align:center}
+    .dashboard-stats-mock div span{display:block}
+    .dashboard-stats-mock .stat-value{font-size:1.8rem;font-weight:600;color:var(--text-main)}
+    .dashboard-stats-mock .stat-label{font-size:.85rem;color:var(--text-subtle);margin-top:5px}
+    #demos{background-color:var(--lavender)}
+    .demo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:35px}
+    .demo-card{background-color:var(--ivory-white);border-radius:var(--border-radius);padding:30px;box-shadow:var(--shadow-soft);transition:var(--transition-main)}
+    .demo-card:hover{box-shadow:var(--shadow-medium)}
+    .demo-card h4{font-family:var(--font-body);font-size:1.3rem;font-weight:600;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid #eee;color:var(--accent-lavender)}
+    .demo-exercise button{margin:5px;padding:9px 15px;border:1px solid #ddd;border-radius:8px;background-color:#fff;color:var(--text-main);cursor:pointer;font-size:.95em;font-family:var(--font-body);transition:all .2s ease}
+    .demo-exercise button:hover:not(:disabled){background-color:var(--soft-gold);border-color:var(--accent-gold);transform:translateY(-2px)}
+    .demo-exercise button:disabled{opacity:.5;cursor:not-allowed;background-color:#eee}
+    .demo-exercise input{padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:.95em;margin:5px;font-family:var(--font-body);width:calc(100% - 10px)}
+    .demo-exercise .chosen-words,.demo-exercise .asr-output{margin-top:12px;padding:10px;background-color:#f8f9fa;border-radius:6px;font-size:.9em;min-height:2.5em;color:var(--text-subtle);line-height:1.5;border:1px dashed #eee}
+    .demo-exercise .result{margin-top:10px;font-size:.9em;font-weight:600;transition:color .3s ease}
+    .vibe-content{text-align:center;max-width:700px;margin:0 auto}
+    .vibe-content p{font-size:1.2rem;color:var(--text-subtle);font-weight:300;line-height:1.8}
+    .vibe-icon{font-size:3.5rem;margin-bottom:25px;display:inline-block;animation:pulse 2.5s infinite ease-in-out;background:linear-gradient(135deg,var(--accent-lavender),var(--accent-gold));background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    #stats{background:linear-gradient(145deg,var(--accent-gold),var(--accent-lavender));padding:80px 0;border-top:1px solid rgba(0,0,0,.05);border-bottom:1px solid rgba(0,0,0,.05)}
+    .stats-container{display:flex;justify-content:space-around;text-align:center;max-width:900px;margin:0 auto;flex-wrap:wrap;gap:30px}
+    .stat-item{flex:1;min-width:160px;padding:10px}
+    .stat-number{font-size:3.5rem;font-weight:600;color:var(--ivory-white);line-height:1;text-shadow:0 2px 5px rgba(0,0,0,.1)}
+    .stat-label{font-size:1rem;color:rgba(255,255,255,.8);margin-top:8px;font-weight:300}
+    footer{padding:50px 20px;text-align:center;background-color:var(--deep-charcoal);color:rgba(255,250,250,.7);font-size:.95rem}
+    footer p{margin:0;font-weight:300;letter-spacing:.8px}
+    @keyframes fadeInHero{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes bounce{0%,20%,50%,80%,100%{transform:translate(-50%,0)}40%{transform:translate(-50%,-12px)}60%{transform:translate(-50%,-6px)}}
+    @keyframes pulse{0%{transform:scale(1);opacity:.8}50%{transform:scale(1.15);opacity:1}100%{transform:scale(1);opacity:.8}}
+    @media (max-width:992px){h2{font-size:2.4rem}#hero h1{font-size:3rem}.container{padding:0 20px}}
+    @media (max-width:768px){h1{font-size:2.8rem}#hero h1{font-size:2.5rem}h2{font-size:2rem;margin-bottom:40px}h3{font-size:1.5rem}.floating-nav{display:none}section{padding:70px 0}#hero p{font-size:1.1rem}.stats-container{flex-direction:column;gap:35px}#stats{padding:60px 0}.stat-number{font-size:3rem}#components .component-grid,#demos .demo-grid{grid-template-columns:1fr;gap:25px}.lesson-list{gap:20px}.lesson-item{padding:20px}.dashboard-mockup{padding:30px}.dashboard-stats-mock{flex-direction:column;gap:20px}}
+    @media (max-width:480px){#hero h1{font-size:2.2rem}#hero p{font-size:1rem}h2{font-size:1.8rem}.container{padding:0 15px}section{padding:50px 0}.component-card,.demo-card{padding:25px}.lesson-item{flex-direction:column;text-align:center;gap:15px;padding:25px}.dashboard-mockup{padding:25px}footer{padding:40px 15px;font-size:.9rem}}
   </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav id="header">
-        <div class="nav-container">
-            <a href="#" class="logo">rozmoWA-App</a>
-            <ul class="nav-links">
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#offer">Offer</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </div>
+
+<nav class="floating-nav" id="main-nav">
+  <a href="#hero" data-tooltip="Welcome" class="active"></a>
+  <a href="#stats" data-tooltip="Pulse"></a>
+  <a href="#components" data-tooltip="Building Blocks"></a>
+  <a href="#lessons" data-tooltip="Curiosity Speaks"></a>
+  <a href="#dashboard" data-tooltip="Your Flow"></a>
+  <a href="#demos" data-tooltip="Playground"></a>
+  <a href="#vibe" data-tooltip="The Heartbeat"></a>
 </nav>
 
-    <!-- Hero Section -->
-    <section class="hero" id="hero">
-        <h1>Language is not learned — it's lived.</h1>
-        <p>Discover RozmoWA's modern language approach — practical, inspiring, and human.</p>
-        <div class="cta-buttons">
-            <a href="#offer" class="btn btn-primary">Explore Our Classes</a>
-            <a href="#app" class="btn btn-secondary">Download the App</a>
-            <a href="#contact" class="btn btn-tertiary">Start Learning Today</a>
+<section id="hero">
+  <div class="hero-content">
+    <h1>RozmoWA</h1>
+    <p>Where Polish hearts meet English words. Explore the digital soul of a language journey designed with warmth and curiosity.</p>
   </div>
+  <a href="#stats" class="scroll-down">Discover</a>
 </section>
 
-    <!-- Mission Section -->
-    <section class="content-section" id="mission">
-        <div class="container">
-            <h2 class="section-title">Our Mission</h2>
-            <p class="section-content">RozmoWA redefines language learning by blending authentic communication with cultural understanding.</p>
+<section id="stats">
+  <div class="stats-container container">
+    <div class="stat-item">
+      <div class="stat-number" id="lessons-count">0</div>
+      <div class="stat-label">Lessons Created</div>
     </div>
-    </section>
-
-    <!-- Lessons Section -->
-    <section class="content-section" id="offer">
-        <div class="container">
-            <h2 class="section-title">Our Lessons</h2>
-            <p class="section-content">Preview structured courses and personalized sessions designed for all levels.</p>
-            <div class="section-cta">
-                <a href="#contact" class="btn btn-primary">View Full Offer</a>
+    <div class="stat-item">
+      <div class="stat-number" id="components-count">0</div>
+      <div class="stat-label">Components Built</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" id="commits-count">0</div>
+      <div class="stat-label">Commits Made</div>
     </div>
   </div>
 </section>
 
-    <!-- Poster Section -->
-    <section class="poster-section" id="poster">
 <div class="container">
-            <div class="poster-grid">
-                <div class="poster-image">
-                    <div class="poster-placeholder">RozmoWA Poster</div>
+  <section id="components">
+    <h2>Building Blocks 🧩</h2>
+    <div class="component-grid">
+      <div class="component-card">
+        <span class="component-icon">▶️</span>
+        <h4>Exercise Card System</h4>
+        <p>The stage for learning. Adapts fluidly to quizzes, ordering tasks, and listening challenges.</p>
       </div>
-                <div class="poster-content">
-                    <h2>Speak English Without Stress</h2>
-                    <p>RozmoWA teaches languages that help you express yourself and explore the world.</p>
-                    <p>Our creative and practical approach makes learning enjoyable and natural.</p>
-                    <div class="poster-buttons">
-                        <a href="#offer" class="btn btn-primary">View Our Classes</a>
-                        <a href="#about" class="btn btn-secondary">Meet Our Teachers</a>
+      <div class="component-card">
+        <span class="component-icon">🎤</span>
+        <h4>Interactive Audio</h4>
+        <p>Speaks clearly. Uses browser speech synthesis for authentic pronunciation practice and listening exercises.</p>
       </div>
+      <div class="component-card">
+        <span class="component-icon">📊</span>
+        <h4>Progress Tracker</h4>
+        <p>Tracks your journey with streaks, XP, and achievements. All progress saved locally for privacy.</p>
       </div>
-      </div>
-    </div>
-  </section>
-
-    <!-- App Section -->
-    <section class="content-section" id="app">
-        <div class="container">
-            <h2 class="section-title">RozmoWA App</h2>
-            <p class="section-content">Learn anytime, anywhere. Interactive exercises, audio lessons, and progress tracking.</p>
-            <div class="section-cta">
-                <a href="index-app.html" class="btn btn-primary">Launch App</a>
-      </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="testimonials" id="testimonials">
-        <div class="container">
-            <h2 class="section-title">Testimonials</h2>
-            <p class="section-content">Hear from our students about their learning journeys and results.</p>
-            <div class="testimonial-grid">
-                <div class="testimonial-card">
-                    <p>"RozmoWA transformed the way I approach language learning. Now I actually enjoy speaking!"</p>
-                    <div class="testimonial-author">— Anna K.</div>
-      </div>
-                <div class="testimonial-card">
-                    <p>"The app makes it so easy to practice daily. I've never been more consistent with learning."</p>
-                    <div class="testimonial-author">— Marcin P.</div>
-                </div>
-                <div class="testimonial-card">
-                    <p>"Finally, a method that focuses on real conversations, not just grammar rules."</p>
-                    <div class="testimonial-author">— Kasia W.</div>
-        </div>
+      <div class="component-card">
+        <span class="component-icon">🎨</span>
+        <h4>Delightful Interactions</h4>
+        <p>Buttons that invite, inputs that respond. Crafted for intuitive touch and visual peace.</p>
       </div>
     </div>
   </section>
 
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <div class="container">
-            <h2 class="section-title">Join Us</h2>
-            <p class="section-content">Ready to start? Contact our team to find your perfect learning path.</p>
-            <form class="contact-form">
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
+  <section id="lessons">
+    <h2>Where Curiosity Speaks 🌸</h2>
+    <div class="lesson-list">
+      <div class="lesson-item">
+        <span class="lesson-icon">📝</span>
+        <div class="lesson-details">
+          <h4>Choice & Clarity (MCQ)</h4>
+          <p>Select the path of understanding. Example: "Embrace the right article: ___ apple".</p>
+        </div>
       </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-          </div>
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" required></textarea>
-          </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
-            </form>
+      <div class="lesson-item">
+        <span class="lesson-icon">👆</span>
+        <div class="lesson-details">
+          <h4>Sentence Weaving (Tap Order)</h4>
+          <p>Arrange fragments into meaning. Example: "Compose the thought: 'I am from Poland'".</p>
         </div>
-    </section>
+      </div>
+      <div class="lesson-item">
+        <span class="lesson-icon">🎧</span>
+        <div class="lesson-details">
+          <h4>Echoes to Words (Listen & Type)</h4>
+          <p>Translate sound into script. Example: "Capture the whisper: 'three'".</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <!-- Footer -->
-    <footer id="footer">
-        <div class="container">
-            <div class="footer-quote">"The grass isn't greener on the other side — it's greener when you water it."</div>
-            <div class="footer-signature">— Wiktoria</div>
-            <div class="footer-links">© RozmoWA 2025 • Privacy Policy • Terms of Service</div>
+  <section id="dashboard">
+    <h2>Your Daily Flow ✨</h2>
+    <div class="dashboard-mockup" role="region" aria-label="dashboard example">
+      <h3>Today's Snapshot</h3>
+      <div class="progress-bar-mock" aria-hidden="true"><div></div></div>
+      <p style="color:var(--text-subtle);font-size:.95rem">Keep momentum — small steps add up. Here's a minimal mock of streaks and earned XP.</p>
+      <div class="dashboard-stats-mock" aria-hidden="false">
+        <div><span class="stat-value">7</span><span class="stat-label">Hearts</span></div>
+        <div><span class="stat-value">320</span><span class="stat-label">XP</span></div>
+        <div><span class="stat-value">4</span><span class="stat-label">Streak</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="demos">
+    <h2>Playground — Try the Ideas 🎛️</h2>
+    <div class="demo-grid">
+      <div class="demo-card">
+        <h4>MCQ — Choice & Feedback</h4>
+        <div class="demo-exercise" data-demo="mcq">
+          <p style="color:var(--text-subtle);margin-bottom:10px">Which completes the sentence? "I have ___ apple."</p>
+          <div>
+            <button data-answer="an">an</button>
+            <button data-answer="a">a</button>
+            <button data-answer="the">the</button>
+          </div>
+          <div class="result" aria-live="polite"></div>
         </div>
+      </div>
+
+      <div class="demo-card">
+        <h4>Tap Order — Compose</h4>
+        <div class="demo-exercise" data-demo="order">
+          <p style="color:var(--text-subtle);margin-bottom:10px">Arrange to form: "I am from Poland"</p>
+          <div>
+            <button data-word="Poland">Poland</button>
+            <button data-word="from">from</button>
+            <button data-word="I">I</button>
+            <button data-word="am">am</button>
+          </div>
+          <div class="chosen-words" aria-live="polite"></div>
+          <div style="margin-top:10px;">
+            <button id="reset-order">Reset</button>
+            <button id="check-order">Check</button>
+          </div>
+          <div class="result" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h4>Listen & Type — Gentle ASR</h4>
+        <div class="demo-exercise" data-demo="listen">
+          <p style="color:var(--text-subtle);margin-bottom:10px">Press play, then type what you hear.</p>
+          <div>
+            <button id="demo-play">▶ Play</button>
+            <input id="listen-input" placeholder="Type what you heard…" />
+            <button id="listen-submit">Submit</button>
+          </div>
+          <div class="result" id="listen-result" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="vibe">
+    <h2>The Heartbeat 💫</h2>
+    <div class="vibe-content">
+      <span class="vibe-icon">💫</span>
+      <p>RozmoWA is built around warmth: short daily practices, clear feedback, and moments of delight. The UI aims to invite exploration rather than pressure.</p>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <p>Made with care — RozmoWA • Lightweight learning, human-first UX.</p>
 </footer>
 
 <script>
-        document.querySelector('.contact-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Thank you for your message! We will respond soon.');
-            this.reset();
-        });
+  (function(){
+    const animateCounter = (el, to, ms=1200) => {
+      if(!el) return;
+      const start = 0;
+      const duration = ms;
+      const startTime = performance.now();
+      const step = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const value = Math.floor(progress * to);
+        el.textContent = value;
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
 
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-    });
+    document.addEventListener('DOMContentLoaded', () => {
+      animateCounter(document.getElementById('lessons-count'), 7);
+      animateCounter(document.getElementById('components-count'), 30);
+      animateCounter(document.getElementById('commits-count'), 100);
+
+      const obs = new IntersectionObserver((entries)=> {
+        entries.forEach(e=>{
+          if(e.isIntersecting) {
+            e.target.classList.add('visible');
+            if(e.target.id === 'dashboard') {
+              setTimeout(() => {
+                document.querySelector('.progress-bar-mock').classList.add('animate');
+              }, 200);
+            }
+          }
         });
+      }, {threshold:.15});
+      document.querySelectorAll('section').forEach(s=>obs.observe(s));
+
+      const navLinks = Array.from(document.querySelectorAll('.floating-nav a'));
+      const sections = navLinks.map(a => document.querySelector(a.getAttribute('href')));
+      const onScroll = ()=> {
+        const center = window.scrollY + window.innerHeight/2;
+        sections.forEach((sec,i)=>{
+          if(!sec) return;
+          const r = sec.getBoundingClientRect();
+          const absTop = window.scrollY + r.top;
+          if(center >= absTop && center < absTop + r.height){
+            navLinks.forEach(n=>n.classList.remove('active'));
+            navLinks[i].classList.add('active');
+          }
+        });
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, {passive:true});
+
+      document.querySelectorAll('[data-demo="mcq"] button[data-answer]').forEach(btn=>{
+        btn.addEventListener('click', (e)=>{
+          const ans = e.target.getAttribute('data-answer');
+          const res = e.target.closest('.demo-exercise').querySelector('.result');
+          if(ans === 'an'){
+            res.textContent = '✓ Correct — gentle win!';
+            res.style.color = 'green';
+          } else {
+            res.textContent = '✗ Try again — listen for vowel sounds.';
+            res.style.color = 'crimson';
+          }
+        });
+      });
+
+      const chosen = [];
+      const chosenEl = document.querySelector('.chosen-words');
+      const wordButtons = document.querySelectorAll('[data-demo="order"] button[data-word]');
+      wordButtons.forEach(b=>{
+        b.addEventListener('click', ()=>{
+          if(!b.disabled) {
+            chosen.push(b.getAttribute('data-word'));
+            b.disabled = true;
+            chosenEl.textContent = chosen.join(' ');
+          }
+        });
+      });
+      document.getElementById('reset-order').addEventListener('click', ()=>{
+        chosen.length = 0;
+        chosenEl.textContent = '';
+        wordButtons.forEach(b => b.disabled = false);
+        document.querySelector('[data-demo="order"] .result').textContent = '';
+      });
+      document.getElementById('check-order').addEventListener('click', ()=>{
+        const ok = chosen.join(' ') === 'I am from Poland';
+        const r = document.querySelector('[data-demo="order"] .result');
+        r.textContent = ok ? '✓ Nicely done — sentence complete!' : '✗ Not quite — try a different order.';
+        r.style.color = ok ? 'green' : 'crimson';
+      });
+
+      const utter = new SpeechSynthesisUtterance('three');
+      utter.lang = 'en-US';
+      utter.rate = 0.9;
+      document.getElementById('demo-play').addEventListener('click', ()=> {
+        speechSynthesis.cancel();
+        speechSynthesis.speak(utter);
+      });
+      document.getElementById('listen-submit').addEventListener('click', ()=>{
+        const val = (document.getElementById('listen-input').value||'').trim().toLowerCase();
+        const out = document.getElementById('listen-result');
+        if(!val) {
+          out.textContent = 'Please type what you heard.';
+          out.style.color='crimson';
+          return;
+        }
+        out.textContent = val === 'three' ? '✓ Correct — echo captured.' : `Heard "${val}" — try again if needed.`;
+        out.style.color = (val === 'three') ? 'green' : 'crimson';
+      });
+    });
+  })();
 </script>
+
 </body>
 </html>
