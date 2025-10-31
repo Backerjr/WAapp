@@ -156,43 +156,12 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Capture image digest
-        id: capture-digest
-        run: |
-          # Capture the digest emitted by docker/build-push-action (steps.build.outputs.digest)
-          # and export it as this step's output named "digest" so the job output can reference it.
-          if [ -z "${{ steps.build.outputs.digest }}" ]; then
-            echo "digest=" >> $GITHUB_OUTPUT
-            echo "::warning::Build produced no digest in steps.build.outputs.digest"
-          else
-            echo "digest=${{ steps.build.outputs.digest }}" >> $GITHUB_OUTPUT
-            echo "Captured digest=${{ steps.build.outputs.digest }}"
-          fi
-
-      - name: Output image digest
-        run: echo "Image digest - ${{ steps.build.outputs.digest }}"
-      - name: Validate image digest
-        id: capture-digest
-        run: |
-          if [ -z "${{ steps.build.outputs.digest }}" ]; then
-            echo "::error::No image digest was produced. Docker build or push may have failed."
-            exit 1
-          else
-            echo "digest=${{ steps.build.outputs.digest }}" >> $GITHUB_OUTPUT
-            echo "Captured digest=${{ steps.build.outputs.digest }}"
-            echo "Image digest - ${{ steps.build.outputs.digest }}"
-          fi
-
       - name: Generate image summary
         run: |
           echo "## Docker Image Published 🐳" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Registry:** \
-          \
-          ${{ env.REGISTRY }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "**Repository:** \
-          \
-          ${{ env.IMAGE_NAME }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Registry:** \`${{ env.REGISTRY }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Repository:** \`${{ env.IMAGE_NAME }}\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Tags:" >> $GITHUB_STEP_SUMMARY
           echo "```" >> $GITHUB_STEP_SUMMARY
@@ -236,7 +205,6 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          # Use the digest produced by the publish-image job. This should be a full value like: sha256:...
           image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ needs.publish-image.outputs.image-digest }}
           format: 'sarif'
           output: 'trivy-results.sarif'
