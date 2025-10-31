@@ -203,7 +203,9 @@ jobs:
         id: get-digest
         run: |
           # Get the digest of the latest image we just published
-          LATEST_IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
+          # Convert repository name to lowercase for Docker registry compatibility
+          REPO_LOWER=$(echo "${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
+          LATEST_IMAGE="${{ env.REGISTRY }}/$REPO_LOWER:latest"
           echo "Pulling latest image to get digest: $LATEST_IMAGE"
           
           # Pull the image to ensure we have it locally
@@ -219,7 +221,7 @@ jobs:
           
           echo "Full digest extracted: $DIGEST"
           echo "digest=$DIGEST" >> $GITHUB_OUTPUT
-          echo "image-ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@$DIGEST" >> $GITHUB_OUTPUT
+          echo "image-ref=${{ env.REGISTRY }}/$REPO_LOWER@$DIGEST" >> $GITHUB_OUTPUT
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.28.0
