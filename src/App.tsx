@@ -114,11 +114,11 @@ function App() {
 
   return (
     <div className="app">
-          <Header
-            progress={progress}
-            currentView={viewMode as string}
-            onViewChange={(view) => setViewMode(view as ViewMode)}
-          />
+      <Header
+        progress={progress}
+        currentView={viewMode as string}
+        onViewChange={(view) => setViewMode(view as ViewMode)}
+      />
       
       {!currentLesson ? (
         <>
