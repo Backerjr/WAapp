@@ -124,7 +124,8 @@ function App() {
         <nav className="app-navigation">
           <button
             className={`nav-btn ${(viewMode as string) === 'home' ? 'active' : ''}`}
-            onClick={() => setViewMode('home')}
+onClick={() => setViewMode('home')}
+
           >
             🏠 Home
           </button>
