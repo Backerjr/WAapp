@@ -132,6 +132,10 @@
   .nav-btn span {
     display: none;
   }
+
+  .stats {
+    display: none;
+  }
 }
 
 /* Enhanced Header with Glassmorphism */
