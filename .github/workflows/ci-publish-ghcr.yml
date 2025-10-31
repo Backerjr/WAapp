@@ -202,17 +202,20 @@ jobs:
       - name: Get image digest from latest tag
         id: get-digest
         run: |
-          # Get the digest of the latest image we just published
+          # Get the digest of the image we just published
           # Convert repository name to lowercase for Docker registry compatibility
           REPO_LOWER=$(echo "${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
-          LATEST_IMAGE="${{ env.REGISTRY }}/$REPO_LOWER:latest"
-          echo "Pulling latest image to get digest: $LATEST_IMAGE"
+          
+          # Use the SHA-based tag which should always exist (short SHA)
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          SHA_TAG="${{ env.REGISTRY }}/$REPO_LOWER:main-$SHORT_SHA"
+          echo "Pulling SHA-tagged image to get digest: $SHA_TAG"
           
           # Pull the image to ensure we have it locally
-          docker pull $LATEST_IMAGE
+          docker pull $SHA_TAG
           
           # Get the full digest
-          DIGEST=$(docker inspect $LATEST_IMAGE --format='{{index .RepoDigests 0}}' | cut -d'@' -f2)
+          DIGEST=$(docker inspect $SHA_TAG --format='{{index .RepoDigests 0}}' | cut -d'@' -f2)
           
           if [ -z "$DIGEST" ]; then
             echo "::error::Could not extract digest from image"
