@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test('Frontend Verification', async ({ page }) => {
   // Clear localStorage to ensure a clean state for the test
-  await page.goto('http://localhost:5000');
+  await page.goto('/');
   await page.evaluate(() => localStorage.clear());
   await page.reload();
 
