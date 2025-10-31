@@ -17,15 +17,33 @@ const mockProgress: Progress = {
 };
 
 describe('Header', () => {
-  it('should render all navigation buttons', () => {
+  it('should render logo and stats correctly', () => {
     render(<Header progress={mockProgress} onViewChange={() => {}} />);
 
-    expect(screen.getByText('🏠 Home')).toBeInTheDocument();
-    expect(screen.getByText('About Us')).toBeInTheDocument();
-    expect(screen.getByText('Classes')).toBeInTheDocument();
-    expect(screen.getByText('Contact')).toBeInTheDocument();
-    expect(screen.getByText('🚀 App')).toBeInTheDocument();
-    expect(screen.getByText('🌙 Learn')).toBeInTheDocument();
-    expect(screen.getByText('Dashboard')).toBeInTheDocument();
+    // Check logo
+    expect(screen.getByText('WA')).toBeTruthy();
+    
+    // Check stats display
+    expect(screen.getByText('5')).toBeTruthy(); // streak
+    expect(screen.getByText(/100.*XP/)).toBeTruthy(); // xp
+    expect(screen.getByText('3')).toBeTruthy(); // hearts
+    
+    // Check navigation buttons when onViewChange is provided
+    expect(screen.getByText('✨ Elegant')).toBeTruthy();
+    expect(screen.getByText('📚 Learning')).toBeTruthy();
+  });
+
+  it('should not render navigation when onViewChange is not provided', () => {
+    render(<Header progress={mockProgress} />);
+
+    // Should still render logo and stats
+    expect(screen.getByText('WA')).toBeTruthy();
+    expect(screen.getByText('5')).toBeTruthy();
+    expect(screen.getByText(/100.*XP/)).toBeTruthy();
+    expect(screen.getByText('3')).toBeTruthy();
+    
+    // Should not render navigation buttons
+    expect(screen.queryByText('✨ Elegant')).toBeNull();
+    expect(screen.queryByText('📚 Learning')).toBeNull();
   });
 });
