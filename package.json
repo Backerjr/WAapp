@@ -6,6 +6,9 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "test": "vitest --run",
+    "test:unit": "vitest --run",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
     "preview": "vite preview",
     "start": "npm run build && node server.js",
     "vercel-build": "npm run build"
