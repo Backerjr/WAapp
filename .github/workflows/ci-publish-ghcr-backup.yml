@@ -1,0 +1,262 @@
+name: CI & Publish to GHCR
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  pages: write
+  id-token: write
+  actions: read
+  security-events: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  NODE_VERSION: '20'
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Run linter
+        run: npm run lint --if-present
+        continue-on-error: true
+
+      - name: Run type check
+        run: npm run type-check --if-present
+        continue-on-error: true
+
+      - name: Run tests
+        run: npm test --if-present
+
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Check build output
+        run: |
+          if [ ! -d "dist" ]; then
+            echo "::error::Build failed - dist directory not found"
+            exit 1
+          fi
+          echo "✅ Build successful - dist directory exists"
+          ls -la dist/
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ github.sha }}
+          path: dist/
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Report build size
+        run: |
+          DIST_SIZE=$(du -sh dist/ | cut -f1)
+          echo "::notice title=Build Size::Distribution bundle size: $DIST_SIZE"
+
+  publish-image:
+    name: Build and Publish Docker Image
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    timeout-minutes: 20
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    outputs:
+      image-digest: ${{ steps.capture-digest.outputs.digest }}
+      image-tags: ${{ steps.meta.outputs.tags }}
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver-opts: |
+            image=moby/buildkit:latest
+            network=host
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value={{branch}}-{{date 'YYYYMMDD-HHmmss'}}
+          labels: |
+            org.opencontainers.image.title=WAapp
+            org.opencontainers.image.description=Language Learning Web Application
+            org.opencontainers.image.vendor=${{ github.repository_owner }}
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-${{ github.sha }}
+          path: dist/
+
+      - name: Build and push Docker image
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Capture image digest
+        id: capture-digest
+        run: |
+          # Capture the digest emitted by docker/build-push-action (steps.build.outputs.digest)
+          # and export it as this step's output named "digest" so the job output can reference it.
+          if [ -z "${{ steps.build.outputs.digest }}" ]; then
+            echo "digest=" >> $GITHUB_OUTPUT
+            echo "::warning::Build produced no digest in steps.build.outputs.digest"
+          else
+            echo "digest=${{ steps.build.outputs.digest }}" >> $GITHUB_OUTPUT
+            echo "Captured digest=${{ steps.build.outputs.digest }}"
+          fi
+
+      - name: Output image digest
+        run: echo "Image digest - ${{ steps.build.outputs.digest }}"
+      - name: Validate image digest
+        id: capture-digest
+        run: |
+          if [ -z "${{ steps.build.outputs.digest }}" ]; then
+            echo "::error::No image digest was produced. Docker build or push may have failed."
+            exit 1
+          else
+            echo "digest=${{ steps.build.outputs.digest }}" >> $GITHUB_OUTPUT
+            echo "Captured digest=${{ steps.build.outputs.digest }}"
+            echo "Image digest - ${{ steps.build.outputs.digest }}"
+          fi
+
+      - name: Generate image summary
+        run: |
+          echo "## Docker Image Published 🐳" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Registry:** \
+          \
+          ${{ env.REGISTRY }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Repository:** \
+          \
+          ${{ env.IMAGE_NAME }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Tags:" >> $GITHUB_STEP_SUMMARY
+          echo "```" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.meta.outputs.tags }}" >> $GITHUB_STEP_SUMMARY
+          echo "```" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Pull Command:" >> $GITHUB_STEP_SUMMARY
+          echo "```bash" >> $GITHUB_STEP_SUMMARY
+          echo "docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest" >> $GITHUB_STEP_SUMMARY
+          echo "```" >> $GITHUB_STEP_SUMMARY
+
+      - name: Capture and validate digest
+        id: capture-digest
+        run: |
+          DIGEST="${{ steps.build.outputs.digest }}"
+          if [ -z "$DIGEST" ]; then
+            echo "::error::Docker build did not produce a valid digest"
+            exit 1
+          fi
+          echo "digest=$DIGEST" >> $GITHUB_OUTPUT
+          echo "Image published with digest: $DIGEST"
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    needs: publish-image
+    timeout-minutes: 10
+    if: needs.publish-image.result == 'success'
+    
+    steps:
+      - name: Verify image digest
+        run: |
+          DIGEST="${{ needs.publish-image.outputs.image-digest }}"
+          if [ -z "$DIGEST" ]; then
+            echo "::error::No image digest received from publish-image job"
+            exit 1
+          fi
+          echo "Using image digest: $DIGEST"
+          echo "Full image reference: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@$DIGEST"
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          # Use the digest produced by the publish-image job. This should be a full value like: sha256:...
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ needs.publish-image.outputs.image-digest }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  deploy-notification:
+    name: Deployment Notification
+    runs-on: ubuntu-latest
+    needs: [build-and-test, publish-image]
+    if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Check deployment status
+        run: |
+          if [ "${{ needs.publish-image.result }}" == "success" ]; then
+            echo "::notice title=Deployment Status::✅ Successfully built and published to GHCR"
+          else
+            echo "::warning title=Deployment Status::❌ Deployment failed or was skipped"
+          fi
