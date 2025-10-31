@@ -25,6 +25,7 @@
     "vite-plugin-pages": "^0.33.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.56.1",
     "@actions/github": "^6.0.1",
     "@octokit/rest": "^22.0.0",
     "@playwright/test": "^1.56.1",
