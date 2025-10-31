@@ -21,7 +21,7 @@ permissions:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: backerjr/rozmowa
+  IMAGE_NAME: rozmowa  # Repository name only, owner will be dynamically lowercased
   NODE_VERSION: '20'
 
 jobs:
@@ -140,8 +140,8 @@ jobs:
           cache-from: type=gha,scope=nginx-release
           cache-to: type=gha,mode=max,scope=nginx-release
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:nginx-latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:nginx-${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ steps.lowercase.outputs.repository_owner }}/rozmowa:nginx-latest
+            ${{ env.REGISTRY }}/${{ steps.lowercase.outputs.repository_owner }}/rozmowa:nginx-${{ github.sha }}
 
       - name: Build and push caddy image
         uses: docker/build-push-action@v6
@@ -153,11 +153,11 @@ jobs:
           cache-from: type=gha,scope=caddy-release
           cache-to: type=gha,mode=max,scope=caddy-release
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:caddy-latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:caddy-${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ steps.lowercase.outputs.repository_owner }}/rozmowa:caddy-latest
+            ${{ env.REGISTRY }}/${{ steps.lowercase.outputs.repository_owner }}/rozmowa:caddy-${{ github.sha }}
 
       - name: Output image tags
         run: |
           echo "✅ Published Docker images:"
-          echo "  Nginx: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:nginx-${{ github.sha }}"
-          echo "  Caddy: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:caddy-${{ github.sha }}"
+          echo "  Nginx: ${{ env.REGISTRY }}/${{ steps.lowercase.outputs.repository_owner }}/rozmowa:nginx-${{ github.sha }}"
+          echo "  Caddy: ${{ env.REGISTRY }}/${{ steps.lowercase.outputs.repository_owner }}/rozmowa:caddy-${{ github.sha }}"
