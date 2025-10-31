@@ -443,7 +443,7 @@ export const skillTree: Unit[] = [
               { en: 'Bathroom', pl: 'Łazienka' },
               { en: 'Living room', pl: 'Salon' }
             ],
-            correctAnswer: 'Kitchen,Bathroom,Living room',
+            correctAnswer: 'Kitchen',
             hint_pl: 'Każdy pokój ma swoją główną funkcję'
           },
           {
