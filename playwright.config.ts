@@ -22,3 +22,9 @@ export default defineConfig({
     timeout: 5000,
   },
 });
+ 
+// add Playwright test runner and types (dev dependency)
+// To install, run in your shell:
+//   npm install --save-dev @playwright/test
+// (optional) install browsers used by Playwright for running tests:
+//   npx playwright install
