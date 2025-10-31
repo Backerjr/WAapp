@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "test": "vitest",
+    "test": "vitest --run",
+    "test:watch": "vitest",
     "preview": "vite preview",
     "start": "npm run build && node server.js",
     "vercel-build": "npm run build",
