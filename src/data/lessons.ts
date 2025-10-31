@@ -335,7 +335,7 @@ export const skillTree: Unit[] = [
             type: 'multiple_choice',
             prompt_en: 'What time is it? (3:00 PM)',
             prompt_pl: 'Która jest godzina? (15:00)',
-            options: ['Three o\'clock', 'Three PM', 'Fifteen hundred', 'All correct'],
+            options: ["Three o'clock", 'Three PM', 'Fifteen hundred', 'All correct'],
             correctAnswer: 'All correct',
             hint_pl: 'Wszystkie odpowiedzi oznaczają tę samą godzinę'
           },
