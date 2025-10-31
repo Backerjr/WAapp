@@ -443,9 +443,13 @@ export const skillTree: Unit[] = [
               { en: 'Bathroom', pl: 'Łazienka' },
               { en: 'Living room', pl: 'Salon' }
             ],
+ copilot/sub-pr-58
             // Note: correctAnswer is required by Exercise interface but not used by ImageMatch component
             // The component validates matches by comparing pairs directly
             correctAnswer: 'Kitchen,Bathroom,Living room',
+
+            correctAnswer: 'Kitchen',
+ bugfix-consolidate-navigation
             hint_pl: 'Każdy pokój ma swoją główną funkcję'
           },
           {
