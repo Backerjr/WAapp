@@ -1,0 +1,60 @@
+name: Check GitHub Pages Status
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 12 * * 1'  # Weekly on Monday at 12:00 UTC
+
+permissions:
+  contents: read
+  pages: read
+
+jobs:
+  check-status:
+    name: Check Pages Configuration
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    
+    steps:
+      - name: Check Pages status
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              const response = await github.rest.repos.getPages({
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              });
+              
+              const isCorrectlyConfigured = response.data.source.branch === 'gh-pages' && 
+                                          response.data.source.path === '/';
+              
+              core.startGroup('📄 Current Pages Configuration');
+              core.info(`Source branch: ${response.data.source.branch}`);
+              core.info(`Source path: ${response.data.source.path}`);
+              core.info(`Status: ${response.data.status}`);
+              core.info(`URL: ${response.data.html_url}`);
+              core.info(`Build type: ${response.data.build_type}`);
+              core.endGroup();
+              
+              if (isCorrectlyConfigured) {
+                core.info('✅ GitHub Pages is correctly configured');
+              } else {
+                core.warning('⚠️ Pages configuration differs from expected');
+                core.info(`Expected: branch=gh-pages, path=/`);
+                core.info(`Actual: branch=${response.data.source.branch}, path=${response.data.source.path}`);
+              }
+              
+            } catch (error) {
+              if (error.status === 404) {
+                core.warning('⚠️ GitHub Pages is not configured');
+                core.info('Enable via: Settings > Pages > Deploy from branch > gh-pages / (root)');
+              } else {
+                core.error(`Failed to check Pages: ${error.message}`);
+                throw error;
+              }
+            }
+
+      - name: Summary
+        run: |
+          echo "::notice title=Check Complete::Pages configuration check completed"

@@ -16,11 +16,7 @@ permissions:
 
 # Ensure only one deployment happens at a time
 concurrency:
- fix/yaml-indentation-deploy-pages
-  group: "pages-${{ github.ref }}"
-
   group: "pages-config-${{ github.ref }}"
- replit-agent
   cancel-in-progress: true
 
 jobs:
