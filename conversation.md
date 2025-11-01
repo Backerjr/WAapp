@@ -1,1 +1,0 @@
-User requested a personal blog layout with Unsplash images after DALL·E failed. The layout includes a navigation bar, hero image, profile/about section, latest post feature, and a subscribe form.
