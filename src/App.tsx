@@ -154,6 +154,7 @@ function App() {
           {viewMode === 'offer' && <OfferPage onNavigate={handleNavigation} />}
           {viewMode === 'contact' && <ContactPage onNavigate={handleNavigation} />}
           {viewMode === 'app' && <AppPage onNavigate={handleNavigation} onStartApp={() => setViewMode('elegant')} />}
+ copilot/create-visual-storytelling-theme
           {viewMode === 'theme' && <ThemeLanding onNavigate={handleNavigation} />}
 
           <footer className="app-footer">
@@ -161,6 +162,19 @@ function App() {
               Dedicated to the one who teaches the world how to listen.
             </p>
           </footer>
+
+          
+          {/* Visual Storytelling Theme Landing */}
+          {viewMode === 'theme' && <ThemeLanding onNavigate={handleNavigation} />}
+
+          {viewMode !== 'theme' && (
+            <footer className="app-footer">
+              <p className="footer-dedication">
+                Dedicated to the one who teaches the world how to listen.
+              </p>
+            </footer>
+          )}
+ replit-agent
         </>
       ) : (
         <LessonView

@@ -52,7 +52,11 @@ function Header({ progress, currentView, onViewChange }: HeaderProps) {
               className={`nav-button ${currentView === 'theme' ? 'active' : ''}`}
               onClick={() => onViewChange('theme')}
             >
+ copilot/create-visual-storytelling-theme
               🌌 Theme
+
+              🌈 Theme
+ replit-agent
             </button>
             <button
               className={`nav-button ${currentView === 'learning' ? 'active' : ''}`}
