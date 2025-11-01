@@ -113,6 +113,8 @@ jobs:
     needs: build-and-test
     timeout-minutes: 10
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/replit-agent')
+    permissions:
+      contents: write  # Required to push to gh-pages branch
     
     steps:
       - name: Checkout code
