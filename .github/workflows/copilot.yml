@@ -1,0 +1,57 @@
+name: Copilot Coding Agent
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - replit-agent
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  packages: write
+  actions: read
+
+concurrency:
+  group: copilot
+  cancel-in-progress: false
+
+jobs:
+  copilot:
+    name: Run Copilot Coding Agent
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create runtime logs directory
+        run: mkdir -p /home/runner/work/_temp/runtime-logs
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run Copilot Agent
+        uses: github/copilot-swe-agent@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Copilot Logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: copilot-logs
+          path: /home/runner/work/_temp/runtime-logs
