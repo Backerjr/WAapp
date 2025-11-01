@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 
 export default function MotionBackground() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -14,6 +14,19 @@ export default function MotionBackground() {
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Memoize particles array to avoid recreating on every render
+  const particles = useMemo(() => {
+    if (typeof window === 'undefined') return [];
+    return Array.from({ length: 20 }).map((_, i) => ({
+      id: i,
+      initialX: Math.random() * window.innerWidth,
+      initialY: Math.random() * window.innerHeight,
+      delay: Math.random() * 5,
+      duration: Math.random() * 10 + 10,
+      yOffset: Math.random() * -200 - 100
+    }));
   }, []);
 
   return (
@@ -51,23 +64,23 @@ export default function MotionBackground() {
 
       {/* Floating particles */}
       <div className="particles">
-        {Array.from({ length: 20 }).map((_, i) => (
+        {particles.map((particle) => (
           <motion.div
-            key={i}
+            key={particle.id}
             className="particle"
             initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
+              x: particle.initialX,
+              y: particle.initialY,
               opacity: 0
             }}
             animate={{
-              y: [null, Math.random() * -200 - 100],
+              y: [null, particle.yOffset],
               opacity: [0, 0.6, 0]
             }}
             transition={{
-              duration: Math.random() * 10 + 10,
+              duration: particle.duration,
               repeat: Infinity,
-              delay: Math.random() * 5,
+              delay: particle.delay,
               ease: "linear"
             }}
           />
