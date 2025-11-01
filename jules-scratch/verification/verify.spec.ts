@@ -2,6 +2,8 @@
 import { test, expect } from '@playwright/test';
 import { clearLocalStorage, goHome, waitForLanding, takeFullScreenshot } from './verify.helpers';
 
+test.use({ headless: true });
+
 test('Frontend Verification', async ({ page }) => {
   // Ensure a clean state and go to the app
   await goHome(page, '/');
