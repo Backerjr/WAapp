@@ -45,9 +45,10 @@ jobs:
         run: npm run build
 
       - name: Run Copilot Agent
-        uses: github/copilot-swe-agent@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  uses: github/copilot-swe-agent@v1
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
       - name: Upload Copilot Logs
         if: always()
