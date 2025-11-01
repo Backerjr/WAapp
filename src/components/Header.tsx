@@ -49,6 +49,12 @@ function Header({ progress, currentView, onViewChange }: HeaderProps) {
               🚀 App
             </button>
             <button
+              className={`nav-button ${currentView === 'theme' ? 'active' : ''}`}
+              onClick={() => onViewChange('theme')}
+            >
+              🌌 Theme
+            </button>
+            <button
               className={`nav-button ${currentView === 'learning' ? 'active' : ''}`}
               onClick={() => onViewChange('learning')}
             >
