@@ -1,74 +1,94 @@
 import { motion } from 'framer-motion';
+import { useEffect, useState, useMemo } from 'react';
 
 export default function MotionBackground() {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({
+        x: e.clientX / window.innerWidth,
+        y: e.clientY / window.innerHeight
+      });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Memoize particles array to avoid recreating on every render
+  const particles = useMemo(() => {
+    if (typeof window === 'undefined') return [];
+    return Array.from({ length: 20 }).map((_, i) => ({
+      id: i,
+      initialX: Math.random() * window.innerWidth,
+      initialY: Math.random() * window.innerHeight,
+      delay: Math.random() * 5,
+      duration: Math.random() * 10 + 10,
+      yOffset: Math.random() * -200 - 100
+    }));
+  }, []);
+
   return (
     <div className="motion-background">
-      {/* Aurora waves */}
+      {/* Aurora gradient layers */}
       <motion.div
-        className="aurora-wave"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 2 }}
-      />
-      <motion.div
-        className="aurora-wave"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 2, delay: 0.5 }}
-      />
-      <motion.div
-        className="aurora-wave"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 2, delay: 1 }}
+        className="aurora-layer aurora-layer-1"
+        animate={{
+          x: mousePosition.x * 50,
+          y: mousePosition.y * 50,
+          rotate: mousePosition.x * 10
+        }}
+        transition={{ duration: 3, ease: "easeOut" }}
       />
       
-      {/* Floating letters symbolizing stories */}
       <motion.div
-        className="floating-letters"
-        style={{ top: '20%', left: '10%' }}
+        className="aurora-layer aurora-layer-2"
         animate={{
-          y: [-20, 20, -20],
-          rotate: [-5, 5, -5],
+          x: -mousePosition.x * 30,
+          y: -mousePosition.y * 30,
+          rotate: -mousePosition.y * 8
         }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-      >
-        W
-      </motion.div>
+        transition={{ duration: 4, ease: "easeOut" }}
+      />
+
       <motion.div
-        className="floating-letters"
-        style={{ top: '60%', right: '15%' }}
+        className="aurora-layer aurora-layer-3"
         animate={{
-          y: [20, -20, 20],
-          rotate: [5, -5, 5],
+          x: mousePosition.y * 40,
+          y: -mousePosition.x * 40,
+          scale: 1 + mousePosition.x * 0.1
         }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-      >
-        A
-      </motion.div>
-      <motion.div
-        className="floating-letters"
-        style={{ bottom: '30%', left: '20%' }}
-        animate={{
-          y: [-15, 15, -15],
-          rotate: [-3, 3, -3],
-        }}
-        transition={{
-          duration: 12,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-      >
-        ✉
-      </motion.div>
+        transition={{ duration: 5, ease: "easeOut" }}
+      />
+
+      {/* Floating particles */}
+      <div className="particles">
+        {particles.map((particle) => (
+          <motion.div
+            key={particle.id}
+            className="particle"
+            initial={{
+              x: particle.initialX,
+              y: particle.initialY,
+              opacity: 0
+            }}
+            animate={{
+              y: [null, particle.yOffset],
+              opacity: [0, 0.6, 0]
+            }}
+            transition={{
+              duration: particle.duration,
+              repeat: Infinity,
+              delay: particle.delay,
+              ease: "linear"
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Vignette overlay */}
+      <div className="vignette" />
     </div>
   );
 }

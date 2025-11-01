@@ -1,38 +1,60 @@
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
 interface ChapterCardProps {
-  icon: string;
   title: string;
   description: string;
-  onClick: () => void;
-  delay?: number;
+  icon: string;
+  color: string;
+  page: string;
+  onNavigate: (page: string) => void;
 }
 
-export default function ChapterCard({ 
-  icon, 
-  title, 
-  description, 
-  onClick,
-  delay = 0 
+export default function ChapterCard({
+  title,
+  description,
+  icon,
+  color,
+  page,
+  onNavigate
 }: ChapterCardProps) {
+  const cardVariants: Variants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0
+    }
+  };
+
   return (
     <motion.div
-      className="chapter-card"
-      onClick={onClick}
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay }}
+      className={`chapter-card chapter-card-${color}`}
+      variants={cardVariants}
       whileHover={{ 
-        scale: 1.02,
+        scale: 1.03,
+        y: -8,
         transition: { duration: 0.3 }
       }}
-      whileTap={{ scale: 0.98 }}
+      onClick={() => onNavigate(page)}
     >
-      <div className="chapter-card-content">
-        <span className="chapter-icon">{icon}</span>
-        <h3 className="chapter-title">{title}</h3>
-        <p className="chapter-description">{description}</p>
+      <motion.div 
+        className="card-icon"
+        whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.1 }}
+        transition={{ duration: 0.5 }}
+      >
+        {icon}
+      </motion.div>
+
+      <div className="card-content">
+        <h3 className="card-title">{title}</h3>
+        <p className="card-description">{description}</p>
       </div>
+
+      <motion.div 
+        className="card-glow"
+        initial={{ opacity: 0 }}
+        whileHover={{ opacity: 0.3 }}
+        transition={{ duration: 0.3 }}
+      />
     </motion.div>
   );
 }

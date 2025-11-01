@@ -8,67 +8,95 @@ interface StoryGridProps {
 export default function StoryGrid({ onNavigate }: StoryGridProps) {
   const chapters = [
     {
-      icon: '🎯',
-      title: 'Interactive Learning',
-      description: 'Engage with exercises that feel like play, not work. From listening comprehension to creative writing.',
-      page: 'app',
+      id: 'components',
+      title: 'Interactive Components',
+      description: 'Explore the building blocks of our immersive learning experience',
+      icon: '🧩',
+      color: 'lavender',
+      page: 'components'
     },
     {
-      icon: '🎨',
-      title: 'Creative Expression',
-      description: 'Express yourself through language. Build confidence with every word you speak and write.',
-      page: 'offer',
+      id: 'exercises',
+      title: 'Learning Exercises',
+      description: 'Practice with engaging exercises designed to spark mastery',
+      icon: '📝',
+      color: 'amber',
+      page: 'exercises'
     },
     {
-      icon: '🌍',
-      title: 'Cultural Connection',
-      description: 'Discover the heart of Polish culture. Stories, traditions, and conversations that matter.',
-      page: 'about',
+      id: 'app',
+      title: 'Your Learning Space',
+      description: 'Dive into your personalized language journey',
+      icon: '🌟',
+      color: 'indigo',
+      page: 'app'
     },
     {
-      icon: '💬',
-      title: 'Real Conversations',
-      description: 'Practice with authentic dialogues. Learn how people actually speak, not just textbook phrases.',
-      page: 'app',
-    },
-    {
-      icon: '📚',
-      title: 'Personalized Lessons',
-      description: 'Your journey, your pace. Adaptive learning that grows with you.',
-      page: 'offer',
-    },
-    {
+      id: 'about',
+      title: 'Our Story',
+      description: 'Discover the heart behind WaApp and our mission',
       icon: '💫',
-      title: 'Join Our Community',
-      description: 'Connect with fellow learners. Share your story and be part of something beautiful.',
-      page: 'contact',
+      color: 'gold',
+      page: 'about'
     },
+    {
+      id: 'offers',
+      title: 'Course Offerings',
+      description: 'Find the perfect path to fluency tailored for you',
+      icon: '🎓',
+      color: 'rose',
+      page: 'offer'
+    },
+    {
+      id: 'contact',
+      title: 'Connect With Us',
+      description: 'Reach out and begin a conversation',
+      icon: '✉️',
+      color: 'teal',
+      page: 'contact'
+    }
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15
+      }
+    }
+  };
+
   return (
-    <section className="story-grid">
-      <motion.h2
-        className="story-grid-title"
+    <section className="story-grid-section">
+      <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.8 }}
+        className="section-header"
       >
-        Your Learning Adventure Awaits
-      </motion.h2>
-      
-      <div className="story-cards">
-        {chapters.map((chapter, index) => (
+        <h2 className="section-title">Your Journey Awaits</h2>
+        <p className="section-subtitle">
+          Choose your path and step into a world where learning feels effortless
+        </p>
+      </motion.div>
+
+      <motion.div
+        className="story-grid"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
+      >
+        {chapters.map((chapter) => (
           <ChapterCard
-            key={index}
-            icon={chapter.icon}
-            title={chapter.title}
-            description={chapter.description}
-            onClick={() => onNavigate(chapter.page)}
-            delay={0.1 * index}
+            key={chapter.id}
+            {...chapter}
+            onNavigate={onNavigate}
           />
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }
