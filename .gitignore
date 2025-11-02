@@ -1,20 +1,24 @@
-# ... existing .gitignore content ...
-**/node_modules/
-package-lock.json
-
-# ... etc ...
-
-# Test
-test
+node_modules
+dist
+.DS_Store
+*.log
+.env
+.env.*
+!LICENSE
+!README.md
+/build
+/dist
+/.firebase
+/firebase-debug.log
+/package-lock.json
+/yarn.lock
 
 # === Add these lines for Python ===
-# Python cache
 __pycache__/
 *.py[cod]
 *$py.class
-
-# Python virtual environment
 .venv/
 venv/
 ENV/
+class_specs.json
 # ==================================
