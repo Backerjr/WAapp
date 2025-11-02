@@ -1,36 +1,24 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
 node_modules
 dist
-dist-ssr
-*.local
-
-# Test results
-/test-results/
-/playwright-report/
-test-results.json
-jules-scratch/verification/verification.png
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+*.log
+.env
+.env.*
+!LICENSE
+!README.md
+/build
+/dist
+/.firebase
+/firebase-debug.log
+/package-lock.json
+/yarn.lock
 
-# Replit
-.config
-.upm
-.vercel
-screenshots/
+# === Add these lines for Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+class_specs.json
+# ==================================
