@@ -1,5 +1,3 @@
-import './LandingPage.css';
-
 interface LandingPageProps {
   onNavigate: (page: string) => void;
 }

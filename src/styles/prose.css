@@ -1,0 +1,231 @@
+/* ═══════════════════════════════════════════════════════════
+   PROSE STYLING - For lesson content and rich text
+   ═══════════════════════════════════════════════════════════ */
+
+.prose {
+  color: var(--text-primary);
+  line-height: 1.7;
+  max-width: 65ch;
+}
+
+/* Headings */
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  scroll-margin-top: 96px;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 2em;
+  margin-bottom: 0.75em;
+  line-height: 1.25;
+}
+
+.prose h1 {
+  font-size: var(--text-4xl);
+  font-family: var(--font-display);
+}
+
+.prose h2 {
+  font-size: var(--text-3xl);
+  font-family: var(--font-display);
+}
+
+.prose h3 {
+  font-size: var(--text-2xl);
+}
+
+.prose h4 {
+  font-size: var(--text-xl);
+}
+
+/* Paragraphs */
+.prose p {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.prose p:first-child {
+  margin-top: 0;
+}
+
+.prose p:last-child {
+  margin-bottom: 0;
+}
+
+/* Links */
+.prose a {
+  color: var(--prose-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  transition: color var(--dur-fast) var(--easing-standard);
+}
+
+.prose a:hover {
+  color: var(--brand-300);
+  text-decoration-thickness: 2px;
+}
+
+/* Inline Code */
+.prose code {
+  background: var(--prose-code-bg);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-xs);
+  padding: 0.15em 0.4em;
+  font-size: 0.9em;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+.prose a code {
+  color: var(--prose-link);
+}
+
+/* Code Blocks */
+.prose pre {
+  background: var(--prose-code-bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin: 1.5em 0;
+  line-height: 1.6;
+}
+
+.prose pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 0.875rem;
+}
+
+/* Blockquotes */
+.prose blockquote {
+  border-left: 3px solid var(--prose-quote);
+  color: var(--text-secondary);
+  background: color-mix(in oklab, var(--prose-quote) 12%, transparent);
+  margin: 1.5rem 0;
+  padding: 0.75rem 1rem;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-style: italic;
+}
+
+.prose blockquote p {
+  margin: 0;
+}
+
+.prose blockquote cite {
+  display: block;
+  margin-top: 0.5em;
+  font-size: var(--text-sm);
+  font-style: normal;
+  color: var(--text-muted);
+}
+
+/* Lists */
+.prose ul,
+.prose ol {
+  margin: 1.25em 0;
+  padding-left: 1.75em;
+}
+
+.prose li {
+  margin: 0.5em 0;
+}
+
+.prose ul ul,
+.prose ol ul,
+.prose ul ol,
+.prose ol ol {
+  margin: 0.5em 0;
+}
+
+/* Tables */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: var(--text-sm);
+}
+
+.prose th {
+  background: var(--elev-1);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid var(--line);
+}
+
+.prose td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.prose tr:hover {
+  background: var(--elev-1);
+}
+
+/* Horizontal Rule */
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 2.5em 0;
+}
+
+/* Images */
+.prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  margin: 1.5em 0;
+}
+
+.prose figure {
+  margin: 1.5em 0;
+}
+
+.prose figcaption {
+  margin-top: 0.75em;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* Strong & Emphasis */
+.prose strong {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.prose em {
+  font-style: italic;
+}
+
+/* Mark/Highlight */
+.prose mark {
+  background: color-mix(in oklab, var(--warning) 30%, transparent);
+  padding: 0.1em 0.3em;
+  border-radius: var(--radius-xs);
+}
+
+/* Small Text */
+.prose small {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+/* Kbd (Keyboard) */
+.prose kbd {
+  background: var(--elev-2);
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: var(--radius-xs);
+  padding: 0.15em 0.4em;
+  font-size: 0.875em;
+  font-family: var(--font-mono);
+  box-shadow: var(--shadow-1);
+}

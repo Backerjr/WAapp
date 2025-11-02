@@ -1,0 +1,153 @@
+:root {
+  /* ═══════════════════════════════════════════════════════════
+     BRAND COLORS - Modern Blue Palette
+     ═══════════════════════════════════════════════════════════ */
+  --brand-50: #eef9ff;
+  --brand-100: #d6f0ff;
+  --brand-200: #b0e0ff;
+  --brand-300: #82cdff;
+  --brand-400: #54b8ff;
+  --brand-500: #229dff;
+  --brand-600: #0a7fe6;
+  --brand-700: #0766b8;
+  --brand-800: #074f8f;
+  --brand-900: #083f73;
+
+  /* ═══════════════════════════════════════════════════════════
+     NEUTRAL SCALE - Dark Theme
+     ═══════════════════════════════════════════════════════════ */
+  --bg: #0b0f14;
+  --surface: #111720;
+  --elev-1: #151d2a;
+  --elev-2: #1a2432;
+  --elev-3: #1f2b3b;
+  
+  --text-primary: #e6edf6;
+  --text-secondary: #a9b4c4;
+  --text-muted: #7c8898;
+
+  /* ═══════════════════════════════════════════════════════════
+     STATE COLORS
+     ═══════════════════════════════════════════════════════════ */
+  --success: #1bc47d;
+  --warning: #ffd166;
+  --danger: #ff6b6b;
+  --info: #5ab0ff;
+
+  /* ═══════════════════════════════════════════════════════════
+     BORDERS & SHADOWS
+     ═══════════════════════════════════════════════════════════ */
+  --line: #223146;
+  --line-soft: #1a2636;
+  
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-2: 0 6px 20px rgba(0, 0, 0, 0.35);
+  --shadow-3: 0 14px 40px rgba(0, 0, 0, 0.45);
+
+  /* ═══════════════════════════════════════════════════════════
+     RADIUS & SPACING
+     ═══════════════════════════════════════════════════════════ */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* ═══════════════════════════════════════════════════════════
+     TYPOGRAPHY
+     ═══════════════════════════════════════════════════════════ */
+  --font-sans: 'Poppins', 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-mono: 'Menlo', 'Consolas', 'Monaco', monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+
+  /* ═══════════════════════════════════════════════════════════
+     MOTION TIMING
+     ═══════════════════════════════════════════════════════════ */
+  --easing-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --easing-emphasized: cubic-bezier(0.2, 0.7, 0, 1);
+  --easing-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  
+  --dur-quick: 120ms;
+  --dur-fast: 180ms;
+  --dur-medium: 260ms;
+  --dur-slow: 380ms;
+
+  /* ═══════════════════════════════════════════════════════════
+     PROSE (Lesson Content)
+     ═══════════════════════════════════════════════════════════ */
+  --prose-code-bg: #0e1420;
+  --prose-quote: #7fb3ff;
+  --prose-link: var(--brand-400);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LIGHT MODE OVERRIDES
+   ═══════════════════════════════════════════════════════════ */
+[data-theme="light"] {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --elev-1: #f4f7fb;
+  --elev-2: #eef2f7;
+  --elev-3: #e9eef5;
+  
+  --text-primary: #0b1220;
+  --text-secondary: #37445a;
+  --text-muted: #64738b;
+  
+  --line: #dfe6ef;
+  --line-soft: #eef2f7;
+  
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-2: 0 6px 20px rgba(0, 0, 0, 0.08);
+  --shadow-3: 0 14px 40px rgba(0, 0, 0, 0.12);
+
+  --prose-code-bg: #f4f7fb;
+  --prose-quote: #0766b8;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LEGACY COMPATIBILITY (for existing components)
+   ═══════════════════════════════════════════════════════════ */
+:root {
+  /* Map old colors to new tokens */
+  --color-primary: var(--brand-600);
+  --color-secondary: var(--brand-400);
+  --color-text: var(--text-primary);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --color-warning: var(--warning);
+  
+  /* Legacy spacing */
+  --spacing-xs: var(--space-1);
+  --spacing-sm: var(--space-2);
+  --spacing-md: var(--space-4);
+  --spacing-lg: var(--space-6);
+  --spacing-xl: var(--space-8);
+  
+  /* Legacy shadows */
+  --shadow-sm: var(--shadow-1);
+  --shadow-md: var(--shadow-2);
+  --shadow-lg: var(--shadow-3);
+  
+  /* Transitions */
+  --transition-smooth: all var(--dur-medium) var(--easing-standard);
+  --transition-fast: all var(--dur-fast) var(--easing-standard);
+}

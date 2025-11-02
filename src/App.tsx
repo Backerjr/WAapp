@@ -6,7 +6,6 @@ import SkillTree from './components/SkillTree';
 import LessonView from './components/LessonView';
 import Header from './components/Header';
 import ProgressionDashboard from './components/ProgressionDashboard';
-import './App.css';
 import LandingPage from './components/LandingPage';
 import AboutPage from './components/AboutPage';
 

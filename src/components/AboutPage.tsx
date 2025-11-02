@@ -1,5 +1,3 @@
-import './Website.css';
-
 interface AboutPageProps {
   onNavigate?: (page: string) => void;
 }
