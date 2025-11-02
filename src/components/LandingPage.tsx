@@ -20,16 +20,16 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
           </p>
 
           <div className="hero-buttons">
-            <button onClick={() => onNavigate('offer')} className="btn-primary">
-              Explore Courses
+            <button onClick={() => onNavigate('learn')} className="btn-primary">
+              Start Learning Now
             </button>
 
-            <button onClick={() => onNavigate('app')} className="btn-secondary">
-              Launch App
+            <button onClick={() => onNavigate('progress')} className="btn-secondary">
+              Track Progress
             </button>
 
-            <button onClick={() => onNavigate('contact')} className="btn-accent">
-              Get Started Today
+            <button onClick={() => onNavigate('about')} className="btn-accent">
+              Learn More
             </button>
           </div>
         </div>

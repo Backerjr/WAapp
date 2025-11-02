@@ -5,18 +5,10 @@ import { ALL_ACHIEVEMENTS } from './data/achievements';
 import SkillTree from './components/SkillTree';
 import LessonView from './components/LessonView';
 import Header from './components/Header';
-import LessonPlanner from './components/LessonPlanner';
-import RozmowaWall from './components/RozmowaWall';
 import ProgressionDashboard from './components/ProgressionDashboard';
-import SocialHub from './components/SocialHub';
-import ElegantDashboard from './components/ElegantDashboard';
 import './App.css';
 import LandingPage from './components/LandingPage';
 import AboutPage from './components/AboutPage';
-import OfferPage from './components/OfferPage';
-import ContactPage from './components/ContactPage';
-import AppPage from './components/AppPage';
-import ThemeLanding from './theme/ThemeLanding';
 
 const INITIAL_PROGRESS: Progress = {
   completedLessons: [],
@@ -37,7 +29,7 @@ const INITIAL_STATS: UserStats = {
   exerciseIndex: 0
 };
 
-type ViewMode = 'learning' | 'planner' | 'wall' | 'progress' | 'social' | 'elegant' | 'home' | 'about' | 'offer' | 'contact' | 'app' | 'theme';
+type ViewMode = 'home' | 'learn' | 'progress' | 'about';
 
 function App() {
   const [progress, setProgress] = useState<Progress>(INITIAL_PROGRESS);
@@ -123,7 +115,7 @@ function App() {
       
       {!currentLesson ? (
         <>
-          {viewMode === 'learning' && (
+          {viewMode === 'learn' && (
             <SkillTree 
               units={skillTree} 
               progress={progress}
@@ -136,35 +128,14 @@ function App() {
               achievements={ALL_ACHIEVEMENTS}
             />
           )}
-          {viewMode === 'social' && (
-            <SocialHub progress={progress} />
-          )}
-          {viewMode === 'elegant' && (
-            <ElegantDashboard 
-              progress={progress}
-              onProgressUpdate={setProgress}
-            />
-          )}
-          {viewMode === 'planner' && <LessonPlanner />}
-          {viewMode === 'wall' && <RozmowaWall />}
-          
-          {/* Website Pages */}
           {viewMode === 'home' && <LandingPage onNavigate={handleNavigation} />}
           {viewMode === 'about' && <AboutPage onNavigate={handleNavigation} />}
-          {viewMode === 'offer' && <OfferPage onNavigate={handleNavigation} />}
-          {viewMode === 'contact' && <ContactPage onNavigate={handleNavigation} />}
-          {viewMode === 'app' && <AppPage onNavigate={handleNavigation} onStartApp={() => setViewMode('elegant')} />}
-          
-          {/* Visual Storytelling Theme Landing */}
-          {viewMode === 'theme' && <ThemeLanding onNavigate={handleNavigation} />}
 
-          {viewMode !== 'theme' && (
-            <footer className="app-footer">
-              <p className="footer-dedication">
-                Dedicated to the one who teaches the world how to listen.
-              </p>
-            </footer>
-          )}
+          <footer className="app-footer">
+            <p className="footer-dedication">
+              Dedicated to the one who teaches the world how to listen.
+            </p>
+          </footer>
         </>
       ) : (
         <LessonView

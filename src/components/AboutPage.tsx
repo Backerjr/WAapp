@@ -122,6 +122,43 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
             </div>
           </div>
         </section>
+
+        {/* CONTACT US */}
+        <section className="about-contact">
+          <h2>Get in Touch</h2>
+          <p className="contact-intro">
+            Ready to start your language journey? Have questions about our classes? 
+            We'd love to hear from you!
+          </p>
+          
+          <div className="contact-grid">
+            <div className="contact-card">
+              <h3>📧 Email</h3>
+              <p><a href="mailto:hello@rozmowa.com">hello@rozmowa.com</a></p>
+            </div>
+            
+            <div className="contact-card">
+              <h3>💬 Social Media</h3>
+              <p>
+                <a href="https://facebook.com/rozmowa" target="_blank" rel="noopener">Facebook</a> • 
+                <a href="https://instagram.com/rozmowa" target="_blank" rel="noopener">Instagram</a>
+              </p>
+            </div>
+            
+            <div className="contact-card">
+              <h3>📍 Location</h3>
+              <p>Online classes worldwide</p>
+            </div>
+          </div>
+          
+          <div className="cta-box">
+            <h3>Ready to Start?</h3>
+            <p>Join thousands of learners speaking with confidence.</p>
+            <button onClick={() => onNavigate?.('learn')} className="cta-button">
+              Start Learning Now →
+            </button>
+          </div>
+        </section>
       </div>
     </div>
   );

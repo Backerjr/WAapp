@@ -25,46 +25,22 @@ function Header({ progress, currentView, onViewChange }: HeaderProps) {
               🏠 Home
             </button>
             <button
+              className={`nav-button ${currentView === 'learn' ? 'active' : ''}`}
+              onClick={() => onViewChange('learn')}
+            >
+              🎓 Learn
+            </button>
+            <button
+              className={`nav-button ${currentView === 'progress' ? 'active' : ''}`}
+              onClick={() => onViewChange('progress')}
+            >
+              📊 Progress
+            </button>
+            <button
               className={`nav-button ${currentView === 'about' ? 'active' : ''}`}
               onClick={() => onViewChange('about')}
             >
-              About Us
-            </button>
-            <button
-              className={`nav-button ${currentView === 'offer' ? 'active' : ''}`}
-              onClick={() => onViewChange('offer')}
-            >
-              Classes
-            </button>
-            <button
-              className={`nav-button ${currentView === 'contact' ? 'active' : ''}`}
-              onClick={() => onViewChange('contact')}
-            >
-              Contact
-            </button>
-            <button
-              className={`nav-button ${currentView === 'app' ? 'active' : ''}`}
-              onClick={() => onViewChange('app')}
-            >
-              🚀 App
-            </button>
-            <button
-              className={`nav-button ${currentView === 'theme' ? 'active' : ''}`}
-              onClick={() => onViewChange('theme')}
-            >
-              🌌 Theme
-            </button>
-            <button
-              className={`nav-button ${currentView === 'learning' ? 'active' : ''}`}
-              onClick={() => onViewChange('learning')}
-            >
-              🌙 Learn
-            </button>
-            <button
-              className={`nav-button ${currentView === 'elegant' ? 'active' : ''}`}
-              onClick={() => onViewChange('elegant')}
-            >
-              Dashboard
+              ℹ️ About
             </button>
           </nav>
         )}
