@@ -16,8 +16,8 @@ test('Frontend Verification', async ({ page }) => {
   // Wait for the landing page to be ready
   await waitForLanding(page);
 
-  // Validate the hero headline (update to match current landing content)
-  const heroHeadline = page.locator('h1', { hasText: 'RozmoWA' });
+  // Validate the hero headline on the landing page
+  const heroHeadline = page.locator('h2.hero-headline');
   await expect(heroHeadline).toBeVisible();
-  await expect(heroHeadline).toContainText('RozmoWA');
+  await expect(heroHeadline).toContainText('Speak beautifully');
 });
