@@ -1,4 +1,4 @@
-name: Copilot Coding Agent
+name: CI Build and Test
 
 on:
   workflow_dispatch:
@@ -15,22 +15,15 @@ permissions:
   packages: write
   actions: read
 
-concurrency:
-  group: copilot
-  cancel-in-progress: false
-
 jobs:
-  copilot:
-    name: Run Copilot Coding Agent
+  build-and-test:
+    name: Build and Test
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Create runtime logs directory
-        run: mkdir -p /home/runner/work/_temp/runtime-logs
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -41,17 +34,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Run tests
+        run: npm test
+
       - name: Build project
         run: npm run build
 
-      - name: Run Copilot Agent
-        uses: github/copilot-swe-agent@v1
+      - name: Check TypeScript
+        run: npx tsc --noEmit
+
+      - name: AI Code Review (optional)
+        run: |
+          gh copilot suggest "Review changes in this PR" || echo "Copilot CLI not available"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload Copilot Logs
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: copilot-logs
-          path: /home/runner/work/_temp/runtime-logs
