@@ -12,14 +12,32 @@ const achievements = [
   { id: '6', name: 'Course Complete', unlocked: false },
 ];
 
-// TODO: Replace with actual user data from authentication/user context
-const formatJoinDate = (date: Date) => {
+// Format join date consistently
+const formatJoinDate = (date: Date): string => {
   return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 };
 
-export const ProfilePage: React.FC = () => {
-  // TODO: Get actual join date from user data
-  const joinDate = formatJoinDate(new Date());
+interface ProfilePageProps {
+  userName?: string;
+  userEmail?: string;
+  joinDate?: Date;
+  wordsLearned?: number;
+  lessonsCompleted?: number;
+  dayStreak?: number;
+  userLevel?: string;
+}
+
+export const ProfilePage: React.FC<ProfilePageProps> = ({
+  userName = 'John Doe',
+  userEmail = 'john.doe@example.com',
+  joinDate,
+  wordsLearned = 245,
+  lessonsCompleted = 12,
+  dayStreak = 7,
+  userLevel = 'Intermediate Learner',
+}) => {
+  // Use current date if joinDate is not provided
+  const displayJoinDate = joinDate || new Date();
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="mb-8">
@@ -39,19 +57,19 @@ export const ProfilePage: React.FC = () => {
           </div>
           <div className="flex-1">
             <h2 className="font-heading text-h2 text-primary-text dark:text-primary-text-dark mb-1">
-              John Doe
+              {userName}
             </h2>
             <div className="flex flex-wrap items-center gap-4 text-small text-secondary-text dark:text-secondary-text-dark mb-3">
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
-                <span>john.doe@example.com</span>
+                <span>{userEmail}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                <span>Joined {joinDate}</span>
+                <span>Joined {formatJoinDate(displayJoinDate)}</span>
               </div>
             </div>
-            <Badge colorScheme="accent">Intermediate Learner</Badge>
+            <Badge colorScheme="accent">{userLevel}</Badge>
           </div>
           <Button variant="secondary" size="md" leftIcon={<Edit2 className="w-4 h-4" />}>
             Edit Profile
@@ -72,7 +90,7 @@ export const ProfilePage: React.FC = () => {
               </div>
               <div>
                 <p className="font-heading text-h2 text-primary-text dark:text-primary-text-dark">
-                  245
+                  {wordsLearned}
                 </p>
                 <p className="text-small text-secondary-text dark:text-secondary-text-dark">
                   Words Learned
@@ -88,7 +106,7 @@ export const ProfilePage: React.FC = () => {
               </div>
               <div>
                 <p className="font-heading text-h2 text-primary-text dark:text-primary-text-dark">
-                  12
+                  {lessonsCompleted}
                 </p>
                 <p className="text-small text-secondary-text dark:text-secondary-text-dark">
                   Lessons Completed
@@ -104,7 +122,7 @@ export const ProfilePage: React.FC = () => {
               </div>
               <div>
                 <p className="font-heading text-h2 text-primary-text dark:text-primary-text-dark">
-                  7
+                  {dayStreak}
                 </p>
                 <p className="text-small text-secondary-text dark:text-secondary-text-dark">
                   Day Streak
