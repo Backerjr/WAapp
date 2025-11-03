@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CourseCard, Input, Badge } from '../../components/rozmowa';
 import { Search, Filter } from 'lucide-react';
 
@@ -54,6 +55,7 @@ const mockCourses = [
 ];
 
 export const LearnPage: React.FC = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLevel, setSelectedLevel] = useState<string>('all');
 
