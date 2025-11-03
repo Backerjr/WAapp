@@ -11,6 +11,11 @@ const achievements = [
   { id: '6', name: 'Course Complete', unlocked: false },
 ];
 
+// Format join date consistently
+const formatJoinDate = (date: Date): string => {
+  return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+};
+
 interface ProfilePageProps {
   userName?: string;
   userEmail?: string;
@@ -24,16 +29,14 @@ interface ProfilePageProps {
 export const ProfilePage: React.FC<ProfilePageProps> = ({
   userName = 'John Doe',
   userEmail = 'john.doe@example.com',
-  joinDate = new Date(),
+  joinDate,
   wordsLearned = 245,
   lessonsCompleted = 12,
   dayStreak = 7,
   userLevel = 'Intermediate Learner',
 }) => {
-  // Format join date dynamically
-  const formatJoinDate = (date: Date): string => {
-    return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-  };
+  // Use current date if joinDate is not provided
+  const displayJoinDate = joinDate || new Date();
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="mb-8">
@@ -62,7 +65,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                <span>Joined {formatJoinDate(joinDate)}</span>
+                <span>Joined {formatJoinDate(displayJoinDate)}</span>
               </div>
             </div>
             <Badge colorScheme="accent">{userLevel}</Badge>
