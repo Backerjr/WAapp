@@ -15,7 +15,6 @@ afterEach(() => {
 
 describe('Header', () => {
   const mockProgress: Progress = {
-    currentLevel: 5,
     xp: 1250,
     streak: 7,
     hearts: 3,
