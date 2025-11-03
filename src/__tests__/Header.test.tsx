@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Header from '../components/legacy/Header';
-import Header from '../components/legacy/Header';
 import { Progress } from '../types';
 import { describe, it, expect, afterEach } from 'vitest';
 import { cleanup } from '@testing-library/react';
