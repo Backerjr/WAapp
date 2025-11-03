@@ -1,7 +1,17 @@
 import { render, screen } from '@testing-library/react';
 import Header from '../components/legacy/Header';
 import { Progress } from '../types';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
+import { cleanup } from '@testing-library/react';
+import * as matchers from '@testing-library/jest-dom/matchers';
+
+// Extend Vitest's expect with jest-dom matchers
+expect.extend(matchers);
+
+// Cleanup after each test
+afterEach(() => {
+  cleanup();
+});
 
 const mockProgress: Progress = {
   completedLessons: [],
@@ -16,13 +26,13 @@ const mockProgress: Progress = {
   weeklyStreak: 1,
 };
 
-describe('Header', () => {
-  it('should render all navigation buttons', () => {
-    render(<Header progress={mockProgress} onViewChange={() => {}} />);
+describe('Header', (): void => {
+    it('should render all navigation buttons', () => {
+      render(<Header progress={mockProgress} onViewChange={() => { } } />);
 
-    expect(screen.getByText('🏠 Home')).toBeInTheDocument();
-    expect(screen.getByText('🎓 Learn')).toBeInTheDocument();
-    expect(screen.getByText('📊 Progress')).toBeInTheDocument();
-    expect(screen.getByText('ℹ️ About')).toBeInTheDocument();
+      expect(screen.getByText('🏠 Home')).toBeInTheDocument();
+      expect(screen.getByText('🎓 Learn')).toBeInTheDocument();
+      expect(screen.getByText('📊 Progress')).toBeInTheDocument();
+      expect(screen.getByText('ℹ️ About')).toBeInTheDocument();
+    });
   });
-});
