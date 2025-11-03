@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Badge, Button } from '../../components/rozmowa';
 import { User, Mail, Calendar, Award, BookOpen, TrendingUp, Edit2 } from 'lucide-react';
+import { Progress } from '../../types';
 
 const achievements = [
   { id: '1', name: 'First Lesson', unlocked: true },
@@ -11,11 +12,34 @@ const achievements = [
   { id: '6', name: 'Course Complete', unlocked: false },
 ];
 
-interface ProfilePageProps {
-  joinDate?: string;
-}
+// Helper function to format the join date
+const formatJoinDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const month = date.toLocaleDateString('en-US', { month: 'short' });
+  const year = date.getFullYear();
+  return `${month} ${year}`;
+};
 
-export const ProfilePage: React.FC<ProfilePageProps> = ({ joinDate = new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) }) => {
+// Get join date from localStorage or use current date as fallback
+const getJoinDate = (): string => {
+  try {
+    const savedProgress = localStorage.getItem('progress');
+    if (savedProgress) {
+      const progress: Progress = JSON.parse(savedProgress);
+      if (progress.joinDate) {
+        return formatJoinDate(progress.joinDate);
+      }
+    }
+  } catch (error) {
+    console.error('Error reading join date from localStorage:', error);
+  }
+  // Fallback to current date if no saved progress
+  return formatJoinDate(new Date().toISOString());
+};
+
+export const ProfilePage: React.FC = () => {
+  const joinDate = getJoinDate();
+  
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="mb-8">

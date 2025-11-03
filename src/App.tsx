@@ -15,6 +15,7 @@ const INITIAL_PROGRESS: Progress = {
   streak: 1,
   hearts: 5,
   lastActiveDate: new Date().toDateString(),
+  joinDate: new Date().toISOString(),
   // Enhanced progression features
   level: 1,
   dailyGoal: 20, // 20 XP per day
@@ -42,6 +43,11 @@ function App() {
     if (savedProgress) {
       const parsed = JSON.parse(savedProgress);
       const today = new Date().toDateString();
+      
+      // Migration: add joinDate if it doesn't exist
+      if (!parsed.joinDate) {
+        parsed.joinDate = new Date().toISOString();
+      }
       
       if (parsed.lastActiveDate !== today) {
         const yesterday = new Date(Date.now() - 86400000).toDateString();
