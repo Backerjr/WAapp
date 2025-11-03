@@ -2,6 +2,8 @@ import { render, screen } from '@testing-library/react';
 import Header from '../components/Header';
 import { Progress } from '../types';
 import { describe, it, expect } from 'vitest';
+import { fadeUp } from './styles/motion';
+import { motion } from 'framer-motion';
 
 const mockProgress: Progress = {
   completedLessons: [],
