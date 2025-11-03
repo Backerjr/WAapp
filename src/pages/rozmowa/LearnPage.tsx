@@ -152,7 +152,7 @@ export const LearnPage: React.FC = () => {
           <CourseCard
             key={course.id}
             {...course}
-            onClick={() => navigate(`/rozmowa/learn/${course.id}`)}
+            onClick={() => {}}
           />
         ))}
       </div>
