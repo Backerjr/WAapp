@@ -152,9 +152,7 @@ export const LearnPage: React.FC = () => {
           <CourseCard
             key={course.id}
             {...course}
-            onClick={() => {
-              // TODO: Implement navigation to course detail page
-            }}
+            onClick={() => navigate(`/rozmowa/learn/course/${course.id}`)}
           />
         ))}
       </div>
