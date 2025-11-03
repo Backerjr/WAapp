@@ -138,7 +138,7 @@ jobs:
           cache-to: type=gha,mode=max,scope=${{ matrix.variant }}-release
           build-args: |
             VERSION=${{ steps.version.outputs.version }}
-            BUILD_DATE=${{ github.event.release.created_at || github.event.head_commit.timestamp }}
+            BUILD_DATE=${{ github.event.release.created_at || github.event.commits[0].timestamp }}
 
       - name: Image summary
         run: |

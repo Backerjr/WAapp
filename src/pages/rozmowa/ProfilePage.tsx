@@ -29,7 +29,7 @@ interface ProfilePageProps {
 export const ProfilePage: React.FC<ProfilePageProps> = ({
   userName = 'John Doe',
   userEmail = 'john.doe@example.com',
-  joinDate,
+  joinDate = new Date(),
   wordsLearned = 245,
   lessonsCompleted = 12,
   dayStreak = 7,
