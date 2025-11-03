@@ -15,16 +15,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
     "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
   "include": ["src"],
-  "exclude": [
-    "src/**/*.test.ts",
-    "src/**/*.test.tsx",
-    "src/**/__tests__",
-    "src/components/_archived/**"
-  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
