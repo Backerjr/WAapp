@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>RozmoWA LearnPage Navigation Demo</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f5f5f5; }
+    .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    h1 { color: #2c3e50; }
+    .code-block { background: #f8f9fa; padding: 15px; border-left: 4px solid #007bff; border-radius: 4px; margin: 15px 0; font-family: 'Courier New', monospace; }
+    .before { border-left-color: #dc3545; }
+    .after { border-left-color: #28a745; }
+    .label { font-weight: bold; margin-bottom: 8px; }
+    .highlight { background: #fff3cd; padding: 2px 4px; border-radius: 2px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎉 Console.log Replaced with Navigation</h1>
+    <p>The console.log statement in <code>LearnPage.tsx</code> has been successfully replaced with proper React Router navigation.</p>
+    
+    <div class="label">❌ Before (Line 153):</div>
+    <div class="code-block before">
+onClick={() => <span class="highlight">console.log(`Navigate to course: ${course.id}`)</span>}
+    </div>
+    
+    <div class="label">✅ After (Line 155):</div>
+    <div class="code-block after">
+onClick={() => <span class="highlight">navigate(`/rozmowa/learn/${course.id}`)</span>}
+    </div>
+    
+    <h2>Changes Made:</h2>
+    <ul>
+      <li>✅ Imported <code>useNavigate</code> from <code>react-router-dom</code></li>
+      <li>✅ Added <code>const navigate = useNavigate();</code> hook</li>
+      <li>✅ Replaced console.log with <code>navigate(`/rozmowa/learn/${course.id}`)</code></li>
+    </ul>
+    
+    <h2>Impact:</h2>
+    <p>When a user clicks on any course card in the Learn page, the app will now properly navigate to the course detail page at <code>/rozmowa/learn/:courseId</code> instead of just logging to the console.</p>
+    
+    <p><strong>Example:</strong> Clicking "Grammar Essentials" will navigate to <code>/rozmowa/learn/1</code></p>
+  </div>
+</body>
+</html>
