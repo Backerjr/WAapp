@@ -1,4 +1,4 @@
-import { Lesson } from '../types';
+import { Lesson } from '../../types';
 import ExerciseCard from './ExerciseCard';
 
 interface LessonViewProps {

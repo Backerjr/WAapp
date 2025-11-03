@@ -1,4 +1,4 @@
-import { Progress } from '../types';
+import { Progress } from '../../types';
 import StatusBeacon from './StatusBeacon';
 
 interface HeaderProps {

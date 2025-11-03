@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import { Progress, UserStats } from './types';
 import { skillTree } from './data/lessons';
 import { ALL_ACHIEVEMENTS } from './data/achievements';
-import SkillTree from './components/SkillTree';
-import LessonView from './components/LessonView';
-import Header from './components/Header';
-import ProgressionDashboard from './components/ProgressionDashboard';
-import LandingPage from './components/LandingPage';
-import AboutPage from './components/AboutPage';
+import SkillTree from './components/legacy/SkillTree';
+import LessonView from './components/legacy/LessonView';
+import Header from './components/legacy/Header';
+import ProgressionDashboard from './components/legacy/ProgressionDashboard';
+import LandingPage from './components/legacy/LandingPage';
+import AboutPage from './components/legacy/AboutPage';
 
 const INITIAL_PROGRESS: Progress = {
   completedLessons: [],

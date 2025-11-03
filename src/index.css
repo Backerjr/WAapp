@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   /* Enhanced Gradient Palette - Purple, Teal, Ivory, Deep Midnight */
   --color-ivory: #FFFEF7;
@@ -212,6 +216,17 @@ body {
   font-weight: 400;
   overflow-x: hidden;
   position: relative;
+}
+
+/* rozmoWA Design System - Light/Dark Mode Base Styles */
+@layer base {
+  body {
+    @apply bg-primary-background text-primary-text;
+  }
+
+  .dark body {
+    @apply bg-primary-background-dark text-primary-text-dark;
+  }
 }
 
 /* Subtle background texture */
