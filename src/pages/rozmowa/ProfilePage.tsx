@@ -11,7 +11,14 @@ const achievements = [
   { id: '6', name: 'Course Complete', unlocked: false },
 ];
 
+// TODO: Replace with actual user data from authentication/user context
+const formatJoinDate = (date: Date) => {
+  return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+};
+
 export const ProfilePage: React.FC = () => {
+  // TODO: Get actual join date from user data
+  const joinDate = formatJoinDate(new Date());
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="mb-8">
@@ -40,7 +47,7 @@ export const ProfilePage: React.FC = () => {
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                <span>Joined Nov 2025</span>
+                <span>Joined {joinDate}</span>
               </div>
             </div>
             <Badge colorScheme="accent">Intermediate Learner</Badge>
