@@ -15,6 +15,7 @@ const mockProgress: Progress = {
   dailyXP: 10,
   achievements: [],
   weeklyStreak: 1,
+  joinDate: new Date().toDateString(),
 };
 
 describe('Header', () => {
