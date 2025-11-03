@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card, Badge, Button } from '../../components/rozmowa';
 import { User, Mail, Calendar, Award, BookOpen, TrendingUp, Edit2 } from 'lucide-react';
-import { Progress } from '../../types';
 
 const achievements = [
   { id: '1', name: 'First Lesson', unlocked: true },
@@ -71,9 +70,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
             </div>
             <Badge colorScheme="accent">{userLevel}</Badge>
           </div>
-          <Button variant="secondary" size="md" leftIcon={<Edit2 className="w-4 h-4" />}>
-            Edit Profile
-          </Button>
+          <Button variant="secondary" size="md" leftIcon={<Edit2 className="w-4 h-4" />}>Edit Profile</Button>
         </div>
       </Card>
 
@@ -98,7 +95,6 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               </div>
             </div>
           </Card>
-          
           <Card variant="default">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full bg-info/10 dark:bg-info-dark/10 flex items-center justify-center">
@@ -114,7 +110,6 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({
               </div>
             </div>
           </Card>
-          
           <Card variant="default">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full bg-accent/10 dark:bg-accent-dark/10 flex items-center justify-center">
