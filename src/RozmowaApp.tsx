@@ -25,8 +25,9 @@ import ProfilePage from './pages/rozmowa/ProfilePage';
  * - Explore all navigation items to see different page layouts
  */
 export function RozmowaApp() {
-  // Set basename for GitHub Pages deployment (/WAapp/) or root for local dev (/)
-  const basename = import.meta.env.MODE === 'production' && !import.meta.env.VERCEL ? '/WAapp' : '/';
+  // Set basename for GitHub Pages deployment (/WAapp/) or root for other environments
+  // GitHub Pages serves at /WAapp/, Vercel and local dev serve at root /
+  const basename = window.location.pathname.startsWith('/WAapp') ? '/WAapp' : '/';
   
   return (
     <BrowserRouter basename={basename}>
