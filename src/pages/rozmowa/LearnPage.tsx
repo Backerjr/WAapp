@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CourseCard, Input, Badge } from '../../components/rozmowa';
 import { Search, Filter } from 'lucide-react';
 
@@ -54,6 +55,7 @@ const mockCourses = [
 ];
 
 export const LearnPage: React.FC = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLevel, setSelectedLevel] = useState<string>('all');
 
@@ -150,7 +152,13 @@ export const LearnPage: React.FC = () => {
           <CourseCard
             key={course.id}
             {...course}
-            onClick={() => console.log(`Navigate to course: ${course.id}`)}
+            onClick={() => {
+              // TODO: Add route for course detail page in RozmowaApp.tsx
+              // Example: <Route path="learn/:courseId" element={<CourseDetailPage />} />
+              // Note: Currently navigates to an undefined route. Add a catch-all route
+              // or implement CourseDetailPage to prevent 404 errors.
+              navigate(`/rozmowa/learn/${course.id}`);
+            }}
           />
         ))}
       </div>
