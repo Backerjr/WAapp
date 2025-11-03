@@ -224,7 +224,7 @@ body {
     @apply bg-primary-background text-primary-text;
   }
 
-  .dark body {
+  body.dark {
     @apply bg-primary-background-dark text-primary-text-dark;
   }
 }

@@ -1,4 +1,6 @@
 import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import Header from '../components/legacy/Header';
 import Header from '../components/legacy/Header';
 import { Progress } from '../types';
 import { describe, it, expect, afterEach } from 'vitest';
@@ -24,6 +26,7 @@ const mockProgress: Progress = {
   dailyXP: 10,
   achievements: [],
   weeklyStreak: 1,
+  joinDate: new Date().toDateString(),
 };
 
 describe('Header', (): void => {
