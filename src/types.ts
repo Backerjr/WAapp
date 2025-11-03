@@ -50,6 +50,7 @@ export interface Progress {
   streak: number;
   hearts: number;
   lastActiveDate: string;
+  joinDate: string; // ISO date string when user joined
   // Enhanced progression features
   level: number;
   dailyGoal: number;
