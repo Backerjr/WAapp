@@ -11,7 +11,13 @@ const achievements = [
   { id: '6', name: 'Course Complete', unlocked: false },
 ];
 
-export const ProfilePage: React.FC = () => {
+interface ProfilePageProps {
+  joinDate?: string;
+}
+
+export const ProfilePage: React.FC<ProfilePageProps> = ({ 
+  joinDate = new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) 
+}) => {
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="mb-8">
@@ -40,7 +46,7 @@ export const ProfilePage: React.FC = () => {
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                <span>Joined Nov 2025</span>
+                <span>Joined {joinDate}</span>
               </div>
             </div>
             <Badge colorScheme="accent">Intermediate Learner</Badge>
