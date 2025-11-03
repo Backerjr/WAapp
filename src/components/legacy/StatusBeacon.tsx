@@ -1,4 +1,4 @@
-import { useOnlineStatus } from '../hooks';
+import { useOnlineStatus } from '../../hooks';
 import './StatusBeacon.css';
 
 interface StatusBeaconProps {

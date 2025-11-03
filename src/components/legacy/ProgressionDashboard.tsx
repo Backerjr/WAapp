@@ -1,5 +1,5 @@
 import React from 'react';
-import { Progress, Achievement } from '../types';
+import { Progress, Achievement } from '../../types';
 import './ProgressionDashboard.css';
 
 interface ProgressionDashboardProps {

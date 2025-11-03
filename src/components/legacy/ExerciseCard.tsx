@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Exercise } from '../types';
-import MultipleChoice from './exercises/MultipleChoice';
-import TypeAnswer from './exercises/TypeAnswer';
-import ListenAndSelect from './exercises/ListenAndSelect';
-import ListenAndType from './exercises/ListenAndType';
-import DragWords from './exercises/DragWords';
-import ImageMatch from './exercises/ImageMatch';
-import FillBlanks from './exercises/FillBlanks';
+import { Exercise } from '../../types';
+import MultipleChoice from '../exercises/MultipleChoice';
+import TypeAnswer from '../exercises/TypeAnswer';
+import ListenAndSelect from '../exercises/ListenAndSelect';
+import ListenAndType from '../exercises/ListenAndType';
+import DragWords from '../exercises/DragWords';
+import ImageMatch from '../exercises/ImageMatch';
+import FillBlanks from '../exercises/FillBlanks';
 
 interface ExerciseCardProps {
   exercise: Exercise;

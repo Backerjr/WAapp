@@ -1,4 +1,4 @@
-import { Unit, Progress } from '../types';
+import { Unit, Progress } from '../../types';
 
 interface SkillTreeProps {
   units: Unit[];
