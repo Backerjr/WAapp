@@ -12,13 +12,14 @@ const achievements = [
   { id: '6', name: 'Course Complete', unlocked: false },
 ];
 
-interface ProfilePageProps {
-  joinDate?: string;
-}
+// TODO: Replace with actual user data from authentication/user context
+const formatJoinDate = (date: Date) => {
+  return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+};
 
-export const ProfilePage: React.FC<ProfilePageProps> = ({ 
-  joinDate = new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) 
-}) => {
+export const ProfilePage: React.FC = () => {
+  // TODO: Get actual join date from user data
+  const joinDate = formatJoinDate(new Date());
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="mb-8">
