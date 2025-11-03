@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Badge, Button } from '../../components/rozmowa';
 import { User, Mail, Calendar, Award, BookOpen, TrendingUp, Edit2 } from 'lucide-react';
+import { Progress } from '../../types';
 
 const achievements = [
   { id: '1', name: 'First Lesson', unlocked: true },
