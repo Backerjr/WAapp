@@ -152,7 +152,13 @@ export const LearnPage: React.FC = () => {
           <CourseCard
             key={course.id}
             {...course}
-            onClick={() => {}}
+            onClick={() => {
+              // TODO: Add route for course detail page in RozmowaApp.tsx
+              // Example: <Route path="learn/:courseId" element={<CourseDetailPage />} />
+              // Note: Currently navigates to an undefined route. Add a catch-all route
+              // or implement CourseDetailPage to prevent 404 errors.
+              navigate(`/rozmowa/learn/${course.id}`);
+            }}
           />
         ))}
       </div>
