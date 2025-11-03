@@ -1,8 +1,8 @@
-import { render, screen, cleanup } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { render, screen } from '@testing-library/react';
 import Header from '../components/legacy/Header';
 import { Progress } from '../types';
 import { describe, it, expect, afterEach } from 'vitest';
+import { cleanup } from '@testing-library/react';
 import * as matchers from '@testing-library/jest-dom/matchers';
 
 // Extend Vitest's expect with jest-dom matchers
@@ -13,27 +13,29 @@ afterEach(() => {
   cleanup();
 });
 
-const mockProgress: Progress = {
-  completedLessons: [],
-  xp: 100,
-  streak: 5,
-  hearts: 3,
-  lastActiveDate: new Date().toDateString(),
-  level: 1,
-  dailyGoal: 20,
-  dailyXP: 10,
-  achievements: [],
-  weeklyStreak: 1,
-  joinDate: new Date().toDateString(),
-};
+describe('Header', () => {
+  const mockProgress: Progress = {
+    currentLevel: 5,
+    xp: 1250,
+    streak: 7,
+    hearts: 3,
+    completedLessons: ['lesson1', 'lesson2'],
+  };
 
-describe('Header', (): void => {
-    it('should render all navigation buttons', () => {
-      render(<Header progress={mockProgress} onViewChange={() => { } } />);
-
-      expect(screen.getByText('🏠 Home')).toBeInTheDocument();
-      expect(screen.getByText('🎓 Learn')).toBeInTheDocument();
-      expect(screen.getByText('📊 Progress')).toBeInTheDocument();
-      expect(screen.getByText('ℹ️ About')).toBeInTheDocument();
-    });
+  it('renders user stats correctly', () => {
+    render(<Header progress={mockProgress} onMenuClick={() => {}} />);
+    
+    // Check for logo
+    expect(screen.getByText(/🌙 Rozmowa/i)).toBeInTheDocument();
+    
+    // Check for stats (just the numbers, since text is in title attributes)
+    expect(screen.getByText('7')).toBeInTheDocument(); // streak
+    expect(screen.getByText('1250')).toBeInTheDocument(); // XP
+    expect(screen.getByText('3')).toBeInTheDocument(); // hearts
+    
+    // Check for title attributes
+    expect(screen.getByTitle('Day Streak')).toBeInTheDocument();
+    expect(screen.getByTitle('Total XP')).toBeInTheDocument();
+    expect(screen.getByTitle('Hearts Remaining')).toBeInTheDocument();
   });
+});
