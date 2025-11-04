@@ -21,7 +21,7 @@ describe('Header', () => {
   it('renders user stats correctly', () => {
     render(<Header progress={mockProgress} />);
     
-    // Check for logo text (emoji is in a separate span with aria-hidden)
+    // Check for logo (text is split between span and text node)
     expect(screen.getByText('Rozmowa')).toBeInTheDocument();
     
     // Check for stats (numbers are visible and accessible)
