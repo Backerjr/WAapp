@@ -14,7 +14,7 @@ export const CourseDetailPage: React.FC = () => {
     return (
       <div className="container mx-auto px-4 py-8">
         <Button
-          variant="outline"
+          variant="secondary"
           onClick={() => navigate('/rozmowa/learn')}
           className="mb-6"
         >
@@ -45,7 +45,7 @@ export const CourseDetailPage: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <Button
-        variant="outline"
+        variant="secondary"
         onClick={() => navigate('/rozmowa/learn')}
         className="mb-6"
       >
