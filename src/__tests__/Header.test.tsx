@@ -24,9 +24,14 @@ describe('Header', () => {
     // Check for logo (text is split between span and text node)
     expect(screen.getByText('Rozmowa')).toBeInTheDocument();
     
-    // Check for stats (just the numbers, since text is in title attributes)
+    // Check for stats (numbers are visible and accessible)
     expect(screen.getByText('7')).toBeInTheDocument(); // streak
     expect(screen.getByText('3')).toBeInTheDocument(); // hearts
     expect(screen.getByText('1250')).toBeInTheDocument(); // xp
+    
+    // Verify stats have proper aria-labels for accessibility
+    expect(screen.getByLabelText('Day Streak: 7')).toBeInTheDocument();
+    expect(screen.getByLabelText('Total XP: 1250')).toBeInTheDocument();
+    expect(screen.getByLabelText('Hearts Remaining: 3')).toBeInTheDocument();
   });
 });
