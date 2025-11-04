@@ -25,8 +25,8 @@ describe('Header', () => {
     expect(screen.getByRole('heading', { name: /Rozmowa/i })).toBeInTheDocument();
 
     // Check for stats (just the numbers, since text is in title attributes)
-    expect(screen.getByText('7')).toBeInTheDocument(); // streak
-    expect(screen.getByText('3')).toBeInTheDocument(); // hearts
-    expect(screen.getByText('1250')).toBeInTheDocument(); // xp
+    expect(screen.getByTitle('Day Streak').textContent).toContain('7'); // streak
+    expect(screen.getByTitle('Hearts Remaining').textContent).toContain('3'); // hearts
+    expect(screen.getByTitle('Total XP').textContent).toContain('1250'); // xp
   });
 });
