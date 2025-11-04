@@ -70,18 +70,22 @@ export const CourseDetailPage: React.FC = () => {
 
           {/* Course Stats */}
           <div className="flex flex-wrap gap-4 mb-6">
-            <div className="flex items-center gap-2">
-              <Clock className="w-5 h-5 text-secondary-text dark:text-secondary-text-dark" />
-              <span className="text-body text-secondary-text dark:text-secondary-text-dark">
-                {course.duration}
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <BookOpen className="w-5 h-5 text-secondary-text dark:text-secondary-text-dark" />
-              <span className="text-body text-secondary-text dark:text-secondary-text-dark">
-                {course.lessonsCount} lessons
-              </span>
-            </div>
+            {course.duration && (
+              <div className="flex items-center gap-2">
+                <Clock className="w-5 h-5 text-secondary-text dark:text-secondary-text-dark" />
+                <span className="text-body text-secondary-text dark:text-secondary-text-dark">
+                  {course.duration}
+                </span>
+              </div>
+            )}
+            {course.lessonsCount && (
+              <div className="flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-secondary-text dark:text-secondary-text-dark" />
+                <span className="text-body text-secondary-text dark:text-secondary-text-dark">
+                  {course.lessonsCount} lessons
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Progress */}
@@ -123,32 +127,36 @@ export const CourseDetailPage: React.FC = () => {
       </div>
 
       {/* Course Description */}
-      <Card className="mb-8">
-        <h2 className="font-heading text-h2 text-primary-text dark:text-primary-text-dark mb-4">
-          About This Course
-        </h2>
-        <p className="text-body text-secondary-text dark:text-secondary-text-dark">
-          {course.longDescription}
-        </p>
-      </Card>
+      {course.longDescription && (
+        <Card className="mb-8">
+          <h2 className="font-heading text-h2 text-primary-text dark:text-primary-text-dark mb-4">
+            About This Course
+          </h2>
+          <p className="text-body text-secondary-text dark:text-secondary-text-dark">
+            {course.longDescription}
+          </p>
+        </Card>
+      )}
 
       {/* Topics Covered */}
-      <Card>
-        <h2 className="font-heading text-h2 text-primary-text dark:text-primary-text-dark mb-4">
-          What You'll Learn
-        </h2>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {course.topics.map((topic, index) => (
-            <li
-              key={index}
-              className="flex items-start gap-2 text-body text-secondary-text dark:text-secondary-text-dark"
-            >
-              <Award className="w-5 h-5 text-success dark:text-success-dark flex-shrink-0 mt-0.5" />
-              <span>{topic}</span>
-            </li>
-          ))}
-        </ul>
-      </Card>
+      {course.topics && course.topics.length > 0 && (
+        <Card>
+          <h2 className="font-heading text-h2 text-primary-text dark:text-primary-text-dark mb-4">
+            What You'll Learn
+          </h2>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {course.topics.map((topic, index) => (
+              <li
+                key={index}
+                className="flex items-start gap-2 text-body text-secondary-text dark:text-secondary-text-dark"
+              >
+                <Award className="w-5 h-5 text-success dark:text-success-dark flex-shrink-0 mt-0.5" />
+                <span>{topic}</span>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      )}
     </div>
   );
 };
