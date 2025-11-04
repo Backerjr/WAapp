@@ -10,8 +10,9 @@ interface HeaderProps {
 /*
   Accessibility changes:
   - Remove the page-level H1 from the shared header to avoid multiple H1s on pages.
-  - Keep the visual logo but render as a non-heading element with aria-label.
-  - Add role="banner" to the header and aria-labels on nav/stats where appropriate.
+  - Keep the visual logo but render as a non-heading element.
+  - Hide decorative emoji from screen readers while keeping text accessible.
+  - Add aria-labels on nav and individual stats for screen reader context.
 */
 function Header({ progress, currentView, onViewChange }: HeaderProps) {
   return (
@@ -55,7 +56,7 @@ function Header({ progress, currentView, onViewChange }: HeaderProps) {
         )}
         
         <div className="stats">
-          <div className="stat-item" aria-label={`Day Streak: ${progress.streak}`}>
+          <div className="stat-item" aria-label={`Day streak: ${progress.streak}`}>
             <span className="stat-icon" aria-hidden="true">🔥</span>
             <span className="stat-value">{progress.streak}</span>
           </div>
@@ -65,7 +66,7 @@ function Header({ progress, currentView, onViewChange }: HeaderProps) {
             <span className="stat-value">{progress.xp}</span>
           </div>
           
-          <div className="stat-item" aria-label={`Hearts Remaining: ${progress.hearts}`}>
+          <div className="stat-item" aria-label={`Hearts remaining: ${progress.hearts}`}>
             <span className="stat-icon" aria-hidden="true">💜</span>
             <span className="stat-value">{progress.hearts}</span>
           </div>
