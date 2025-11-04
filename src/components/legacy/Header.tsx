@@ -1,3 +1,4 @@
+import React from 'react';
 import { Progress } from '../../types';
 import StatusBeacon from './StatusBeacon';
 
@@ -7,17 +8,26 @@ interface HeaderProps {
   onViewChange?: (view: string) => void;
 }
 
+/*
+  Accessibility changes:
+  - Remove the page-level H1 from the shared header to avoid multiple H1s on pages.
+  - Keep the visual logo but render as a non-heading element with aria-label.
+  - Add role="banner" to the header and aria-labels on nav/stats where appropriate.
+*/
 function Header({ progress, currentView, onViewChange }: HeaderProps) {
   return (
-    <header className="header">
+    <header className="header" role="banner">
       <div className="header-content">
         <div className="header-left">
-          <h1 className="logo">🌙 Rozmowa</h1>
+          {/* Logo (not a page-level heading) */}
+          <div className="logo" aria-label="Rozmowa">
+            🌙 Rozmowa
+          </div>
           <StatusBeacon position="inline" showLabel={false} />
         </div>
         
         {onViewChange && (
-          <nav className="view-nav">
+          <nav className="view-nav" aria-label="Main navigation">
             <button
               className={`nav-button ${currentView === 'home' ? 'active' : ''}`}
               onClick={() => onViewChange('home')}
@@ -45,7 +55,7 @@ function Header({ progress, currentView, onViewChange }: HeaderProps) {
           </nav>
         )}
         
-        <div className="stats">
+        <div className="stats" aria-hidden="true">
           <div className="stat-item" title="Day Streak">
             <span className="stat-icon">🔥</span>
             <span className="stat-value">{progress.streak}</span>
