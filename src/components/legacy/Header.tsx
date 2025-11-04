@@ -1,4 +1,3 @@
-import React from 'react';
 import { Progress } from '../../types';
 import StatusBeacon from './StatusBeacon';
 
@@ -20,8 +19,8 @@ function Header({ progress, currentView, onViewChange }: HeaderProps) {
       <div className="header-content">
         <div className="header-left">
           {/* Logo (not a page-level heading) */}
-          <div className="logo" aria-label="Rozmowa">
-            🌙 Rozmowa
+          <div className="logo">
+            <span aria-hidden="true">🌙</span> Rozmowa
           </div>
           <StatusBeacon position="inline" showLabel={false} />
         </div>
@@ -55,19 +54,19 @@ function Header({ progress, currentView, onViewChange }: HeaderProps) {
           </nav>
         )}
         
-        <div className="stats" aria-hidden="true">
-          <div className="stat-item" title="Day Streak">
-            <span className="stat-icon">🔥</span>
+        <div className="stats">
+          <div className="stat-item" aria-label={`Day Streak: ${progress.streak}`}>
+            <span className="stat-icon" aria-hidden="true">🔥</span>
             <span className="stat-value">{progress.streak}</span>
           </div>
           
-          <div className="stat-item" title="Total XP">
-            <span className="stat-icon">✨</span>
+          <div className="stat-item" aria-label={`Total XP: ${progress.xp}`}>
+            <span className="stat-icon" aria-hidden="true">✨</span>
             <span className="stat-value">{progress.xp}</span>
           </div>
           
-          <div className="stat-item" title="Hearts Remaining">
-            <span className="stat-icon">💜</span>
+          <div className="stat-item" aria-label={`Hearts Remaining: ${progress.hearts}`}>
+            <span className="stat-icon" aria-hidden="true">💜</span>
             <span className="stat-value">{progress.hearts}</span>
           </div>
         </div>
