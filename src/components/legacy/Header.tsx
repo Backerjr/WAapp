@@ -10,8 +10,9 @@ interface HeaderProps {
 /*
   Accessibility changes:
   - Remove the page-level H1 from the shared header to avoid multiple H1s on pages.
-  - Keep the visual logo but render as a non-heading element with aria-label.
-  - Add role="banner" to the header and aria-labels on nav/stats where appropriate.
+  - Keep the visual logo but render as a non-heading element.
+  - Hide decorative emoji from screen readers while keeping text accessible.
+  - Add aria-labels on nav and individual stats for screen reader context.
 */
 function Header({ progress, currentView, onViewChange }: HeaderProps) {
   return (
