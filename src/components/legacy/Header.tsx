@@ -20,8 +20,8 @@ function Header({ progress, currentView, onViewChange }: HeaderProps) {
       <div className="header-content">
         <div className="header-left">
           {/* Logo (not a page-level heading) */}
-          <div className="logo" aria-label="Rozmowa">
-            🌙 Rozmowa
+          <div className="logo">
+            <span aria-hidden="true">🌙</span> Rozmowa
           </div>
           <StatusBeacon position="inline" showLabel={false} />
         </div>
