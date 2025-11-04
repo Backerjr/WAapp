@@ -55,7 +55,7 @@ function Header({ progress, currentView, onViewChange }: HeaderProps) {
           </nav>
         )}
         
-        <div className="stats" aria-hidden="true">
+        <div className="stats">
           <div className="stat-item" title="Day Streak">
             <span className="stat-icon">🔥</span>
             <span className="stat-value">{progress.streak}</span>
