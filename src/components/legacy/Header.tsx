@@ -55,18 +55,18 @@ function Header({ progress, currentView, onViewChange }: HeaderProps) {
         )}
         
         <div className="stats">
-          <div className="stat-item" title="Day Streak">
-            <span className="stat-icon">🔥</span>
+          <div className="stat-item" aria-label={`Streak: ${progress.streak} days`} title="Day Streak">
+            <span className="stat-icon" aria-hidden="true">🔥</span>
             <span className="stat-value">{progress.streak}</span>
           </div>
           
-          <div className="stat-item" title="Total XP">
-            <span className="stat-icon">✨</span>
+          <div className="stat-item" aria-label={`Total XP: ${progress.xp}`} title="Total XP">
+            <span className="stat-icon" aria-hidden="true">✨</span>
             <span className="stat-value">{progress.xp}</span>
           </div>
           
-          <div className="stat-item" title="Hearts Remaining">
-            <span className="stat-icon">💜</span>
+          <div className="stat-item" aria-label={`Hearts remaining: ${progress.hearts}`} title="Hearts Remaining">
+            <span className="stat-icon" aria-hidden="true">💜</span>
             <span className="stat-value">{progress.hearts}</span>
           </div>
         </div>
