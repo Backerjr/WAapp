@@ -1,11 +1,13 @@
 import { describe, it, expect, beforeAll } from 'vitest'
 import { readFile } from 'node:fs/promises'
 import * as yaml from 'js-yaml'
+import { join } from 'path';
 
 // Note: Skipping workflow validation tests in jsdom environment
 // These tests should be run in a node environment instead
 describe.skip('GitHub Workflows Validation', () => {
   // const workflowsDir = join(process.cwd(), '.github/workflows')
+  const workflowsDir = join(__dirname, '../.github/workflows');
   
   const workflows = [
     'ci-publish-ghcr.yml',

@@ -1,6 +1,6 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import RozmowaApp from './RozmowaApp'
 import ErrorBoundary from './components/legacy/ErrorBoundary'
 import { initTheme } from './styles/theme'
 import './styles/tokens.css'
@@ -10,10 +10,10 @@ import './styles/prose.css'
 // Initialize theme on app load
 initTheme();
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
     <ErrorBoundary>
-      <App />
+      <RozmowaApp />
     </ErrorBoundary>
-  </React.StrictMode>,
+  </StrictMode>,
 )

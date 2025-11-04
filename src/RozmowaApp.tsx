@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from './pages/rozmowa/MainLayout';
 import Dashboard from './pages/rozmowa/Dashboard';
 import LearnPage from './pages/rozmowa/LearnPage';
+import CourseDetailPage from './pages/rozmowa/CourseDetailPage';
 import ReviewPage from './pages/rozmowa/ReviewPage';
 import ResourceLibrary from './pages/rozmowa/ResourceLibrary';
 import ProfilePage from './pages/rozmowa/ProfilePage';
@@ -25,12 +26,17 @@ import ProfilePage from './pages/rozmowa/ProfilePage';
  * - Explore all navigation items to see different page layouts
  */
 export function RozmowaApp() {
+  // Set basename for GitHub Pages deployment (/WAapp/) or root for other environments
+  // GitHub Pages serves at /WAapp/, Vercel and local dev serve at root /
+  const basename = window.location.pathname.startsWith('/WAapp') ? '/WAapp' : '/';
+  
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <Routes>
         <Route path="/rozmowa" element={<MainLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="learn" element={<LearnPage />} />
+          <Route path="learn/:courseId" element={<CourseDetailPage />} />
           <Route path="review" element={<ReviewPage />} />
           <Route path="resources" element={<ResourceLibrary />} />
           <Route path="profile" element={<ProfilePage />} />
