@@ -15,7 +15,7 @@ interface HeaderProps {
 */
 function Header({ progress, currentView, onViewChange }: HeaderProps) {
   return (
-    <header className="header" role="banner">
+    <header className="header">
       <div className="header-content">
         <div className="header-left">
           {/* Logo (not a page-level heading) */}
