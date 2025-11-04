@@ -21,8 +21,8 @@ describe('Header', () => {
   it('renders user stats correctly', () => {
     render(<Header progress={mockProgress} />);
     
-    // Check for logo
-    expect(screen.getByText(/🌙 Rozmowa/i)).toBeInTheDocument();
+    // Check for logo (text is split between span and text node)
+    expect(screen.getByText('Rozmowa')).toBeInTheDocument();
     
     // Check for stats (just the numbers, since text is in title attributes)
     expect(screen.getByText('7')).toBeInTheDocument(); // streak
