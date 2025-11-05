@@ -16,8 +16,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "types": ["vitest/globals", "@testing-library/jest-dom"]
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src"],
   "exclude": [
