@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from './Card';
 import { Badge } from './Badge';
 import { ProgressBar } from './ProgressBar';
-import { cn } from '../../utils/cn';
+import { cn } from '@/lib/utils';
 
 interface CourseCardProps {
   title: string;

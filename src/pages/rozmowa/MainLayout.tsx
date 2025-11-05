@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Home, BookOpen, RefreshCw, Library, User, Moon, Sun } from 'lucide-react';
-import { cn } from '../../utils/cn';
+import { cn } from '@/lib/utils';
 
 export const MainLayout: React.FC = () => {
   const location = useLocation();

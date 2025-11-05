@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from './Card';
-import { cn } from '../../utils/cn';
+import { cn } from '@/lib/utils';
 
 interface StatCardProps {
   value: string | number;
