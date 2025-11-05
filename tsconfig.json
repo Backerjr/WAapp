@@ -16,7 +16,11 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src"],
   "exclude": [
@@ -24,6 +28,8 @@
     "src/**/*.test.tsx",
     "src/**/__tests__",
     "src/components/_archived/**",
+    "src/test/**",
+    "src/utils/cn.ts",
     "node_modules"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]

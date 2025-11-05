@@ -5,6 +5,11 @@ import { resolve } from 'path'
 export default defineConfig({
   plugins: [react()],
   base: process.env.VERCEL ? '/' : process.env.NODE_ENV === 'production' ? '/WAapp/' : '/',
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'),
+    },
+  },
   server: {
     host: '0.0.0.0',
     port: 5000,
