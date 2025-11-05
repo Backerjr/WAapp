@@ -145,7 +145,11 @@ function App() {
         <Sidebar 
           activePage={viewMode} 
           setActivePage={(page) => {
-            setViewMode(page.toLowerCase() as ViewMode);
+            const normalizedPage = page.toLowerCase();
+            const validModes: ViewMode[] = ['home', 'learn', 'progress', 'about'];
+            if (validModes.includes(normalizedPage as ViewMode)) {
+              setViewMode(normalizedPage as ViewMode);
+            }
             if (isMobile) {
               setIsMobileMenuOpen(false);
             }
