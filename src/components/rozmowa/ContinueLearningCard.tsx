@@ -3,7 +3,7 @@ import { Card } from './Card';
 import { ProgressBar } from './ProgressBar';
 import { Button } from './Button';
 import { PlayCircle } from 'lucide-react';
-import { cn } from '../../utils/cn';
+import { cn } from '@/lib/utils';
 
 interface ContinueLearningCardProps {
   title: string;

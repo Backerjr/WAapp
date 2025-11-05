@@ -29,7 +29,6 @@
     "src/**/__tests__",
     "src/components/_archived/**",
     "src/test/**",
-    "src/utils/cn.ts",
     "node_modules"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
