@@ -21,8 +21,8 @@ describe('Header', () => {
   it('renders user stats correctly', () => {
     render(<Header progress={mockProgress} />);
 
-    // Check for logo by accessible heading name (ignore emoji encoding issues)
-    expect(screen.getByRole('heading', { name: /Rozmowa/i })).toBeInTheDocument();
+    // Check for logo text (intentionally not a heading to avoid multiple H1s)
+    expect(screen.getByText(/Rozmowa/i)).toBeInTheDocument();
 
     // Check for stats (just the numbers, since text is in title attributes)
     expect(screen.getByTitle('Day Streak').textContent).toContain('7'); // streak
