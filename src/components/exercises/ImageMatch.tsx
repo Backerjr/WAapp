@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Exercise } from '../../types';
 import './ImageMatch.css';
 
@@ -17,10 +17,16 @@ const ImageMatch: React.FC<ImageMatchProps> = ({ exercise, onCorrect }) => {
   const [correctMatches, setCorrectMatches] = useState<Set<string>>(new Set());
   const [incorrectMatches, setIncorrectMatches] = useState<Set<string>>(new Set());
 
-  // Shuffle the right side for variety
-  const shuffledPairs = [...exercisePairs].sort(() => Math.random() - 0.5);
+  // Shuffle the right side for variety - memoize to prevent re-shuffling on every render
+  const shuffledPairs = useMemo(
+    () => [...exercisePairs].sort(() => Math.random() - 0.5),
+    [exercisePairs]
+  );
   const leftItems = exercisePairs;
-  const rightItems = shuffledPairs.map(pair => pair.pl);
+  const rightItems = useMemo(
+    () => shuffledPairs.map(pair => pair.pl),
+    [shuffledPairs]
+  );
 
   const handleLeftClick = (item: string) => {
     if (correctMatches.has(item)) return;

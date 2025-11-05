@@ -56,34 +56,48 @@ function App() {
   };
 
   useEffect(() => {
-    const savedProgress = localStorage.getItem('progress');
-    const savedStats = localStorage.getItem('userStats');
-    
-    if (savedProgress) {
-      const parsed = JSON.parse(savedProgress);
-      const today = new Date().toDateString();
+    // Load and migrate saved data on mount
+    const loadSavedData = () => {
+      const savedProgress = localStorage.getItem('progress');
+      const savedStats = localStorage.getItem('userStats');
       
-      // Migration: add joinDate if it doesn't exist
-      if (!parsed.joinDate) {
-        parsed.joinDate = new Date().toISOString();
-      }
-      
-      if (parsed.lastActiveDate !== today) {
-        const yesterday = new Date(Date.now() - 86400000).toDateString();
-        if (parsed.lastActiveDate === yesterday) {
-          parsed.streak += 1;
-        } else {
-          parsed.streak = 1;
+      if (savedProgress) {
+        const parsed = JSON.parse(savedProgress);
+        const today = new Date().toDateString();
+        
+        // Migration: add joinDate if it doesn't exist
+        if (!parsed.joinDate) {
+          parsed.joinDate = new Date().toISOString();
         }
-        parsed.lastActiveDate = today;
+        
+        if (parsed.lastActiveDate !== today) {
+          const yesterday = new Date(Date.now() - 86400000).toDateString();
+          if (parsed.lastActiveDate === yesterday) {
+            parsed.streak += 1;
+          } else {
+            parsed.streak = 1;
+          }
+          parsed.lastActiveDate = today;
+        }
+        
+        return { progress: parsed, stats: savedStats ? JSON.parse(savedStats) : null };
       }
       
-      setProgress(parsed);
-    }
-    
-    if (savedStats) {
-      setUserStats(JSON.parse(savedStats));
-    }
+      return { progress: null, stats: savedStats ? JSON.parse(savedStats) : null };
+    };
+
+    // Use microtask to batch state updates
+    Promise.resolve().then(() => {
+      const { progress: loadedProgress, stats: loadedStats } = loadSavedData();
+      
+      if (loadedProgress) {
+        setProgress(loadedProgress);
+      }
+      
+      if (loadedStats) {
+        setUserStats(loadedStats);
+      }
+    });
   }, []);
 
   useEffect(() => {
