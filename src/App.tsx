@@ -4,11 +4,12 @@ import { skillTree } from './data/lessons';
 import { ALL_ACHIEVEMENTS } from './data/achievements';
 import SkillTree from './components/legacy/SkillTree';
 import LessonView from './components/legacy/LessonView';
-import Header from './components/legacy/Header';
+import Header from './components/Header';
 import ProgressionDashboard from './components/legacy/ProgressionDashboard';
 import LandingPage from './components/legacy/LandingPage';
 import AboutPage from './components/legacy/AboutPage';
-import Sidebar from './components/legacy/Sidebar';
+import Sidebar from './components/Sidebar';
+import './App.css';
 
 const INITIAL_PROGRESS: Progress = {
   completedLessons: [],
