@@ -151,6 +151,8 @@
     left: 0;
     top: 0;
     z-index: 1001;
+    width: 250px !important; /* Force full width on mobile */
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.5);
   }
   
   .sidebar-header {

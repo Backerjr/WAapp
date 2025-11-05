@@ -8,6 +8,7 @@ import Header from './components/legacy/Header';
 import ProgressionDashboard from './components/legacy/ProgressionDashboard';
 import LandingPage from './components/legacy/LandingPage';
 import AboutPage from './components/legacy/AboutPage';
+import Sidebar from './components/legacy/Sidebar';
 
 const INITIAL_PROGRESS: Progress = {
   completedLessons: [],
@@ -35,6 +36,23 @@ function App() {
   const [progress, setProgress] = useState<Progress>(INITIAL_PROGRESS);
   const [userStats, setUserStats] = useState<UserStats>(INITIAL_STATS);
   const [viewMode, setViewMode] = useState<ViewMode>('home');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile viewport
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   useEffect(() => {
     const savedProgress = localStorage.getItem('progress');
@@ -112,46 +130,73 @@ function App() {
 
   return (
     <div className="app">
-      <Header
-        progress={progress}
-        currentView={viewMode as string}
-        onViewChange={(view) => setViewMode(view as ViewMode)}
-      />
-      
-      {!currentLesson ? (
-        <>
-          {viewMode === 'learn' && (
-            <SkillTree 
-              units={skillTree} 
-              progress={progress}
-              onStartLesson={startLesson}
-            />
-          )}
-          {viewMode === 'progress' && (
-            <ProgressionDashboard 
-              progress={progress}
-              achievements={ALL_ACHIEVEMENTS}
-            />
-          )}
-          {viewMode === 'home' && <LandingPage onNavigate={handleNavigation} />}
-          {viewMode === 'about' && <AboutPage onNavigate={handleNavigation} />}
-
-          <footer className="app-footer">
-            <p className="footer-dedication">
-              Dedicated to the one who teaches the world how to listen.
-            </p>
-          </footer>
-        </>
-      ) : (
-        <LessonView
-          lesson={currentLesson}
-          exerciseIndex={userStats.exerciseIndex}
-          onComplete={completeLesson}
-          onLoseHeart={loseHeart}
-          onExit={exitLesson}
-          onNextExercise={(index) => setUserStats(prev => ({ ...prev, exerciseIndex: index }))}
+      {/* Mobile overlay when sidebar is open */}
+      {isMobile && isMobileMenuOpen && (
+        <div 
+          className="sidebar-overlay" 
+          onClick={() => setIsMobileMenuOpen(false)}
+          aria-hidden="true"
         />
       )}
+      
+      {/* Conditionally render Sidebar based on mobile state */}
+      {(!isMobile || isMobileMenuOpen) && (
+        <Sidebar 
+          activePage={viewMode} 
+          setActivePage={(page) => {
+            setViewMode(page.toLowerCase() as ViewMode);
+            if (isMobile) {
+              setIsMobileMenuOpen(false);
+            }
+          }} 
+        />
+      )}
+      
+      <main className="main-content">
+        <Header
+          progress={progress}
+          currentView={viewMode as string}
+          onViewChange={(view) => setViewMode(view as ViewMode)}
+          isMobile={isMobile}
+          isMobileMenuOpen={isMobileMenuOpen}
+          toggleMobileMenu={toggleMobileMenu}
+        />
+        
+        {!currentLesson ? (
+          <>
+            {viewMode === 'learn' && (
+              <SkillTree 
+                units={skillTree} 
+                progress={progress}
+                onStartLesson={startLesson}
+              />
+            )}
+            {viewMode === 'progress' && (
+              <ProgressionDashboard 
+                progress={progress}
+                achievements={ALL_ACHIEVEMENTS}
+              />
+            )}
+            {viewMode === 'home' && <LandingPage onNavigate={handleNavigation} />}
+            {viewMode === 'about' && <AboutPage onNavigate={handleNavigation} />}
+
+            <footer className="app-footer">
+              <p className="footer-dedication">
+                Dedicated to the one who teaches the world how to listen.
+              </p>
+            </footer>
+          </>
+        ) : (
+          <LessonView
+            lesson={currentLesson}
+            exerciseIndex={userStats.exerciseIndex}
+            onComplete={completeLesson}
+            onLoseHeart={loseHeart}
+            onExit={exitLesson}
+            onNextExercise={(index) => setUserStats(prev => ({ ...prev, exerciseIndex: index }))}
+          />
+        )}
+      </main>
     </div>
   );
 }

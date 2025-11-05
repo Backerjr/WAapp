@@ -41,10 +41,10 @@ interface NavigationItem {
 }
 
 const navigationItems: NavigationItem[] = [
-  { id: 'Home', label: 'Home', icon: FiHome },
-  { id: 'Lessons', label: 'Lessons', icon: FiBookOpen },
-  { id: 'AI Zone', label: 'AI Zone', icon: FiCpu },
-  { id: 'Profile', label: 'Profile', icon: FiMoon },
+  { id: 'home', label: 'Home', icon: FiHome },
+  { id: 'learn', label: 'Learn', icon: FiBookOpen },
+  { id: 'progress', label: 'Progress', icon: FiCpu },
+  { id: 'about', label: 'About', icon: FiMoon },
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({ activePage, setActivePage }) => {
