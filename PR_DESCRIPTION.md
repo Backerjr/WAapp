@@ -112,7 +112,7 @@ Enhanced with:
 
 ---
 
-## �� **CI/CD Workflow Fixes**
+## 🛠️ **CI/CD Workflow Fixes**
 
 ### Updated Workflow
 
