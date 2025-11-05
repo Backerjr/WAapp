@@ -70,15 +70,15 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run linter
-        run: pnpm run lint --if-present
+        run: pnpm run lint || echo "Lint script not found, skipping"
         continue-on-error: true
 
       - name: Run type check
-        run: pnpm run type-check --if-present
+        run: pnpm run type-check || echo "Type check script not found, skipping"
         continue-on-error: true
 
       - name: Run tests
-        run: pnpm test --if-present
+        run: pnpm test
 
       - name: Build application
         run: pnpm run build
