@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './jules-scratch/verification',
+  testDir: './e2e',
   // Explicitly match only Playwright test files
   testMatch: '**/*.spec.ts',
   // Exclude any files that might be imported as modules
