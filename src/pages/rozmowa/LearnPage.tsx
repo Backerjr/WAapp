@@ -2,57 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CourseCard, Input, Badge } from '../../components/rozmowa';
 import { Search, Filter } from 'lucide-react';
-
-const mockCourses = [
-  {
-    id: '1',
-    title: 'Grammar Essentials',
-    description: 'Master English grammar fundamentals with comprehensive lessons and exercises.',
-    imageUrl: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&h=300&fit=crop',
-    level: 'Beginner' as const,
-    progress: 45,
-  },
-  {
-    id: '2',
-    title: 'Business English',
-    description: 'Develop professional communication skills for the workplace.',
-    imageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=300&fit=crop',
-    level: 'Intermediate' as const,
-    progress: 20,
-  },
-  {
-    id: '3',
-    title: 'Advanced Conversation',
-    description: 'Enhance fluency with complex discussions and idiomatic expressions.',
-    imageUrl: 'https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?w=400&h=300&fit=crop',
-    level: 'Advanced' as const,
-    progress: 0,
-  },
-  {
-    id: '4',
-    title: 'Everyday Vocabulary',
-    description: 'Build a strong vocabulary foundation for daily conversations.',
-    imageUrl: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=300&fit=crop',
-    level: 'Beginner' as const,
-    progress: 75,
-  },
-  {
-    id: '5',
-    title: 'Pronunciation Practice',
-    description: 'Perfect your English pronunciation with guided audio exercises.',
-    imageUrl: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=400&h=300&fit=crop',
-    level: 'Intermediate' as const,
-    progress: 10,
-  },
-  {
-    id: '6',
-    title: 'IELTS Preparation',
-    description: 'Comprehensive preparation for all sections of the IELTS exam.',
-    imageUrl: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=300&fit=crop',
-    level: 'Advanced' as const,
-    progress: 0,
-  },
-];
+import { mockCourses } from '../../data/mockCourses';
 
 export const LearnPage: React.FC = () => {
   const navigate = useNavigate();
@@ -153,10 +103,6 @@ export const LearnPage: React.FC = () => {
             key={course.id}
             {...course}
             onClick={() => {
-              // TODO: Add route for course detail page in RozmowaApp.tsx
-              // Example: <Route path="learn/:courseId" element={<CourseDetailPage />} />
-              // Note: Currently navigates to an undefined route. Add a catch-all route
-              // or implement CourseDetailPage to prevent 404 errors.
               navigate(`/rozmowa/learn/${course.id}`);
             }}
           />

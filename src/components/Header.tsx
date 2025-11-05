@@ -1,5 +1,5 @@
-import { Progress } from '../../types';
-import StatusBeacon from './StatusBeacon';
+import { Progress } from '../types';
+import StatusBeacon from './legacy/StatusBeacon';
 
 interface HeaderProps {
   progress: Progress;

@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from './pages/rozmowa/MainLayout';
 import Dashboard from './pages/rozmowa/Dashboard';
 import LearnPage from './pages/rozmowa/LearnPage';
+import CourseDetailPage from './pages/rozmowa/CourseDetailPage';
 import ReviewPage from './pages/rozmowa/ReviewPage';
 import ResourceLibrary from './pages/rozmowa/ResourceLibrary';
 import ProfilePage from './pages/rozmowa/ProfilePage';
@@ -35,6 +36,7 @@ export function RozmowaApp() {
         <Route path="/rozmowa" element={<MainLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="learn" element={<LearnPage />} />
+          <Route path="learn/:courseId" element={<CourseDetailPage />} />
           <Route path="review" element={<ReviewPage />} />
           <Route path="resources" element={<ResourceLibrary />} />
           <Route path="profile" element={<ProfilePage />} />
