@@ -77,24 +77,28 @@ const Sidebar: React.FC<SidebarProps> = ({ activePage, setActivePage }) => {
           onClick={toggleSidebar}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
+          aria-label="Toggle sidebar"
+          aria-expanded={!isCollapsed}
         >
           {isCollapsed ? <FiChevronRight size={20} /> : <FiChevronLeft size={20} />}
         </motion.button>
       </div>
 
       {/* Navigation Items */}
-      <nav className="sidebar-nav">
+      <nav className="sidebar-nav" aria-label="Main navigation">
         {navigationItems.map((item) => {
           const IconComponent = item.icon;
           const isActive = activePage === item.id;
 
           return (
-            <motion.div
+            <motion.button
               key={item.id}
               className={`nav-item ${isActive ? 'active' : ''}`}
               onClick={() => handleNavClick(item.id)}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              aria-label={item.label}
+              aria-current={isActive ? 'page' : undefined}
             >
               <div className="nav-icon">
                 <IconComponent size={20} />
@@ -108,12 +112,13 @@ const Sidebar: React.FC<SidebarProps> = ({ activePage, setActivePage }) => {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -10 }}
                     transition={{ duration: 0.2 }}
+                    aria-hidden="true"
                   >
                     {item.label}
                   </motion.span>
                 )}
               </AnimatePresence>
-            </motion.div>
+            </motion.button>
           );
         })}
       </nav>
