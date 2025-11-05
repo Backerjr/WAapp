@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from './Card';
 import { Flame, Target } from 'lucide-react';
-import { cn } from '../../utils/cn';
+import { cn } from '@/lib/utils';
 
 interface DailyGoalsCardProps {
   streak: number;

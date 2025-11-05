@@ -78,8 +78,7 @@ jobs:
         continue-on-error: true
 
       - name: Run tests
-        run: pnpm test || echo "Tests failed, continuing anyway"
-        continue-on-error: true
+        run: pnpm test
 
       - name: Build application
         run: pnpm run build

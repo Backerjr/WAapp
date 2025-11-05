@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from './Card';
 import { Button } from './Button';
 import { RefreshCw } from 'lucide-react';
-import { cn } from '../../utils/cn';
+import { cn } from '@/lib/utils';
 
 interface ReviewQueueCardProps {
   itemsToReview: number;
