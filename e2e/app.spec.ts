@@ -20,7 +20,7 @@ test.describe('App Navigation', () => {
     
     // The home page can be either the landing page (with a hero headline)
     // or the dashboard (with a welcome back message). The test should handle both.
-    const heroHeadline = page.getByRole('heading', { name: /Master Polish/i });
+    const heroHeadline = page.getByRole('heading', { name: /Speak beautifully/i });
     const welcomeHeader = page.getByRole('heading', { name: /Welcome back/i });
 
     await expect(heroHeadline.or(welcomeHeader)).toBeVisible();
@@ -37,10 +37,10 @@ test.describe('App Navigation', () => {
     await expect(header).toBeVisible({ timeout: 10000 });
     
     // Check navigation buttons exist using simpler selectors
-    const homeBtn = header.getByRole('link', { name: /Dashboard/i });
-    const learnBtn = header.getByRole('link', { name: /Learn/i });
-    const progressBtn = header.getByRole('link', { name: /Review/i });
-    const aboutBtn = header.getByRole('link', { name: /Resources/i });
+    const homeBtn = header.getByRole('button', { name: /Home/i });
+    const learnBtn = header.getByRole('button', { name: /Learn/i });
+    const progressBtn = header.getByRole('button', { name: /Progress/i });
+    const aboutBtn = header.getByRole('button', { name: /About/i });
     
     await expect(homeBtn).toBeVisible({ timeout: 5000 });
     await expect(learnBtn).toBeVisible();
@@ -70,17 +70,19 @@ test.describe('App Navigation', () => {
     const mainContent = page.getByRole('main');
     await expect(mainContent).toBeVisible({ timeout: 10000 });
     
-    // Check that stats container exists
-    await expect(mainContent.getByText(/Day Streak/i).first()).toBeVisible();
+    // Check that stats are visible using the actual text in the app
+    // Stats use "Streak:", "Total XP:", and "Hearts remaining:" text
+    await expect(page.getByText(/Streak:/i)).toBeVisible();
+    await expect(page.getByText(/Total XP:/i)).toBeVisible();
+    await expect(page.getByText(/Hearts remaining:/i)).toBeVisible();
     
-    // Check that stats are visible (streak, xp, hearts)
-    await expect(mainContent.getByText(/Day Streak/i).first()).toBeVisible();
-    await expect(mainContent.getByText(/Daily Goal/i)).toBeVisible();
-    await expect(mainContent.getByText(/Review Queue/i).first()).toBeVisible();
-    await expect(page.getByText(/Review Queue/i).first()).toBeVisible();
+    // Check stat icons are present by looking for the title attributes
+    const streakStat = page.locator('[title="Day Streak"]');
+    const xpStat = page.locator('[title="Total XP"]');
+    const heartsStat = page.locator('[title="Hearts Remaining"]');
     
-    // Check stat icons are present
-    const statItems = await page.locator('p').filter({ hasText: /Day Streak|Daily Goal|Review Queue/ }).count();
-    expect(statItems).toBeGreaterThanOrEqual(3);
+    await expect(streakStat).toBeVisible();
+    await expect(xpStat).toBeVisible();
+    await expect(heartsStat).toBeVisible();
   });
 });
