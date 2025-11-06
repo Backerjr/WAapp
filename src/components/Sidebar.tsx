@@ -133,7 +133,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activePage, setActivePage }) => {
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.2, delay: 0.1 }}
           >
-            <div className="brand-text">WAapp</div>
+            <h1 className="brand-text">rozmoWA</h1>
           </motion.div>
         )}
       </AnimatePresence>
