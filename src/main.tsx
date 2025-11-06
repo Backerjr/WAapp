@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './App'
+import RozmowaApp from './RozmowaApp'
 import ErrorBoundary from './components/legacy/ErrorBoundary'
 import { initTheme } from './styles/theme'
 import './styles/tokens.css'
@@ -13,7 +13,7 @@ initTheme();
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ErrorBoundary>
-      <App />
+      <RozmowaApp />
     </ErrorBoundary>
   </StrictMode>,
 )

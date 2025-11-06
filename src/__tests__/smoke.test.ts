@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { skillTree } from '../data/lessons';
-import App from '../App';
+import RozmowaApp from '../RozmowaApp';
 
 describe('smoke', () => {
   it('skillTree has units', () => {
@@ -9,6 +9,6 @@ describe('smoke', () => {
   });
 
   it('App imports without throwing', () => {
-    expect(typeof App).toBe('function');
+    expect(typeof RozmowaApp).toBe('function');
   });
 });

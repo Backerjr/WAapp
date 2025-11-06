@@ -1,14 +1,14 @@
-import { type FC } from 'react';
-import { Card, Badge, Button } from '../../components/rozmowa';
-import { User, Mail, Calendar, Award, BookOpen, TrendingUp, Edit2 } from 'lucide-react';
+import { type FC, useState, useEffect } from 'react';
+import { Card, Badge, Button, Input } from '../../components/rozmowa';
+import { User, Mail, Calendar, Award, BookOpen, TrendingUp, Edit2, X, Check } from 'lucide-react';
 
 const achievements = [
-	{ id: '1', name: 'First Lesson', unlocked: true },
-	{ id: '2', name: '7-Day Streak', unlocked: true },
-	{ id: '3', name: '50 Words', unlocked: true },
-	{ id: '4', name: '14-Day Streak', unlocked: false },
-	{ id: '5', name: '100 Words', unlocked: false },
-	{ id: '6', name: 'Course Complete', unlocked: false },
+	{ id: '1', name: 'First Lesson', unlocked: true, requirement: 1 },
+	{ id: '2', name: '7-Day Streak', unlocked: false, requirement: 7 },
+	{ id: '3', name: '50 Words', unlocked: false, requirement: 50 },
+	{ id: '4', name: '14-Day Streak', unlocked: false, requirement: 14 },
+	{ id: '5', name: '100 Words', unlocked: false, requirement: 100 },
+	{ id: '6', name: 'Course Complete', unlocked: false, requirement: 999 },
 ];
 
 // Format join date consistently
@@ -16,27 +16,79 @@ const formatJoinDate = (date: Date): string => {
 	return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 };
 
-interface ProfilePageProps {
-	userName?: string;
-	userEmail?: string;
-	joinDate?: Date;
-	wordsLearned?: number;
-	lessonsCompleted?: number;
-	dayStreak?: number;
-	userLevel?: string;
-}
+export const ProfilePage: FC = () => {
+	const [isEditing, setIsEditing] = useState(false);
+	const [userName, setUserName] = useState('');
+	const [userEmail, setUserEmail] = useState('');
+	const [tempName, setTempName] = useState('');
+	const [tempEmail, setTempEmail] = useState('');
+	const [progress, setProgress] = useState<any>(null);
 
-export const ProfilePage: FC<ProfilePageProps> = ({
-	userName = 'John Doe',
-	userEmail = 'john.doe@example.com',
-	joinDate = new Date(),
-	wordsLearned = 245,
-	lessonsCompleted = 12,
-	dayStreak = 7,
-	userLevel = 'Intermediate Learner',
-}) => {
-	// Use current date if joinDate is not provided
-	const displayJoinDate = joinDate || new Date();
+	useEffect(() => {
+		// Load from localStorage
+		const savedProfile = localStorage.getItem('userProfile');
+		const savedProgress = localStorage.getItem('progress');
+		
+		if (savedProfile) {
+			const profile = JSON.parse(savedProfile);
+			setUserName(profile.name || 'English Learner');
+			setUserEmail(profile.email || 'learner@rozmowa.app');
+		} else {
+			setUserName('English Learner');
+			setUserEmail('learner@rozmowa.app');
+		}
+
+		if (savedProgress) {
+			setProgress(JSON.parse(savedProgress));
+		} else {
+			setProgress({
+				completedLessons: [],
+				xp: 0,
+				streak: 1,
+				joinDate: new Date().toISOString()
+			});
+		}
+	}, []);
+
+	const handleEditClick = () => {
+		setTempName(userName);
+		setTempEmail(userEmail);
+		setIsEditing(true);
+	};
+
+	const handleSave = () => {
+		setUserName(tempName);
+		setUserEmail(tempEmail);
+		localStorage.setItem('userProfile', JSON.stringify({ name: tempName, email: tempEmail }));
+		setIsEditing(false);
+	};
+
+	const handleCancel = () => {
+		setIsEditing(false);
+	};
+
+	if (!progress) {
+		return <div>Loading...</div>;
+	}
+
+	const wordsLearned = progress.completedLessons.length * 20;
+	const lessonsCompleted = progress.completedLessons.length;
+	const dayStreak = progress.streak || 1;
+	const joinDate = progress.joinDate ? new Date(progress.joinDate) : new Date();
+	const userLevel = lessonsCompleted === 0 ? 'Beginner' : lessonsCompleted < 10 ? 'Intermediate Learner' : 'Advanced Learner';
+
+	// Update achievement unlock status
+	const unlockedAchievements = achievements.map(ach => ({
+		...ach,
+		unlocked: 
+			(ach.name === 'First Lesson' && lessonsCompleted >= 1) ||
+			(ach.name === '7-Day Streak' && dayStreak >= 7) ||
+			(ach.name === '50 Words' && wordsLearned >= 50) ||
+			(ach.name === '14-Day Streak' && dayStreak >= 14) ||
+			(ach.name === '100 Words' && wordsLearned >= 100) ||
+			(ach.name === 'Course Complete' && lessonsCompleted >= 20)
+	}));
+
 	return (
 		<div className="container mx-auto px-4 py-8 max-w-4xl">
 			<div className="mb-8">
@@ -55,28 +107,72 @@ export const ProfilePage: FC<ProfilePageProps> = ({
 						<User className="w-12 h-12 text-white" />
 					</div>
 					<div className="flex-1">
-						<h2 className="font-heading text-h2 text-primary-text dark:text-primary-text-dark mb-1">
-							{userName}
-						</h2>
-						<div className="flex flex-wrap items-center gap-4 text-small text-secondary-text dark:text-secondary-text-dark mb-3">
-							<div className="flex items-center gap-2">
-								<Mail className="w-4 h-4" />
-								<span>{userEmail}</span>
+						{isEditing ? (
+							<div className="space-y-3 mb-3">
+								<Input
+									type="text"
+									value={tempName}
+									onChange={(e) => setTempName(e.target.value)}
+									placeholder="Your name"
+									className="text-h2"
+								/>
+								<Input
+									type="email"
+									value={tempEmail}
+									onChange={(e) => setTempEmail(e.target.value)}
+									placeholder="Your email"
+								/>
 							</div>
-							<div className="flex items-center gap-2">
-								<Calendar className="w-4 h-4" />
-								<span>Joined {formatJoinDate(displayJoinDate)}</span>
-							</div>
-						</div>
-						<Badge colorScheme="accent">{userLevel}</Badge>
+						) : (
+							<>
+								<h2 className="font-heading text-h2 text-primary-text dark:text-primary-text-dark mb-1">
+									{userName}
+								</h2>
+								<div className="flex flex-wrap items-center gap-4 text-small text-secondary-text dark:text-secondary-text-dark mb-3">
+									<div className="flex items-center gap-2">
+										<Mail className="w-4 h-4" />
+										<span>{userEmail}</span>
+									</div>
+									<div className="flex items-center gap-2">
+										<Calendar className="w-4 h-4" />
+										<span>Joined {formatJoinDate(joinDate)}</span>
+									</div>
+								</div>
+								<Badge colorScheme="accent">{userLevel}</Badge>
+							</>
+						)}
 					</div>
-					<Button
-						variant="secondary"
-						size="md"
-						leftIcon={<Edit2 className="w-4 h-4" />}
-					>
-						Edit Profile
-					</Button>
+					<div className="flex gap-2">
+						{isEditing ? (
+							<>
+								<Button
+									variant="primary"
+									size="md"
+									leftIcon={<Check className="w-4 h-4" />}
+									onClick={handleSave}
+								>
+									Save
+								</Button>
+								<Button
+									variant="secondary"
+									size="md"
+									leftIcon={<X className="w-4 h-4" />}
+									onClick={handleCancel}
+								>
+									Cancel
+								</Button>
+							</>
+						) : (
+							<Button
+								variant="secondary"
+								size="md"
+								leftIcon={<Edit2 className="w-4 h-4" />}
+								onClick={handleEditClick}
+							>
+								Edit Profile
+							</Button>
+						)}
+					</div>
 				</div>
 			</Card>
 
@@ -140,7 +236,7 @@ export const ProfilePage: FC<ProfilePageProps> = ({
 					Achievements
 				</h2>
 				<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-					{achievements.map((achievement) => (
+					{unlockedAchievements.map((achievement) => (
 						<Card
 							key={achievement.id}
 							variant="default"
@@ -150,8 +246,12 @@ export const ProfilePage: FC<ProfilePageProps> = ({
 									: 'text-center transition-all duration-300'
 							}
 						>
-							<div className="w-16 h-16 mx-auto mb-2 rounded-full bg-gradient-to-br from-accent to-success dark:from-accent-dark dark:to-success-dark flex items-center justify-center">
-								<Award className="w-8 h-8 text-white" />
+							<div className={`w-16 h-16 mx-auto mb-2 rounded-full flex items-center justify-center ${
+								achievement.unlocked 
+									? 'bg-gradient-to-br from-accent to-success dark:from-accent-dark dark:to-success-dark'
+									: 'bg-secondary-text/20 dark:bg-secondary-text-dark/20'
+							}`}>
+								<Award className={`w-8 h-8 ${achievement.unlocked ? 'text-white' : 'text-secondary-text dark:text-secondary-text-dark'}`} />
 							</div>
 							<p className="text-small text-primary-text dark:text-primary-text-dark font-medium">
 								{achievement.name}

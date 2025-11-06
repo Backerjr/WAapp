@@ -16,11 +16,11 @@ export const MainLayout: React.FC = () => {
   }, [darkMode]);
 
   const navItems = [
-    { path: '/rozmowa', icon: Home, label: 'Dashboard' },
-    { path: '/rozmowa/learn', icon: BookOpen, label: 'Learn' },
-    { path: '/rozmowa/review', icon: RefreshCw, label: 'Review' },
-    { path: '/rozmowa/resources', icon: Library, label: 'Resources' },
-    { path: '/rozmowa/profile', icon: User, label: 'Profile' },
+    { path: '/', icon: Home, label: 'Dashboard' },
+    { path: '/learn', icon: BookOpen, label: 'Learn' },
+    { path: '/review', icon: RefreshCw, label: 'Review' },
+    { path: '/resources', icon: Library, label: 'Resources' },
+    { path: '/profile', icon: User, label: 'Profile' },
   ];
 
   return (
