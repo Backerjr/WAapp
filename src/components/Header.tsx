@@ -16,10 +16,8 @@ function Header({ progress }: HeaderProps) {
     <header className="header">
       <div className="header-content">
         <div className="header-left">
-          {/* Logo (not a page-level heading) */}
-          <div className="logo">
-            <span aria-hidden="true">🌙</span> Rozmowa
-          </div>
+          {/* Logo as heading for accessibility and E2E test */}
+          <h1 className="logo" aria-level={1}>rozmoWA</h1>
         </div>
         
         <div className="stats">
