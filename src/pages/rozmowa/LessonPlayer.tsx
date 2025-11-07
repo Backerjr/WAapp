@@ -1,6 +1,6 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { Button } from '../../components/rozmowa';
+import { Button, Header } from '../../components/rozmowa';
 import { skillTree } from '../../data/lessons';
 import { sm2 } from '../../lib/sm2';
 import { Exercise } from '../../types';
@@ -18,18 +18,21 @@ interface LessonState {
   exerciseIndex: number;
   xpEarned: number;
   showQualityButtons: boolean;
+  showResult: boolean;
 }
 
 type LessonAction =
   | { type: 'RESET' }
   | { type: 'INCREMENT_INDEX' }
   | { type: 'ADD_XP', payload: number }
-  | { type: 'SHOW_QUALITY_BUTTONS' };
+  | { type: 'SHOW_QUALITY_BUTTONS' }
+  | { type: 'SHOW_RESULT', payload: boolean };
 
 const initialState: LessonState = {
   exerciseIndex: 0,
   xpEarned: 0,
   showQualityButtons: false,
+  showResult: false,
 };
 
 const lessonReducer = (state: LessonState, action: LessonAction): LessonState => {
@@ -37,11 +40,13 @@ const lessonReducer = (state: LessonState, action: LessonAction): LessonState =>
     case 'RESET':
       return initialState;
     case 'INCREMENT_INDEX':
-      return { ...state, exerciseIndex: state.exerciseIndex + 1 };
+      return { ...state, exerciseIndex: state.exerciseIndex + 1, showResult: false };
     case 'ADD_XP':
       return { ...state, xpEarned: state.xpEarned + action.payload };
     case 'SHOW_QUALITY_BUTTONS':
       return { ...state, showQualityButtons: true };
+    case 'SHOW_RESULT':
+      return { ...state, showResult: action.payload };
     default:
       return state;
   }
@@ -105,27 +110,27 @@ export const LessonPlayer: React.FC = () => {
     navigate('/review'); // Go back to review page
   };
 
-  const handleCorrect = () => {
-    if (isReviewMode) {
-      dispatch({ type: 'SHOW_QUALITY_BUTTONS' });
-    } else {
-      const earnedXP = 10;
-      dispatch({ type: 'ADD_XP', payload: earnedXP });
-      setTimeout(() => {
-        if (isLastExercise) {
-          handleLessonComplete();
-        } else {
-          dispatch({ type: 'INCREMENT_INDEX' });
-        }
-      }, 1000);
-    }
-  };
+  const handleSubmit = (isCorrect: boolean) => {
+    dispatch({ type: 'SHOW_RESULT', payload: true });
 
-  const handleIncorrect = () => {
-    if (isReviewMode) {
-      handleReviewComplete(0);
+    if (isCorrect) {
+      if (isReviewMode) {
+        dispatch({ type: 'SHOW_QUALITY_BUTTONS' });
+      } else {
+        const earnedXP = 10;
+        dispatch({ type: 'ADD_XP', payload: earnedXP });
+        setTimeout(() => {
+          if (isLastExercise) {
+            handleLessonComplete();
+          } else {
+            dispatch({ type: 'INCREMENT_INDEX' });
+          }
+        }, 1000);
+      }
     } else {
-      // In a real app, you might penalize the user
+      if (isReviewMode) {
+        handleReviewComplete(0);
+      }
     }
   };
 
@@ -143,7 +148,7 @@ export const LessonPlayer: React.FC = () => {
   };
 
   const renderExercise = (exercise: Exercise) => {
-    const props = { exercise, onCorrect: handleCorrect, onIncorrect: handleIncorrect };
+    const props = { exercise, onSubmit: handleSubmit, showResult: state.showResult };
     switch (exercise.type) {
       case 'multiple_choice':
         return <MultipleChoice {...props} />;
@@ -168,9 +173,7 @@ export const LessonPlayer: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-primary-background dark:bg-primary-background-dark">
-      <div className="sticky top-0 z-10 bg-container-background dark:bg-container-background-dark border-b border-border dark:border-border-dark">
-        {/* Header */}
-      </div>
+      <Header progress={{ xp: state.xpEarned, streak: 0, hearts: 5 }} />
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-3xl mx-auto">
           {state.showQualityButtons ? (
