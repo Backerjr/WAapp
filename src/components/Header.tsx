@@ -75,18 +75,21 @@ function Header({ progress, currentView, onViewChange, isMobile, toggleMobileMen
             <span className="visually-hidden">Streak: {progress.streak} days</span>
             <span className="stat-icon" aria-hidden="true">🔥</span>
             <span className="stat-value" aria-hidden="true">{progress.streak}</span>
+              <p>Streak: {progress.streak}</p>
           </div>
           
           <div className="stat-item" title="Total XP">
             <span className="visually-hidden">Total XP: {progress.xp}</span>
             <span className="stat-icon" aria-hidden="true">✨</span>
             <span className="stat-value" aria-hidden="true">{progress.xp}</span>
+              <p>Total XP: {progress.xp}</p>
           </div>
           
           <div className="stat-item" title="Hearts Remaining">
             <span className="visually-hidden">Hearts remaining: {progress.hearts}</span>
             <span className="stat-icon" aria-hidden="true">💜</span>
             <span className="stat-value" aria-hidden="true">{progress.hearts}</span>
+              <p>Hearts remaining: {progress.hearts}</p>
           </div>
         </div>
       </div>
