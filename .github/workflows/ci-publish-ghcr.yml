@@ -1,0 +1,177 @@
+name: CI & Publish to GHCR
+
+on:
+  push:
+    branches:
+      - main
+      - replit-agent
+  pull_request:
+    branches:
+      - main
+      - replit-agent
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  pages: write
+  id-token: write
+  actions: read
+  security-events: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: rozmowa
+  OWNER_LOWER: backerjr  # Hardcoded lowercase owner to avoid any case conversion issues
+  NODE_VERSION: '20'
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Run tests
+        run: npm test --if-present
+
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Check build output
+        run: |
+          if [ ! -d "dist" ]; then
+            echo "::error::Build failed - dist directory not found"
+            exit 1
+          fi
+          echo "✅ Build successful - dist directory exists"
+          ls -la dist/
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ github.sha }}
+          path: dist/
+          retention-days: 7
+          if-no-files-found: error
+
+  build-and-push:
+    name: Build and push images
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    timeout-minutes: 20
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/replit-agent')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-${{ github.sha }}
+          path: dist/
+
+      - name: Verify build output
+        run: |
+          if [ ! -d "dist" ]; then
+            echo "ERROR: dist directory not found"
+            exit 1
+          fi
+          if [ ! -f "dist/index.html" ]; then
+            echo "ERROR: dist/index.html not found"
+            exit 1
+          fi
+          echo "✅ Build output verified successfully"
+          ls -lah dist/
+
+      - name: Convert repository owner to lowercase
+        id: lowercase
+        run: |
+          OWNER_LOWER=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')
+          echo "repository_owner=${OWNER_LOWER}" >> $GITHUB_OUTPUT
+          echo "Debug: Original owner: ${{ github.repository_owner }}"
+          echo "Debug: Lowercase owner: ${OWNER_LOWER}"
+          echo "Debug: Final image prefix will be: ghcr.io/${OWNER_LOWER}/rozmowa"
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          # If triggered by release, use the tag name; otherwise use 'manual'
+          if [ "${{ github.event_name }}" = "release" ]; then
+            echo "version=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=manual-${{ github.sha }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Debug image tags
+        run: |
+          echo "Registry: ${{ env.REGISTRY }}"
+          echo "Image name: ${{ env.IMAGE_NAME }}"
+          echo "Lowercase owner: ${{ steps.lowercase.outputs.repository_owner }}"
+          echo "Debug: Full nginx tag: ghcr.io/backerjr/rozmowa:nginx-latest"
+          echo "Debug: Full caddy tag: ghcr.io/backerjr/rozmowa:caddy-latest"
+
+      - name: Build and push nginx image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile.nginx
+          push: true
+          platforms: linux/amd64
+          cache-from: type=gha,scope=nginx-release
+          cache-to: type=gha,mode=max,scope=nginx-release
+          tags: |
+            ghcr.io/backerjr/rozmowa:nginx-latest
+            ghcr.io/backerjr/rozmowa:nginx-${{ github.sha }}
+
+      - name: Build and push caddy image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile.caddy
+          push: true
+          platforms: linux/amd64
+          cache-from: type=gha,scope=caddy-release
+          cache-to: type=gha,mode=max,scope=caddy-release
+          tags: |
+            ghcr.io/backerjr/rozmowa:caddy-latest
+            ghcr.io/backerjr/rozmowa:caddy-${{ github.sha }}
+
+      - name: Output image tags
+        run: |
+          echo "✅ Published Docker images:"
+          echo "  Nginx: ghcr.io/backerjr/rozmowa:nginx-${{ github.sha }}"
+          echo "  Caddy: ghcr.io/backerjr/rozmowa:caddy-${{ github.sha }}"
