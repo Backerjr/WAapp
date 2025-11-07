@@ -142,6 +142,13 @@ jobs:
           echo "✅ Build artifacts verified"
           ls -lah dist/
 
+      - name: Prepare deployment with vercel.json
+        run: |
+          # Copy vercel.json to dist so it gets deployed to gh-pages
+          # This is needed because Vercel deploys from gh-pages branch
+          cp vercel.json dist/
+          echo "✅ Added vercel.json to deployment"
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
