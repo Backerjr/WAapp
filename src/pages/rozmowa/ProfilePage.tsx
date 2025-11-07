@@ -1,6 +1,19 @@
-import { type FC, useState, useEffect } from 'react';
+import { type FC, useState } from 'react';
 import { Card, Badge, Button, Input } from '../../components/rozmowa';
-import { User, Mail, Calendar, Award, BookOpen, TrendingUp, Edit2, X, Check } from 'lucide-react';
+import { User, Mail, Calendar, Award, BookOpen, TrendingUp, Edit2 } from 'lucide-react';
+
+// Define interfaces for type safety
+interface UserProfile {
+  name: string;
+  email: string;
+}
+
+interface UserProgress {
+  completedLessons: string[];
+  xp: number;
+  streak: number;
+  joinDate: string;
+}
 
 const achievements = [
 	{ id: '1', name: 'First Lesson', unlocked: true, requirement: 1 },
@@ -17,38 +30,35 @@ const formatJoinDate = (date: Date): string => {
 };
 
 export const ProfilePage: FC = () => {
-	const [isEditing, setIsEditing] = useState(false);
-	const [userName, setUserName] = useState('');
-	const [userEmail, setUserEmail] = useState('');
-	const [tempName, setTempName] = useState('');
-	const [tempEmail, setTempEmail] = useState('');
-	const [progress, setProgress] = useState<any>(null);
+  // Load initial state synchronously from localStorage to avoid effects
+  const loadInitialState = () => {
+    const savedProfile = localStorage.getItem('userProfile');
+    const savedProgress = localStorage.getItem('progress');
 
-	useEffect(() => {
-		// Load from localStorage
-		const savedProfile = localStorage.getItem('userProfile');
-		const savedProgress = localStorage.getItem('progress');
-		
-		if (savedProfile) {
-			const profile = JSON.parse(savedProfile);
-			setUserName(profile.name || 'English Learner');
-			setUserEmail(profile.email || 'learner@rozmowa.app');
-		} else {
-			setUserName('English Learner');
-			setUserEmail('learner@rozmowa.app');
-		}
+    const profile: UserProfile = savedProfile
+      ? JSON.parse(savedProfile)
+      : { name: 'English Learner', email: 'learner@rozmowa.app' };
 
-		if (savedProgress) {
-			setProgress(JSON.parse(savedProgress));
-		} else {
-			setProgress({
-				completedLessons: [],
-				xp: 0,
-				streak: 1,
-				joinDate: new Date().toISOString()
-			});
-		}
-	}, []);
+    const progress: UserProgress = savedProgress
+      ? JSON.parse(savedProgress)
+      : {
+          completedLessons: [],
+          xp: 0,
+          streak: 1,
+          joinDate: new Date().toISOString(),
+        };
+
+    return { profile, progress };
+  };
+
+  const [initialState] = useState(loadInitialState);
+  const [userName, setUserName] = useState(initialState.profile.name);
+  const [userEmail, setUserEmail] = useState(initialState.profile.email);
+  const [progress] = useState<UserProgress | null>(initialState.progress);
+  
+  const [isEditing, setIsEditing] = useState(false);
+  const [tempName, setTempName] = useState(userName);
+  const [tempEmail, setTempEmail] = useState(userEmail);
 
 	const handleEditClick = () => {
 		setTempName(userName);
@@ -148,7 +158,6 @@ export const ProfilePage: FC = () => {
 								<Button
 									variant="primary"
 									size="md"
-									leftIcon={<Check className="w-4 h-4" />}
 									onClick={handleSave}
 								>
 									Save
@@ -156,7 +165,6 @@ export const ProfilePage: FC = () => {
 								<Button
 									variant="secondary"
 									size="md"
-									leftIcon={<X className="w-4 h-4" />}
 									onClick={handleCancel}
 								>
 									Cancel

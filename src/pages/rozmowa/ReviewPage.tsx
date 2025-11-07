@@ -1,52 +1,61 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Button } from '../../components/rozmowa';
 import { RefreshCw, BookOpen } from 'lucide-react';
 import { skillTree } from '../../data/lessons';
-import { sm2, SM2Result } from '../../lib/sm2';
+import { SM2Result } from '../../lib/sm2';
 import { Exercise } from '../../types';
 
+// Define types for better safety
 interface ReviewItem extends Exercise {
   lessonId: string;
   unitTitle: string;
 }
 
+interface UserProgress {
+  completedLessons: string[];
+  reviewSchedule?: { [key: string]: SM2Result & { lastReviewed: number } };
+}
+
 export const ReviewPage: React.FC = () => {
   const navigate = useNavigate();
-  const [reviewItems, setReviewItems] = useState<ReviewItem[]>([]);
 
-  useEffect(() => {
+  // Load and calculate review items once on component initialization
+  const [reviewItems] = useState<ReviewItem[]>(() => {
     const savedProgress = localStorage.getItem('progress');
-    if (savedProgress) {
-      const progress = JSON.parse(savedProgress);
-      const reviewSchedule: { [key: string]: SM2Result & { lastReviewed: number } } = progress.reviewSchedule || {};
+    if (!savedProgress) {
+      return [];
+    }
 
-      const allExercises = skillTree.flatMap(unit =>
-        unit.lessons.flatMap(lesson =>
+    const progress: UserProgress = JSON.parse(savedProgress);
+    const reviewSchedule = progress.reviewSchedule || {};
+    const completedLessons = new Set(progress.completedLessons || []);
+
+    // Get all exercises from completed lessons only
+    const relevantExercises = skillTree.flatMap(unit =>
+      unit.lessons
+        .filter(lesson => completedLessons.has(lesson.id))
+        .flatMap(lesson =>
           lesson.exercises.map(ex => ({ ...ex, lessonId: lesson.id, unitTitle: unit.title_en }))
         )
-      );
+    );
 
-      const itemsToReview = allExercises.filter(ex => {
-        const reviewData = reviewSchedule[ex.id];
-        if (!reviewData) {
-          // If never reviewed, it should be reviewed now
-          return true; 
-        }
-        const now = new Date().getTime();
-        const daysSinceLastReview = (now - reviewData.lastReviewed) / (1000 * 60 * 60 * 24);
-        return daysSinceLastReview >= reviewData.interval;
-      });
+    const itemsToReview = relevantExercises.filter(ex => {
+      const reviewData = reviewSchedule[ex.id];
+      if (!reviewData) {
+        // If an exercise from a completed lesson has no review data, it needs review.
+        return true;
+      }
+      const now = new Date().getTime();
+      const daysSinceLastReview = (now - reviewData.lastReviewed) / (1000 * 60 * 60 * 24);
+      return daysSinceLastReview >= reviewData.interval;
+    });
 
-      setReviewItems(itemsToReview);
-    }
-  }, []);
+    return itemsToReview;
+  });
 
   const handleStartReview = () => {
     if (reviewItems.length > 0) {
-      // For simplicity, navigate to the first item. A real implementation would
-      // likely involve a dedicated review player component.
       const firstItem = reviewItems[0];
       navigate(`/lesson/${firstItem.lessonId}?exercise=${firstItem.id}`);
     }

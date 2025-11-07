@@ -1,19 +1,51 @@
-
-import { useState, useEffect } from 'react';
+import { useEffect, useReducer } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '../../components/rozmowa';
-import { ArrowLeft, Heart, Trophy } from 'lucide-react';
 import { skillTree } from '../../data/lessons';
 import { sm2 } from '../../lib/sm2';
 import { Exercise } from '../../types';
 
 // Import individual exercise components
-import { MultipleChoice } from '../../components/exercises/MultipleChoice';
-import { ListenAndSelect } from '../../components/exercises/ListenAndSelect';
-import { TypeAnswer } from '../../components/exercises/TypeAnswer';
-import { ListenAndType } from '../../components/exercises/ListenAndType';
-import { DragWords } from '../../components/exercises/DragWords';
-import { FillBlanks } from '../../components/exercises/FillBlanks';
+import MultipleChoice from '../../components/exercises/MultipleChoice';
+import ListenAndSelect from '../../components/exercises/ListenAndSelect';
+import TypeAnswer from '../../components/exercises/TypeAnswer';
+import ListenAndType from '../../components/exercises/ListenAndType';
+import DragWords from '../../components/exercises/DragWords';
+import FillBlanks from '../../components/exercises/FillBlanks';
+
+// Define state and action types for the reducer
+interface LessonState {
+  exerciseIndex: number;
+  xpEarned: number;
+  showQualityButtons: boolean;
+}
+
+type LessonAction =
+  | { type: 'RESET' }
+  | { type: 'INCREMENT_INDEX' }
+  | { type: 'ADD_XP', payload: number }
+  | { type: 'SHOW_QUALITY_BUTTONS' };
+
+const initialState: LessonState = {
+  exerciseIndex: 0,
+  xpEarned: 0,
+  showQualityButtons: false,
+};
+
+const lessonReducer = (state: LessonState, action: LessonAction): LessonState => {
+  switch (action.type) {
+    case 'RESET':
+      return initialState;
+    case 'INCREMENT_INDEX':
+      return { ...state, exerciseIndex: state.exerciseIndex + 1 };
+    case 'ADD_XP':
+      return { ...state, xpEarned: state.xpEarned + action.payload };
+    case 'SHOW_QUALITY_BUTTONS':
+      return { ...state, showQualityButtons: true };
+    default:
+      return state;
+  }
+};
 
 export const LessonPlayer: React.FC = () => {
   const { lessonId } = useParams<{ lessonId: string }>();
@@ -23,31 +55,25 @@ export const LessonPlayer: React.FC = () => {
   const reviewExerciseId = searchParams.get('exercise');
   const isReviewMode = !!reviewExerciseId;
 
-  const [exerciseIndex, setExerciseIndex] = useState(0);
-  const [hearts, setHearts] = useState(5);
-  const [xpEarned, setXpEarned] = useState(0);
-  const [showQualityButtons, setShowQualityButtons] = useState(false);
+  const [state, dispatch] = useReducer(lessonReducer, initialState);
 
   const lesson = skillTree.flatMap(unit => unit.lessons).find(l => l.id === lessonId);
 
-  // Determine the exercises to be played
   const exercises = isReviewMode
     ? lesson?.exercises.filter(ex => ex.id === reviewExerciseId) || []
     : lesson?.exercises || [];
 
   useEffect(() => {
-    setExerciseIndex(0);
-    setHearts(5);
-    setXpEarned(0);
-    setShowQualityButtons(false);
+    // Reset state whenever the lesson or review mode changes
+    dispatch({ type: 'RESET' });
   }, [lessonId, reviewExerciseId]);
 
   if (!lesson) {
-    return <div>Lesson not found</div>; // Simplified error display
+    return <div>Lesson not found</div>;
   }
 
-  const currentExercise = exercises[exerciseIndex];
-  const isLastExercise = exerciseIndex === exercises.length - 1;
+  const currentExercise = exercises[state.exerciseIndex];
+  const isLastExercise = state.exerciseIndex === exercises.length - 1;
 
   const handleReviewComplete = (quality: number) => {
     const savedProgress = localStorage.getItem('progress');
@@ -81,15 +107,15 @@ export const LessonPlayer: React.FC = () => {
 
   const handleCorrect = () => {
     if (isReviewMode) {
-      setShowQualityButtons(true);
+      dispatch({ type: 'SHOW_QUALITY_BUTTONS' });
     } else {
       const earnedXP = 10;
-      setXpEarned(prev => prev + earnedXP);
+      dispatch({ type: 'ADD_XP', payload: earnedXP });
       setTimeout(() => {
         if (isLastExercise) {
           handleLessonComplete();
         } else {
-          setExerciseIndex(prev => prev + 1);
+          dispatch({ type: 'INCREMENT_INDEX' });
         }
       }, 1000);
     }
@@ -97,10 +123,9 @@ export const LessonPlayer: React.FC = () => {
 
   const handleIncorrect = () => {
     if (isReviewMode) {
-      // Treat incorrect answers in review as the lowest quality
       handleReviewComplete(0);
     } else {
-      setHearts(prev => Math.max(0, prev - 1));
+      // In a real app, you might penalize the user
     }
   };
 
@@ -108,10 +133,10 @@ export const LessonPlayer: React.FC = () => {
     const savedProgress = localStorage.getItem('progress');
     const progress = savedProgress ? JSON.parse(savedProgress) : { completedLessons: [], xp: 0 };
 
-    if (!progress.completedLessons.includes(lessonId)) {
+    if (lessonId && !progress.completedLessons.includes(lessonId)) {
       progress.completedLessons.push(lessonId);
     }
-    progress.xp = (progress.xp || 0) + xpEarned;
+    progress.xp = (progress.xp || 0) + state.xpEarned;
 
     localStorage.setItem('progress', JSON.stringify(progress));
     navigate('/learn');
@@ -138,7 +163,7 @@ export const LessonPlayer: React.FC = () => {
   };
 
   if (!currentExercise) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
   return (
@@ -148,7 +173,7 @@ export const LessonPlayer: React.FC = () => {
       </div>
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-3xl mx-auto">
-          {showQualityButtons ? (
+          {state.showQualityButtons ? (
             <div className="text-center">
               <h2 className="font-heading text-h2 text-primary-text dark:text-primary-text-dark mb-4">How did you do?</h2>
               <div className="flex justify-center gap-4">

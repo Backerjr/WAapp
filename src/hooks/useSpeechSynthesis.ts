@@ -16,29 +16,36 @@ export const useSpeechSynthesis = (options: UseSpeechSynthesisOptions = {}) => {
   } = options;
 
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [isSupported, setIsSupported] = useState(false);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+
+  // Check for browser support once on initial render
+  const [isSupported] = useState(() => 
+    typeof window !== 'undefined' && !!window.speechSynthesis
+  );
 
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.speechSynthesis) {
-      setIsSupported(true);
-
+    if (isSupported) {
       const loadVoices = () => {
         const availableVoices = window.speechSynthesis.getVoices();
         setVoices(availableVoices);
       };
 
-      loadVoices();
-      window.speechSynthesis.onvoiceschanged = loadVoices;
+      loadVoices(); // Initial load
+      window.speechSynthesis.onvoiceschanged = loadVoices; // Subscribe to changes
+
+      // Cleanup subscription
+      return () => {
+        window.speechSynthesis.onvoiceschanged = null;
+      };
     }
-  }, []);
+  }, [isSupported]);
 
   const speak = useCallback((text: string, customOptions?: Partial<UseSpeechSynthesisOptions>) => {
     if (!isSupported || !text) return;
 
-    window.speechSynthesis.cancel();
+    window.speechSynthesis.cancel(); // Stop any previous speech
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = customOptions?.lang || lang;
@@ -46,6 +53,7 @@ export const useSpeechSynthesis = (options: UseSpeechSynthesisOptions = {}) => {
     utterance.pitch = customOptions?.pitch || pitch;
     utterance.volume = customOptions?.volume || volume;
 
+    // Find a matching voice
     const voice = voices.find(v => v.lang === utterance.lang);
     if (voice) {
       utterance.voice = voice;
@@ -53,7 +61,10 @@ export const useSpeechSynthesis = (options: UseSpeechSynthesisOptions = {}) => {
 
     utterance.onstart = () => setIsSpeaking(true);
     utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => setIsSpeaking(false);
+    utterance.onerror = () => {
+      console.error("Speech synthesis error");
+      setIsSpeaking(false);
+    };
 
     utteranceRef.current = utterance;
     window.speechSynthesis.speak(utterance);
@@ -73,10 +84,10 @@ export const useSpeechSynthesis = (options: UseSpeechSynthesisOptions = {}) => {
   }, [isSupported, isSpeaking]);
 
   const resume = useCallback(() => {
-    if (isSupported) {
+    if (isSupported && !isSpeaking) {
       window.speechSynthesis.resume();
     }
-  }, [isSupported]);
+  }, [isSupported, isSpeaking]);
 
   return {
     speak,

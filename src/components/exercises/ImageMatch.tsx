@@ -9,24 +9,19 @@ interface ImageMatchProps {
 }
 
 const ImageMatch: React.FC<ImageMatchProps> = ({ exercise, onCorrect }) => {
-  // Ensure we have pairs array, fallback to empty array
-  const exercisePairs = exercise.pairs || [];
   const [matches, setMatches] = useState<Record<string, string>>({});
   const [selectedLeft, setSelectedLeft] = useState<string | null>(null);
   const [selectedRight, setSelectedRight] = useState<string | null>(null);
   const [correctMatches, setCorrectMatches] = useState<Set<string>>(new Set());
   const [incorrectMatches, setIncorrectMatches] = useState<Set<string>>(new Set());
 
-  // Shuffle the right side for variety - memoize to prevent re-shuffling on every render
-  const shuffledPairs = useMemo(
-    () => [...exercisePairs].sort(() => Math.random() - 0.5),
-    [exercisePairs]
+  // Shuffle pairs once on initial render
+  const [shuffledPairs] = useState(() => 
+    [...(exercise.pairs || [])].sort(() => Math.random() - 0.5)
   );
-  const leftItems = exercisePairs;
-  const rightItems = useMemo(
-    () => shuffledPairs.map(pair => pair.pl),
-    [shuffledPairs]
-  );
+
+  const leftItems = useMemo(() => exercise.pairs || [], [exercise.pairs]);
+  const rightItems = useMemo(() => shuffledPairs.map(pair => pair.pl), [shuffledPairs]);
 
   const handleLeftClick = (item: string) => {
     if (correctMatches.has(item)) return;
@@ -44,7 +39,7 @@ const ImageMatch: React.FC<ImageMatchProps> = ({ exercise, onCorrect }) => {
   };
 
   const checkMatch = (leftItem: string, rightItem: string) => {
-    const correctPair = exercisePairs.find(pair => pair.en === leftItem);
+    const correctPair = (exercise.pairs || []).find(pair => pair.en === leftItem);
     
     if (correctPair && correctPair.pl === rightItem) {
       // Correct match
@@ -58,7 +53,7 @@ const ImageMatch: React.FC<ImageMatchProps> = ({ exercise, onCorrect }) => {
       });
       
       // Check if all matches are complete
-      if (correctMatches.size + 2 >= exercisePairs.length * 2) {
+      if (correctMatches.size + 2 >= (exercise.pairs?.length || 0) * 2) {
         setTimeout(onCorrect, 500);
       }
     } else {
@@ -143,7 +138,7 @@ const ImageMatch: React.FC<ImageMatchProps> = ({ exercise, onCorrect }) => {
       </div>
 
       <div className="progress-indicator">
-        {correctMatches.size / 2} / {exercisePairs.length} matches
+        {correctMatches.size / 2} / {(exercise.pairs?.length || 0)} matches
       </div>
     </div>
   );

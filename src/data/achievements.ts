@@ -1,6 +1,12 @@
 import { Achievement } from '../types';
 
-export const ALL_ACHIEVEMENTS: Achievement[] = [
+interface Progress {
+  xp: number;
+  streak: number;
+  completedLessons: string[];
+}
+
+export const ALL_ACHIEVEMENTS: Omit<Achievement, "unlocked" | "name">[] = [
   {
     id: 'first-lesson',
     title: 'First Steps',
@@ -8,7 +14,6 @@ export const ALL_ACHIEVEMENTS: Achievement[] = [
     icon: '🌟',
     requirement: 1,
     type: 'lessons',
-    unlocked: false
   },
   {
     id: 'lesson-streak-3',
@@ -17,7 +22,6 @@ export const ALL_ACHIEVEMENTS: Achievement[] = [
     icon: '⚡',
     requirement: 3,
     type: 'streak',
-    unlocked: false
   },
   {
     id: 'lesson-streak-7',
@@ -26,7 +30,6 @@ export const ALL_ACHIEVEMENTS: Achievement[] = [
     icon: '🔥',
     requirement: 7,
     type: 'streak',
-    unlocked: false
   },
   {
     id: 'lesson-streak-30',
@@ -35,7 +38,6 @@ export const ALL_ACHIEVEMENTS: Achievement[] = [
     icon: '👑',
     requirement: 30,
     type: 'streak',
-    unlocked: false
   },
   {
     id: 'xp-100',
@@ -44,7 +46,6 @@ export const ALL_ACHIEVEMENTS: Achievement[] = [
     icon: '🎯',
     requirement: 100,
     type: 'xp',
-    unlocked: false
   },
   {
     id: 'xp-500',
@@ -53,7 +54,6 @@ export const ALL_ACHIEVEMENTS: Achievement[] = [
     icon: '🏆',
     requirement: 500,
     type: 'xp',
-    unlocked: false
   },
   {
     id: 'xp-1000',
@@ -62,7 +62,6 @@ export const ALL_ACHIEVEMENTS: Achievement[] = [
     icon: '💎',
     requirement: 1000,
     type: 'xp',
-    unlocked: false
   },
   {
     id: 'lessons-5',
@@ -71,7 +70,6 @@ export const ALL_ACHIEVEMENTS: Achievement[] = [
     icon: '📚',
     requirement: 5,
     type: 'lessons',
-    unlocked: false
   },
   {
     id: 'lessons-10',
@@ -80,7 +78,6 @@ export const ALL_ACHIEVEMENTS: Achievement[] = [
     icon: '🎓',
     requirement: 10,
     type: 'lessons',
-    unlocked: false
   },
   {
     id: 'lessons-25',
@@ -89,7 +86,6 @@ export const ALL_ACHIEVEMENTS: Achievement[] = [
     icon: '🌍',
     requirement: 25,
     type: 'lessons',
-    unlocked: false
   },
   {
     id: 'perfect-lesson',
@@ -98,20 +94,20 @@ export const ALL_ACHIEVEMENTS: Achievement[] = [
     icon: '💯',
     requirement: 1,
     type: 'perfect',
-    unlocked: false
   }
 ];
 
 export const checkAchievements = (
-  progress: any,
+  progress: Progress,
   currentAchievements: string[]
 ): { newAchievements: Achievement[], updatedAchievements: Achievement[] } => {
   const newlyUnlocked: Achievement[] = [];
   const updatedAchievements = ALL_ACHIEVEMENTS.map(achievement => {
     const isAlreadyUnlocked = currentAchievements.includes(achievement.id);
-    
+    const baseAchievement = { ...achievement, unlocked: isAlreadyUnlocked };
+
     if (isAlreadyUnlocked) {
-      return { ...achievement, unlocked: true };
+      return baseAchievement;
     }
 
     let shouldUnlock = false;
@@ -133,11 +129,12 @@ export const checkAchievements = (
     }
 
     if (shouldUnlock) {
-      newlyUnlocked.push({ ...achievement, unlocked: true });
-      return { ...achievement, unlocked: true };
+      const unlockedAchievement = { ...baseAchievement, unlocked: true };
+      newlyUnlocked.push(unlockedAchievement);
+      return unlockedAchievement;
     }
 
-    return { ...achievement, unlocked: false };
+    return baseAchievement;
   });
 
   return { newAchievements: newlyUnlocked, updatedAchievements };
