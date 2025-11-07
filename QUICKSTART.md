@@ -35,25 +35,25 @@ import {
 
 ### Development Mode
 ```bash
-npm run dev
+pnpm run dev
 # Opens http://localhost:5000
 ```
 
 ### Production Build
 ```bash
-npm run build
+pnpm run build
 # Creates optimized bundle in dist/
 ```
 
 ### Run Production Server
 ```bash
-npm run start
+pnpm run start
 # Builds and serves on http://localhost:4173
 ```
 
 ### Run Tests
 ```bash
-npm test
+pnpm test
 # Runs all test suites
 ```
 
@@ -75,7 +75,7 @@ docker run -p 4173:4173 rozmowa
 
 ### 4. Node Server (Manual)
 ```bash
-npm run build
+pnpm run build
 node server.js
 ```
 
@@ -147,7 +147,7 @@ Response:
 
 ### Test on Device
 ```bash
-npm run dev -- --host
+pnpm run dev -- --host
 # Access from phone: http://YOUR_IP:5000
 ```
 
@@ -157,8 +157,8 @@ npm run dev -- --host
 ```bash
 # Clear cache and rebuild
 rm -rf node_modules dist
-npm install
-npm run build
+pnpm install
+pnpm run build
 ```
 
 ### TypeScript Errors
@@ -171,7 +171,7 @@ npx tsc --noEmit
 ```bash
 # Change port in vite.config.ts or server.js
 export PORT=3000
-npm run start
+pnpm run start
 ```
 
 ## 📚 Documentation
@@ -188,8 +188,8 @@ npm run start
 2. Add components in `src/components/`
 3. Add hooks in `src/hooks/`
 4. Update types in `src/types.ts`
-5. Test with `npm test`
-6. Build with `npm run build`
+5. Test with `pnpm test`
+6. Build with `pnpm run build`
 
 ### Code Style
 - TypeScript strict mode
@@ -199,7 +199,7 @@ npm run start
 
 ## 🎯 Next Steps
 
-1. **Test the enhancements** - Run `npm run dev` and explore
+1. **Test the enhancements** - Run `pnpm run dev` and explore
 2. **Review the code** - Check new hooks and components
 3. **Deploy** - Push to GitHub for automatic deployment
 4. **Customize** - Adjust colors, add features, extend functionality
