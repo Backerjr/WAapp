@@ -36,19 +36,19 @@ test.describe('App Navigation', () => {
     const header = page.getByRole('complementary');
     await expect(header).toBeVisible({ timeout: 10000 });
     
-    // Check navigation buttons exist using simpler selectors
-    const homeBtn = header.getByRole('button', { name: /Home/i });
-    const learnBtn = header.getByRole('button', { name: /Learn/i });
-    const progressBtn = header.getByRole('button', { name: /Progress/i });
-    const aboutBtn = header.getByRole('button', { name: /About/i });
-    
-    await expect(homeBtn).toBeVisible({ timeout: 5000 });
-    await expect(learnBtn).toBeVisible();
-    await expect(progressBtn).toBeVisible();
-    await expect(aboutBtn).toBeVisible();
-    
-    // Click Learn button
-    await learnBtn.click();
+    // Check navigation links exist using correct names and roles
+    const dashboardLink = header.getByRole('link', { name: /Dashboard/i });
+    const learnLink = header.getByRole('link', { name: /Learn/i });
+    const reviewLink = header.getByRole('link', { name: /Review/i });
+    const resourcesLink = header.getByRole('link', { name: /Resources/i });
+
+    await expect(dashboardLink).toBeVisible({ timeout: 5000 });
+    await expect(learnLink).toBeVisible();
+    await expect(reviewLink).toBeVisible();
+    await expect(resourcesLink).toBeVisible();
+
+    // Click Learn link
+    await learnLink.click();
     
     // Wait a bit for the view to change
     await page.waitForTimeout(1000);

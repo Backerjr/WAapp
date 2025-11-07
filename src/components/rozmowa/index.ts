@@ -8,3 +8,4 @@ export { DailyGoalsCard } from './DailyGoalsCard';
 export { ReviewQueueCard } from './ReviewQueueCard';
 export { StatCard } from './StatCard';
 export { CourseCard } from './CourseCard';
+export { default as Header } from '../Header';

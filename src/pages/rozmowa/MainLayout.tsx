@@ -101,7 +101,7 @@ export const MainLayout: React.FC = () => {
       </nav>
 
       {/* Main Content */}
-      <main className="lg:pl-64 pb-20 lg:pb-0">
+      <main className="lg:pl-64 pb-20 lg:pb-0" role="main">
         <Outlet />
       </main>
     </div>
