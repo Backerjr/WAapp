@@ -1,3 +1,4 @@
+
 import { Unit } from '../types';
 
 export const skillTree: Unit[] = [
@@ -537,6 +538,65 @@ export const skillTree: Unit[] = [
             words: ['I', 'watch', 'TV', 'in', 'the', 'living', 'room'],
             correctAnswer: 'I watch TV in the living room',
             hint_pl: 'Czynność w głównym pokoju'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'unit-4',
+    title_pl: 'Podróże',
+    title_en: 'Travel',
+    cefr: 'A2',
+    description_pl: 'Podróże to jedyna rzecz, na którą wydajesz pieniądze i stajesz się bogatszy.',
+    description_en: 'Travel is the only thing you buy that makes you richer.',
+    lessons: [
+      {
+        id: 'lesson-4-1',
+        title_pl: 'Rezerwacja Hotelu',
+        title_en: 'Booking a Hotel',
+        icon: '🏨',
+        description_pl: 'Dobry hotel to klucz do udanej podróży.',
+        description_en: 'A good hotel is the key to a successful trip.',
+        xp: 20,
+        exercises: [
+          {
+            id: 'ex-4-1-1',
+            type: 'multiple_choice',
+            prompt_en: 'How do you say "chciałbym zarezerwować pokój" in English?',
+            prompt_pl: 'Jak powiedzieć "chciałbym zarezerwować pokój" po angielsku?',
+            options: ['I would like to book a room', 'I want a room now', 'Can I have a room?', 'Give me a room'],
+            correctAnswer: 'I would like to book a room',
+            hint_pl: 'Grzeczne wyrażenie chęci rezerwacji'
+          },
+          {
+            id: 'ex-4-1-2',
+            type: 'listen_and_type',
+            prompt_en: 'Listen and type what you hear',
+            prompt_pl: 'Posłuchaj i wpisz co słyszysz',
+            audioText: 'Do you have any vacancies?',
+            correctAnswer: 'do you have any vacancies',
+            hint_pl: 'Pytanie o dostępność pokoi'
+          }
+        ]
+      },
+      {
+        id: 'lesson-4-2',
+        title_pl: 'Pytanie o Drogę',
+        title_en: 'Asking for Directions',
+        icon: '🗺️',
+        description_pl: 'Nie bój się pytać, aby nie zgubić drogi.',
+        description_en: 'Don\'t be afraid to ask, so you don\'t lose your way.',
+        xp: 20,
+        exercises: [
+          {
+            id: 'ex-4-2-1',
+            type: 'drag_words',
+            prompt_en: 'Arrange the words to ask for directions to the station',
+            prompt_pl: 'Ułóż słowa, aby zapytać o drogę na stację',
+            words: ['Excuse', 'me', 'how', 'do', 'I', 'get', 'to', 'the', 'station'],
+            correctAnswer: 'Excuse me how do I get to the station',
+            hint_pl: 'Grzeczne pytanie o drogę do konkretnego miejsca'
           }
         ]
       }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   ContinueLearningCard, 
@@ -6,20 +6,35 @@ import {
   ReviewQueueCard, 
   StatCard 
 } from '../../components/rozmowa';
-import { BookOpen, Award, TrendingUp } from 'lucide-react';
+import { Award, TrendingUp } from 'lucide-react';
 import { skillTree } from '../../data/lessons';
+
+// Define the structure for user progress
+interface UserProgress {
+  completedLessons: string[];
+  xp: number;
+  streak: number;
+  hearts: number;
+  lastActiveDate: string;
+  joinDate: string;
+  level: number;
+  dailyGoal: number;
+  dailyXP: number;
+  achievements: string[];
+  weeklyStreak: number;
+}
 
 export const Dashboard: React.FC = () => {
   const navigate = useNavigate();
-  const [progress, setProgress] = useState<any>(null);
 
-  useEffect(() => {
-    // Load progress from localStorage
+  // Initialize state from localStorage once
+  const [progress] = useState<UserProgress | null>(() => {
     const savedProgress = localStorage.getItem('progress');
     if (savedProgress) {
-      setProgress(JSON.parse(savedProgress));
+      return JSON.parse(savedProgress) as UserProgress;
     } else {
-      setProgress({
+      // Return a default progress object if nothing is saved
+      return {
         completedLessons: [],
         xp: 0,
         streak: 1,
@@ -30,22 +45,18 @@ export const Dashboard: React.FC = () => {
         dailyGoal: 20,
         dailyXP: 0,
         achievements: [],
-        weeklyStreak: 0
-      });
+        weeklyStreak: 0,
+      };
     }
-  }, []);
+  });
 
   if (!progress) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>; // Or a proper loading spinner
   }
 
   // Find the next lesson to continue
   const allLessons = skillTree.flatMap(unit => unit.lessons);
-  const nextLesson = allLessons.find(lesson => !progress.completedLessons.includes(lesson.id));
-  const currentLesson = nextLesson || allLessons[0];
-
-  // Calculate words learned (estimate based on completed lessons)
-  const wordsLearned = progress.completedLessons.length * 20;
+  const currentLesson = allLessons.find(lesson => !progress.completedLessons.includes(lesson.id)) || allLessons[0];
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -89,9 +100,9 @@ export const Dashboard: React.FC = () => {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <StatCard
-              value={wordsLearned.toString()}
+              value={(progress.completedLessons.length * 20).toString()}
               label="Words Learned"
-              icon={<BookOpen className="w-5 h-5 text-success dark:text-success-dark" />}
+              icon={<Award className="w-5 h-5 text-success dark:text-success-dark" />}
             />
             <StatCard
               value={progress.completedLessons.length.toString()}

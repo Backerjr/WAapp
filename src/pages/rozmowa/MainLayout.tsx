@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Home, BookOpen, RefreshCw, Library, User, Moon, Sun } from 'lucide-react';
+import { Home, BookOpen, RefreshCw, Library, User, Moon, Sun, Trophy } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export const MainLayout: React.FC = () => {
@@ -19,6 +20,7 @@ export const MainLayout: React.FC = () => {
     { path: '/', icon: Home, label: 'Dashboard' },
     { path: '/learn', icon: BookOpen, label: 'Learn' },
     { path: '/review', icon: RefreshCw, label: 'Review' },
+    { path: '/leaderboard', icon: Trophy, label: 'Leaderboard' },
     { path: '/resources', icon: Library, label: 'Resources' },
     { path: '/profile', icon: User, label: 'Profile' },
   ];
@@ -75,7 +77,7 @@ export const MainLayout: React.FC = () => {
       {/* Mobile Bottom Navigation */}
       <nav className="lg:hidden fixed bottom-0 inset-x-0 bg-container-background dark:bg-container-background-dark border-t border-border dark:border-border-dark z-50">
         <div className="flex items-center justify-around h-16">
-          {navItems.slice(0, 4).map((item) => {
+          {navItems.slice(0, 5).map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
             

@@ -3,10 +3,28 @@ import { readFile } from 'node:fs/promises'
 import * as yaml from 'js-yaml'
 import { join } from 'path';
 
+// Define types for workflow files
+interface WorkflowStep {
+  uses?: string;
+  with?: { [key: string]: unknown };
+  run?: string;
+}
+
+interface WorkflowJob {
+  steps: WorkflowStep[];
+}
+
+interface Workflow {
+  name: string;
+  on: Record<string, unknown> | string | string[];
+  jobs: { [key: string]: WorkflowJob };
+  permissions?: Record<string, string>;
+  concurrency?: { group: string; 'cancel-in-progress': boolean };
+}
+
 // Note: Skipping workflow validation tests in jsdom environment
 // These tests should be run in a node environment instead
 describe.skip('GitHub Workflows Validation', () => {
-  // const workflowsDir = join(process.cwd(), '.github/workflows')
   const workflowsDir = join(__dirname, '../.github/workflows');
   
   const workflows = [
@@ -30,7 +48,7 @@ describe.skip('GitHub Workflows Validation', () => {
           const content = await readFile(filePath, 'utf-8')
           
           // Parse YAML - will throw if invalid
-          const workflow = yaml.load(content) as any
+          const workflow = yaml.load(content) as Workflow
           
           expect(workflow).toBeDefined()
           expect(workflow.name).toBeDefined()
@@ -50,13 +68,13 @@ describe.skip('GitHub Workflows Validation', () => {
     it('should have proper permissions in CI workflow', async () => {
       const filePath = join(workflowsDir, 'ci-publish-ghcr.yml')
       const content = await readFile(filePath, 'utf-8')
-      const workflow = yaml.load(content) as any
+      const workflow = yaml.load(content) as Workflow
       
       expect(workflow.permissions).toBeDefined()
-      expect(workflow.permissions.contents).toBe('read')
-      expect(workflow.permissions.packages).toBe('write')
-      expect(workflow.permissions.pages).toBe('write')
-      expect(workflow.permissions['id-token']).toBe('write')
+      expect(workflow.permissions?.contents).toBe('read')
+      expect(workflow.permissions?.packages).toBe('write')
+      expect(workflow.permissions?.pages).toBe('write')
+      expect(workflow.permissions?.['id-token']).toBe('write')
       
       console.log('✅ CI workflow has correct permissions')
     })
@@ -64,11 +82,13 @@ describe.skip('GitHub Workflows Validation', () => {
     it('should have proper triggers in deploy workflow', async () => {
       const filePath = join(workflowsDir, 'deploy-pages.yml')
       const content = await readFile(filePath, 'utf-8')
-      const workflow = yaml.load(content) as any
+      const workflow = yaml.load(content) as Workflow
       
-      expect(workflow.on.push).toBeDefined()
-      expect(workflow.on.push.branches).toContain('replit-agent')
-      expect(workflow.on.workflow_dispatch).toBeDefined()
+      const onTrigger = workflow.on as { push: { branches: string[] }; workflow_dispatch: unknown }
+
+      expect(onTrigger.push).toBeDefined()
+      expect(onTrigger.push.branches).toContain('replit-agent')
+      expect(onTrigger.workflow_dispatch).toBeDefined()
       
       console.log('✅ Deploy workflow has correct triggers')
     })
@@ -76,11 +96,11 @@ describe.skip('GitHub Workflows Validation', () => {
     it('should have concurrency control in deploy workflow', async () => {
       const filePath = join(workflowsDir, 'deploy-pages.yml')
       const content = await readFile(filePath, 'utf-8')
-      const workflow = yaml.load(content) as any
+      const workflow = yaml.load(content) as Workflow
       
       expect(workflow.concurrency).toBeDefined()
-      expect(workflow.concurrency.group).toBe('pages')
-      expect(workflow.concurrency['cancel-in-progress']).toBe(false)
+      expect(workflow.concurrency?.group).toBe('pages')
+      expect(workflow.concurrency?.['cancel-in-progress']).toBe(false)
       
       console.log('✅ Deploy workflow has proper concurrency control')
     })
@@ -90,13 +110,13 @@ describe.skip('GitHub Workflows Validation', () => {
     it('should use proper GitHub Script action versions in check-pages-config', async () => {
       const filePath = join(workflowsDir, 'check-pages-config.yml')
       const content = await readFile(filePath, 'utf-8')
-      const workflow = yaml.load(content) as any
+      const workflow = yaml.load(content) as Workflow
       
       const job = workflow.jobs['check-pages-status']
       expect(job).toBeDefined()
       
       // Check all steps use actions/github-script@v6 or higher
-      job.steps.forEach((step: any, index: number) => {
+      job.steps.forEach((step, index) => {
         if (step.uses && step.uses.includes('actions/github-script')) {
           const version = step.uses.split('@')[1]
           expect(version).toMatch(/v[6-9]|v[1-9][0-9]/)
@@ -108,14 +128,14 @@ describe.skip('GitHub Workflows Validation', () => {
     it('should have read-only operations in check-pages-config', async () => {
       const filePath = join(workflowsDir, 'check-pages-config.yml')
       const content = await readFile(filePath, 'utf-8')
-      const workflow = yaml.load(content) as any
+      const workflow = yaml.load(content) as Workflow
       
       const job = workflow.jobs['check-pages-status']
       
       // Ensure only read operations (no mutations)
-      const scriptSteps = job.steps.filter((step: any) => step.uses && step.uses.includes('actions/github-script'))
+      const scriptSteps = job.steps.filter(step => step.uses && step.uses.includes('actions/github-script'))
       
-      scriptSteps.forEach((step: any) => {
+      scriptSteps.forEach(step => {
         const script = step.with?.script || ''
         expect(script).not.toContain('updateInformationAboutPagesSite')
         expect(script).not.toContain('createPagesSite')
@@ -129,14 +149,14 @@ describe.skip('GitHub Workflows Validation', () => {
     it('should have valid Docker build steps in CI', async () => {
       const filePath = join(workflowsDir, 'ci-publish-ghcr.yml')
       const content = await readFile(filePath, 'utf-8')
-      const workflow = yaml.load(content) as any
+      const workflow = yaml.load(content) as Workflow
       
       // Check for Docker setup steps
       const dockerSteps = ['docker/setup-buildx-action', 'docker/login-action', 'docker/build-push-action']
-      const allSteps = Object.values(workflow.jobs).flatMap((job: any) => job.steps || [])
+      const allSteps = Object.values(workflow.jobs).flatMap(job => job.steps || [])
       
       dockerSteps.forEach(expectedStep => {
-        const found = allSteps.some((step: any) => 
+        const found = allSteps.some(step => 
           step.uses && step.uses.includes(expectedStep)
         )
         if (found) {
@@ -178,7 +198,7 @@ describe.skip('GitHub Workflows Validation', () => {
       const normalizedVersions = new Set<number>()
       
       // Helper function to normalize version strings to major version numbers
-      const normalizeVersion = (version: any): number | null => {
+      const normalizeVersion = (version: string | number | (string | number)[]): number | null => {
         if (typeof version === 'number') {
           return Math.floor(version)
         }
@@ -202,17 +222,17 @@ describe.skip('GitHub Workflows Validation', () => {
       for (const workflowFile of workflows) {
         const filePath = join(workflowsDir, workflowFile)
         const content = await readFile(filePath, 'utf-8')
-        const workflow = yaml.load(content) as any
+        const workflow = yaml.load(content) as Workflow
         
         // Extract Node.js versions using regex for setup-node actions
-        Object.values(workflow.jobs || {}).forEach((job: any) => {
-          (job.steps || []).forEach((step: any) => {
+        Object.values(workflow.jobs || {}).forEach(job => {
+          (job.steps || []).forEach(step => {
             // Match any setup-node action (different versions, publishers)
             if (step.uses && /setup-node@/.test(step.uses) && step.with?.['node-version']) {
               const rawVersion = step.with['node-version']
               nodeVersions.add(String(rawVersion))
               
-              const normalized = normalizeVersion(rawVersion)
+              const normalized = normalizeVersion(rawVersion as string)
               if (normalized !== null) {
                 normalizedVersions.add(normalized)
               }

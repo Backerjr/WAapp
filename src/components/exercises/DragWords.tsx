@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Exercise } from '../../types';
 import './DragWords.css';
 
@@ -9,17 +9,13 @@ interface DragWordsProps {
 }
 
 const DragWords: React.FC<DragWordsProps> = ({ exercise, onCorrect, onIncorrect }) => {
-  // Ensure we have words array, fallback to empty array
-  const exerciseWords = exercise.words || [];
-  
   const [draggedWords, setDraggedWords] = useState<string[]>([]);
   
-  // Shuffle words once and memoize to prevent re-shuffling
-  const shuffledWords = useMemo(
-    () => [...exerciseWords].sort(() => Math.random() - 0.5),
-    [exerciseWords]
+  // Shuffle words once on initial render and store in state
+  const [shuffledWords] = useState(() => 
+    [...(exercise.words || [])].sort(() => Math.random() - 0.5)
   );
-  
+
   const [availableWords, setAvailableWords] = useState<string[]>(shuffledWords);
   const [draggedItem, setDraggedItem] = useState<string | null>(null);
 
