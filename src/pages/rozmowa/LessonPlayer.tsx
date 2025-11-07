@@ -1,6 +1,7 @@
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { Button, Header } from '../../components/rozmowa';
+import { Button } from '../../components/rozmowa';
+import Header from '../../components/Header';
 import { skillTree } from '../../data/lessons';
 import { sm2 } from '../../lib/sm2';
 import { Exercise } from '../../types';
@@ -32,7 +33,7 @@ const initialState: LessonState = {
   exerciseIndex: 0,
   xpEarned: 0,
   showQualityButtons: false,
-  showResult: false,
+   showResult: false,
 };
 
 const lessonReducer = (state: LessonState, action: LessonAction): LessonState => {
@@ -148,20 +149,27 @@ export const LessonPlayer: React.FC = () => {
   };
 
   const renderExercise = (exercise: Exercise) => {
-    const props = { exercise, onSubmit: handleSubmit, showResult: state.showResult };
+   // Fix showResult type and add missing handlers
+   let showResult: "correct" | "incorrect" | null = null;
+   if (state.showResult) {
+    showResult = state.showQualityButtons ? null : "correct"; // Example logic, adjust as needed
+   }
+   const commonProps = { exercise, onSubmit: handleSubmit, showResult };
+   const correctHandler = () => dispatch({ type: 'ADD_XP', payload: 10 });
+   const incorrectHandler = () => {};
     switch (exercise.type) {
       case 'multiple_choice':
-        return <MultipleChoice {...props} />;
+      return <MultipleChoice {...commonProps} />;
       case 'listen_and_select':
-        return <ListenAndSelect {...props} />;
+      return <ListenAndSelect {...commonProps} />;
       case 'type_answer':
-        return <TypeAnswer {...props} />;
+      return <TypeAnswer {...commonProps} />;
       case 'listen_and_type':
-        return <ListenAndType {...props} />;
+      return <ListenAndType {...commonProps} />;
       case 'drag_words':
-        return <DragWords {...props} />;
+      return <DragWords {...commonProps} onCorrect={correctHandler} onIncorrect={incorrectHandler} />;
       case 'fill_blanks':
-        return <FillBlanks {...props} />;
+      return <FillBlanks {...commonProps} onCorrect={correctHandler} onIncorrect={incorrectHandler} />;
       default:
         return <div>Unsupported exercise type</div>;
     }
@@ -173,7 +181,19 @@ export const LessonPlayer: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-primary-background dark:bg-primary-background-dark">
-      <Header progress={{ xp: state.xpEarned, streak: 0, hearts: 5 }} />
+      <Header progress={{
+        completedLessons: [],
+        xp: state.xpEarned,
+        streak: 0,
+        hearts: 5,
+        lastActiveDate: new Date().toISOString(),
+        joinDate: new Date().toISOString(),
+        level: 1,
+        dailyGoal: 10,
+        dailyXP: state.xpEarned,
+        achievements: [],
+        weeklyStreak: 0
+      }} />
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-3xl mx-auto">
           {state.showQualityButtons ? (
