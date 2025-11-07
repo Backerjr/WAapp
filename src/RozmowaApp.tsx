@@ -7,6 +7,7 @@ import LessonPlayer from './pages/rozmowa/LessonPlayer';
 import ReviewPage from './pages/rozmowa/ReviewPage';
 import ResourceLibrary from './pages/rozmowa/ResourceLibrary';
 import ProfilePage from './pages/rozmowa/ProfilePage';
+import LeaderboardPage from './pages/rozmowa/LeaderboardPage'; // Import LeaderboardPage
 import { auth, googleProvider } from './firebase';
 import { onAuthStateChanged, User, signInWithPopup } from 'firebase/auth';
 import { useState, useEffect } from 'react';
@@ -52,6 +53,7 @@ export function RozmowaApp() {
             <Route path="learn" element={<LearnPage />} />
             <Route path="lesson/:lessonId" element={<LessonPlayer />} />
             <Route path="review" element={<ReviewPage />} />
+            <Route path="leaderboard" element={<LeaderboardPage />} />
             <Route path="resources" element={<ResourceLibrary />} />
             <Route path="profile" element={<ProfilePage />} />
           </Route>
