@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function LandingPage({ onStart }: { onStart: () => void }) {
   return (
     <section className="hero-section">
