@@ -13,11 +13,17 @@ interface HeaderProps {
 */
 function Header({ progress }: HeaderProps) {
   return (
-    <header className="header">
+    <header className="header" role="complementary">
       <div className="header-content">
         <div className="header-left">
           {/* Logo as heading for accessibility and E2E test */}
-          <h1 className="logo" aria-level={1}>rozmoWA</h1>
+          <h1>rozmoWA</h1>
+          <nav>
+            <a href="/" role="link">Dashboard</a>
+            <a href="/learn" role="link">Learn</a>
+            <a href="/review" role="link">Review</a>
+            <a href="/resources" role="link">Resources</a>
+          </nav>
         </div>
         
         <div className="stats">
