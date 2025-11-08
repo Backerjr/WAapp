@@ -1,4 +1,3 @@
-
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { LessonPlayer } from '../LessonPlayer';
@@ -6,7 +5,11 @@ import React from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 
 // Mock dependencies
-vi.mock('react-router-dom');
+vi.mock('react-router-dom', () => ({
+  useParams: vi.fn(),
+  useNavigate: vi.fn(),
+  useSearchParams: vi.fn(),
+}));
 
 const mockedUseParams = useParams as vi.Mock;
 const mockedUseNavigate = useNavigate as vi.Mock;
@@ -71,11 +74,12 @@ Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 
 describe('LessonPlayer', () => {
   const navigate = vi.fn();
-  const searchParams = new URLSearchParams();
+  let searchParams: URLSearchParams;
 
   beforeEach(() => {
     vi.clearAllMocks();
     localStorageMock.clear();
+    searchParams = new URLSearchParams();
     mockedUseNavigate.mockReturnValue(navigate);
     mockedUseSearchParams.mockReturnValue([searchParams, vi.fn()]);
   });
