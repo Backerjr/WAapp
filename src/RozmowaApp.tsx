@@ -1,4 +1,3 @@
-
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainLayout from './pages/rozmowa/MainLayout';
 import Dashboard from './pages/rozmowa/Dashboard';
@@ -14,8 +13,7 @@ import { useState, useEffect } from 'react';
 
 /**
  * rozmoWA Application
- * 
- * Modern language learning application with:
+ * * Modern language learning application with:
  * - Complete Tailwind CSS design system with light/dark mode
  * - Atomic component library (Button, Card, Input, Badge, ProgressBar, etc.)
  * - Fully responsive layout with desktop sidebar and mobile bottom navigation
