@@ -78,11 +78,6 @@ describe('LessonPlayer', () => {
     localStorageMock.clear();
     mockedUseNavigate.mockReturnValue(navigate);
     mockedUseSearchParams.mockReturnValue([searchParams, vi.fn()]);
-    vi.useFakeTimers(); // Use fake timers
-  });
-
-  afterEach(() => {
-    vi.useRealTimers(); // Restore real timers after each test
   });
 
   it('renders "Lesson not found" if lesson does not exist', () => {
@@ -105,12 +100,9 @@ describe('LessonPlayer', () => {
 
     expect(screen.getByText('Result is shown')).toBeInTheDocument();
 
-    // Advance timers to trigger the next exercise
-    vi.advanceTimersByTime(1000);
-
     await waitFor(() => {
       expect(screen.getByText('Type Answer')).toBeInTheDocument();
-    });
+    }, { timeout: 1100 });
   });
 
   it('handles lesson completion', async () => {
@@ -119,19 +111,17 @@ describe('LessonPlayer', () => {
 
     // First exercise
     fireEvent.click(screen.getByText('Correct'));
-    vi.advanceTimersByTime(1000);
-    await waitFor(() => expect(screen.getByText('Type Answer')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Type Answer')).toBeInTheDocument(), { timeout: 1100 });
 
     // Second (last) exercise
     fireEvent.click(screen.getByText('Submit'));
-    vi.advanceTimersByTime(1000);
 
     await waitFor(() => {
       const progress = JSON.parse(localStorage.getItem('progress') || '{}');
       expect(progress.completedLessons).toContain('lesson1');
       expect(progress.xp).toBe(20);
       expect(navigate).toHaveBeenCalledWith('/learn');
-    });
+    }, { timeout: 1100 });
   });
 
   it('shows quality buttons on correct answer in review mode', async () => {

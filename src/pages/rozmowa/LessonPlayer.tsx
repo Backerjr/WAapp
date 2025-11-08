@@ -94,18 +94,33 @@ export const LessonPlayer: React.FC = () => {
     navigate('/review'); // Go back to review page
   };
 
+  const handleLessonComplete = (finalXPEarned: number) => {
+    const savedProgress = localStorage.getItem('progress');
+    const progress = savedProgress ? JSON.parse(savedProgress) : { completedLessons: [], xp: 0 };
+
+    if (lessonId && !progress.completedLessons.includes(lessonId)) {
+      progress.completedLessons.push(lessonId);
+    }
+    progress.xp = (progress.xp || 0) + finalXPEarned;
+
+    localStorage.setItem('progress', JSON.stringify(progress));
+    navigate('/learn');
+  };
+
   const handleSubmit = (isCorrect: boolean) => {
     dispatch({ type: 'SHOW_RESULT', payload: true });
 
     if (isCorrect) {
+      const earnedXP = 10;
+      const newTotalXP = state.xpEarned + earnedXP;
+      dispatch({ type: 'ADD_XP', payload: earnedXP });
+
       if (isReviewMode) {
         dispatch({ type: 'SHOW_QUALITY_BUTTONS' });
       } else {
-        const earnedXP = 10;
-        dispatch({ type: 'ADD_XP', payload: earnedXP });
         setTimeout(() => {
           if (isLastExercise) {
-            handleLessonComplete();
+            handleLessonComplete(newTotalXP);
           } else {
             dispatch({ type: 'INCREMENT_INDEX' });
           }
@@ -118,24 +133,10 @@ export const LessonPlayer: React.FC = () => {
     }
   };
 
-  const handleLessonComplete = () => {
-    const savedProgress = localStorage.getItem('progress');
-    const progress = savedProgress ? JSON.parse(savedProgress) : { completedLessons: [], xp: 0 };
-
-    if (lessonId && !progress.completedLessons.includes(lessonId)) {
-      progress.completedLessons.push(lessonId);
-    }
-    progress.xp = (progress.xp || 0) + state.xpEarned;
-
-    localStorage.setItem('progress', JSON.stringify(progress));
-    navigate('/learn');
-  };
-
   const renderExercise = (exercise: Exercise) => {
-   // Fix showResult type and add missing handlers
    let showResult: "correct" | "incorrect" | null = null;
    if (state.showResult) {
-    showResult = state.showQualityButtons ? null : "correct"; // Example logic, adjust as needed
+    showResult = state.showQualityButtons ? null : "correct";
    }
    const commonProps = { exercise, onSubmit: handleSubmit, showResult };
    const correctHandler = () => dispatch({ type: 'ADD_XP', payload: 10 });
