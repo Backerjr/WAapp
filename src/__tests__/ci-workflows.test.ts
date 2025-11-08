@@ -22,18 +22,11 @@ interface Workflow {
   concurrency?: { group: string; 'cancel-in-progress': boolean };
 }
 
-// Note: Skipping workflow validation tests in jsdom environment
-// These tests should be run in a node environment instead
-describe.skip('GitHub Workflows Validation', () => {
-  const workflowsDir = join(__dirname, '../.github/workflows');
+describe('GitHub Workflows Validation', () => {
+  const workflowsDir = join(__dirname, '.');
   
   const workflows = [
-    'ci-publish-ghcr.yml',
-    'deploy-pages.yml',
-    'gh-pages.yml',
-    'release-publish.yml',
-    'check-pages-config.yml',
-    'set-pages-source.yml'
+    'release.yml',
   ]
 
   beforeAll(() => {
@@ -65,94 +58,40 @@ describe.skip('GitHub Workflows Validation', () => {
   })
 
   describe('Required Workflow Structure', () => {
-    it('should have proper permissions in CI workflow', async () => {
-      const filePath = join(workflowsDir, 'ci-publish-ghcr.yml')
+    it('should have proper permissions in the release workflow', async () => {
+      const filePath = join(workflowsDir, 'release.yml')
       const content = await readFile(filePath, 'utf-8')
       const workflow = yaml.load(content) as Workflow
       
       expect(workflow.permissions).toBeDefined()
       expect(workflow.permissions?.contents).toBe('read')
       expect(workflow.permissions?.packages).toBe('write')
-      expect(workflow.permissions?.pages).toBe('write')
-      expect(workflow.permissions?.['id-token']).toBe('write')
       
-      console.log('✅ CI workflow has correct permissions')
+      console.log('✅ Release workflow has correct permissions')
     })
 
-    it('should have proper triggers in deploy workflow', async () => {
-      const filePath = join(workflowsDir, 'deploy-pages.yml')
+    it('should have proper triggers in the release workflow', async () => {
+      const filePath = join(workflowsDir, 'release.yml')
       const content = await readFile(filePath, 'utf-8')
       const workflow = yaml.load(content) as Workflow
       
-      const onTrigger = workflow.on as { push: { branches: string[] }; workflow_dispatch: unknown }
+      const onTrigger = workflow.on as { release: { types: string[] }; workflow_dispatch: unknown }
 
-      expect(onTrigger.push).toBeDefined()
-      expect(onTrigger.push.branches).toContain('replit-agent')
+      expect(onTrigger.release).toBeDefined()
+      expect(onTrigger.release.types).toContain('published')
       expect(onTrigger.workflow_dispatch).toBeDefined()
       
-      console.log('✅ Deploy workflow has correct triggers')
-    })
-
-    it('should have concurrency control in deploy workflow', async () => {
-      const filePath = join(workflowsDir, 'deploy-pages.yml')
-      const content = await readFile(filePath, 'utf-8')
-      const workflow = yaml.load(content) as Workflow
-      
-      expect(workflow.concurrency).toBeDefined()
-      expect(workflow.concurrency?.group).toBe('pages')
-      expect(workflow.concurrency?.['cancel-in-progress']).toBe(false)
-      
-      console.log('✅ Deploy workflow has proper concurrency control')
-    })
-  })
-
-  describe('GitHub Script Actions Validation', () => {
-    it('should use proper GitHub Script action versions in check-pages-config', async () => {
-      const filePath = join(workflowsDir, 'check-pages-config.yml')
-      const content = await readFile(filePath, 'utf-8')
-      const workflow = yaml.load(content) as Workflow
-      
-      const job = workflow.jobs['check-pages-status']
-      expect(job).toBeDefined()
-      
-      // Check all steps use actions/github-script@v6 or higher
-      job.steps.forEach((step, index) => {
-        if (step.uses && step.uses.includes('actions/github-script')) {
-          const version = step.uses.split('@')[1]
-          expect(version).toMatch(/v[6-9]|v[1-9][0-9]/)
-          console.log(`✅ Step ${index + 1} uses github-script ${version}`)
-        }
-      })
-    })
-
-    it('should have read-only operations in check-pages-config', async () => {
-      const filePath = join(workflowsDir, 'check-pages-config.yml')
-      const content = await readFile(filePath, 'utf-8')
-      const workflow = yaml.load(content) as Workflow
-      
-      const job = workflow.jobs['check-pages-status']
-      
-      // Ensure only read operations (no mutations)
-      const scriptSteps = job.steps.filter(step => step.uses && step.uses.includes('actions/github-script'))
-      
-      scriptSteps.forEach(step => {
-        const script = step.with?.script || ''
-        expect(script).not.toContain('updateInformationAboutPagesSite')
-        expect(script).not.toContain('createPagesSite')
-        expect(script).not.toContain('repository_dispatch')
-        console.log('✅ Script contains only read operations')
-      })
+      console.log('✅ Release workflow has correct triggers')
     })
   })
 
   describe('Docker Build Configuration', () => {
-    it('should have valid Docker build steps in CI', async () => {
-      const filePath = join(workflowsDir, 'ci-publish-ghcr.yml')
+    it('should have valid Docker build steps in the release workflow', async () => {
+      const filePath = join(workflowsDir, 'release.yml')
       const content = await readFile(filePath, 'utf-8')
       const workflow = yaml.load(content) as Workflow
       
-      // Check for Docker setup steps
-      const dockerSteps = ['docker/setup-buildx-action', 'docker/login-action', 'docker/build-push-action']
+      const dockerSteps = ['docker/setup-qemu-action', 'docker/setup-buildx-action', 'docker/login-action', 'docker/metadata-action', 'docker/build-push-action']
       const allSteps = Object.values(workflow.jobs).flatMap(job => job.steps || [])
       
       dockerSteps.forEach(expectedStep => {
@@ -162,99 +101,24 @@ describe.skip('GitHub Workflows Validation', () => {
         if (found) {
           console.log(`✅ Found Docker step: ${expectedStep}`)
         }
+        expect(found).toBe(true)
       })
     })
   })
 
-  describe('Environment Variables & Secrets', () => {
-    it('should not reference undefined secrets in conditionals', async () => {
-      for (const workflowFile of workflows) {
-        const filePath = join(workflowsDir, workflowFile)
-        const content = await readFile(filePath, 'utf-8')
-        
-        // Check for problematic secret references in conditionals
-        const problematicPatterns = [
-          'if:.*secrets\\.',
-          '\\$\\{\\{.*secrets\\..*\\}\\}.*==.*\\$\\{\\{.*secrets\\.',
-        ]
-        
-        problematicPatterns.forEach(pattern => {
-          const regex = new RegExp(pattern, 'g')
-          const matches = content.match(regex)
-          
-          if (matches) {
-            console.warn(`⚠️  ${workflowFile} has potential secret reference issues:`, matches)
-          }
-        })
-      }
-      
-      console.log('✅ No problematic secret references found')
-    })
-  })
-
   describe('Node.js Configuration', () => {
-    it('should use consistent Node.js version across workflows', async () => {
-      const nodeVersions = new Set<string>()
-      const normalizedVersions = new Set<number>()
+    it('should use a consistent Node.js version in the release workflow', async () => {
+      const filePath = join(workflowsDir, 'release.yml')
+      const content = await readFile(filePath, 'utf-8')
+      const workflow = yaml.load(content) as Workflow
       
-      // Helper function to normalize version strings to major version numbers
-      const normalizeVersion = (version: string | number | (string | number)[]): number | null => {
-        if (typeof version === 'number') {
-          return Math.floor(version)
-        }
-        
-        if (Array.isArray(version)) {
-          // Take the first version from array
-          version = version[0]
-        }
-        
-        if (typeof version === 'string') {
-          // Handle various formats: "20", "20.x", ">=20", "~20.1.0", "^20.0.0"
-          const match = version.match(/(\d+)/)
-          if (match) {
-            return parseInt(match[1], 10)
-          }
-        }
-        
-        return null
-      }
-      
-      for (const workflowFile of workflows) {
-        const filePath = join(workflowsDir, workflowFile)
-        const content = await readFile(filePath, 'utf-8')
-        const workflow = yaml.load(content) as Workflow
-        
-        // Extract Node.js versions using regex for setup-node actions
-        Object.values(workflow.jobs || {}).forEach(job => {
-          (job.steps || []).forEach(step => {
-            // Match any setup-node action (different versions, publishers)
-            if (step.uses && /setup-node@/.test(step.uses) && step.with?.['node-version']) {
-              const rawVersion = step.with['node-version']
-              nodeVersions.add(String(rawVersion))
-              
-              const normalized = normalizeVersion(rawVersion as string)
-              if (normalized !== null) {
-                normalizedVersions.add(normalized)
-              }
-            }
-          })
-        })
-      }
-      
-      console.log('Raw Node.js versions found:', Array.from(nodeVersions).sort())
-      console.log('Normalized major versions:', Array.from(normalizedVersions).sort())
-      
-      // Check for consistency using normalized major versions
-      if (normalizedVersions.size > 1) {
-        console.warn('⚠️  Multiple Node.js major versions detected:', Array.from(normalizedVersions).sort())
-        console.warn('⚠️  Raw versions were:', Array.from(nodeVersions).sort())
-      } else if (normalizedVersions.size === 1) {
-        const majorVersion = Array.from(normalizedVersions)[0]
-        console.log(`✅ Consistent Node.js major version: ${majorVersion}`)
-      }
-      
-      expect(nodeVersions.size).toBeGreaterThan(0)
-      expect(normalizedVersions.size).toBeGreaterThan(0)
+      const job = workflow.jobs['release-build']
+      const setupNodeStep = job.steps.find(step => step.uses && step.uses.includes('setup-node'))
+
+      expect(setupNodeStep).toBeDefined()
+      expect(setupNodeStep?.with?.['node-version']).toBe('${{ env.NODE_VERSION }}')
+
+      console.log('✅ Consistent Node.js version used')
     })
   })
 })
