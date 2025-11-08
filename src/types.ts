@@ -92,7 +92,16 @@ export interface LeaderboardEntry {
   isCurrentUser?: boolean;
 }
 
-export interface UserStats {
-  currentLesson: string | null;
+export interface LessonState {
   exerciseIndex: number;
+  xpEarned: number;
+  showQualityButtons: boolean;
+  showResult: boolean | 'correct' | 'incorrect';
 }
+
+export type LessonAction =
+  | { type: 'RESET' }
+  | { type: 'INCREMENT_INDEX' }
+  | { type: 'ADD_XP'; payload: number }
+  | { type: 'SHOW_QUALITY_BUTTONS' }
+  | { type: 'SHOW_RESULT'; payload: boolean };

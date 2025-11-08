@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainLayout from './pages/rozmowa/MainLayout';
 import Dashboard from './pages/rozmowa/Dashboard';
 import LearnPage from './pages/rozmowa/LearnPage';
-import LessonPlayer from './pages/rozmowa/LessonPlayer';
+import { LessonPlayer } from './pages/rozmowa/LessonPlayer';
 import ReviewPage from './pages/rozmowa/ReviewPage';
 import ResourceLibrary from './pages/rozmowa/ResourceLibrary';
 import ProfilePage from './pages/rozmowa/ProfilePage';
