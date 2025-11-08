@@ -1,4 +1,4 @@
-echo '{
+{
   "version": 2,
   "rewrites": [
     {
@@ -6,4 +6,4 @@ echo '{
       "destination": "/index.html"
     }
   ]
-}' > vercel.json
+}
