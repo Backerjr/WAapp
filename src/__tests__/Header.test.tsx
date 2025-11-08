@@ -1,42 +1,10 @@
-<<<<<<< HEAD
 // src/__tests__/Header.test.tsx
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Header from '../components/Header';
 import React from 'react';
 import { describe, it, expect } from 'vitest';
-
-describe('Header', () => {
-  it('renders the header with navigation links', () => {
-    render(<Header progress={0} />);
-
-    // Check for navigation links
-    expect(screen.getByText('Home')).toBeInTheDocument();
-    expect(screen.getByText('Learn')).toBeInTheDocument();
-    expect(screen.getByText('Progress')).toBeInTheDocument();
-    expect(screen.getByText('About')).toBeInTheDocument();
-  });
-
-  it('renders the progress bar with the correct width when progress is provided', () => {
-    const progress = 50;
-    render(<Header progress={progress} />);
-
-    const progressBar = screen.getByRole('progressbar');
-    expect(progressBar).toBeInTheDocument();
-    expect(progressBar).toHaveStyle(`width: ${progress}%`);
-  });
-
-  it('does not render the progress bar when progress is undefined', () => {
-    render(<Header progress={undefined} />);
-
-    const progressBar = screen.queryByRole('progressbar');
-    expect(progressBar).not.toBeInTheDocument();
-=======
-import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import Header from '../components/Header';
 import { Progress } from '../types';
-import { describe, it, expect } from 'vitest';
 
 describe('Header', () => {
   const mockProgress: Progress = {
@@ -45,13 +13,41 @@ describe('Header', () => {
     hearts: 3,
     completedLessons: ['lesson1', 'lesson2'],
     level: 0,
-    dailyGoal: 0,
-    dailyXP: 0,
+    dailyGoal: 100,
+    dailyXP: 50,
     achievements: [],
     weeklyStreak: 0,
     lastActiveDate: new Date().toISOString(),
     joinDate: new Date().toISOString()
   };
+
+  it('renders the header with navigation links', () => {
+    render(<Header progress={mockProgress} />);
+
+    // Check for navigation links
+    expect(screen.getByText('Dashboard')).toBeInTheDocument();
+    expect(screen.getByText('Learn')).toBeInTheDocument();
+    expect(screen.getByText('Review')).toBeInTheDocument();
+    expect(screen.getByText('Resources')).toBeInTheDocument();
+  });
+
+  it('renders the progress bar with the correct width when progress is provided', () => {
+    render(<Header progress={mockProgress} />);
+
+    const progressBar = screen.getByRole('progressbar');
+    const expectedProgress = (mockProgress.dailyXP / mockProgress.dailyGoal) * 100;
+    expect(progressBar).toBeInTheDocument();
+    expect(progressBar).toHaveStyle(`width: ${expectedProgress}%`);
+  });
+
+  it('does not render user stats when progress is undefined', () => {
+    render(<Header progress={undefined} />);
+    expect(screen.getByText(/rozmoWA/i)).toBeInTheDocument();
+    expect(screen.queryByTitle('Day Streak')).not.toBeInTheDocument();
+    expect(screen.queryByTitle('Total XP')).not.toBeInTheDocument();
+    expect(screen.queryByTitle('Hearts Remaining')).not.toBeInTheDocument();
+    expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+  });
 
   it('renders user stats correctly', () => {
     render(<Header progress={mockProgress} />);
@@ -60,9 +56,7 @@ describe('Header', () => {
 
     // Check for stats (just the numbers, since text is in title attributes)
     expect(screen.getByTitle('Day Streak').textContent).toContain('7'); // streak
-    expect(screen.getByTitle('Day Streak').textContent).toContain('7'); // streak
     expect(screen.getByTitle('Hearts Remaining').textContent).toContain('3'); // hearts
     expect(screen.getByTitle('Total XP').textContent).toContain('1250'); // xp
->>>>>>> cdc0897cd6c6b5e8814f59a11e3825f9cfe53d63
   });
 });

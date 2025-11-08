@@ -2,15 +2,15 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { LessonPlayer } from '../LessonPlayer';
-import { skillTree } from '../../../data/lessons';
 import React from 'react';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 
 // Mock dependencies
-vi.mock('react-router-dom', () => ({
-  useParams: vi.fn(),
-  useNavigate: vi.fn(),
-  useSearchParams: vi.fn(),
-}));
+vi.mock('react-router-dom');
+
+const mockedUseParams = useParams as vi.Mock;
+const mockedUseNavigate = useNavigate as vi.Mock;
+const mockedUseSearchParams = useSearchParams as vi.Mock;
 
 vi.mock('../../../data/lessons', () => ({
   skillTree: [
@@ -33,7 +33,7 @@ vi.mock('../../../data/lessons', () => ({
 
 // Mock exercise components
 vi.mock('../../../components/exercises/MultipleChoice', () => ({
-  default: ({ onSubmit, showResult }) => (
+  default: ({ onSubmit, showResult }: { onSubmit: (correct: boolean) => void, showResult: boolean }) => (
     <div>
       <h1>Multiple Choice</h1>
       <button onClick={() => onSubmit(true)}>Correct</button>
@@ -43,7 +43,7 @@ vi.mock('../../../components/exercises/MultipleChoice', () => ({
   ),
 }));
 vi.mock('../../../components/exercises/TypeAnswer', () => ({
-  default: ({ onSubmit }) => (
+  default: ({ onSubmit }: { onSubmit: (correct: boolean) => void }) => (
     <div>
       <h1>Type Answer</h1>
       <button onClick={() => onSubmit(true)}>Submit</button>
@@ -53,15 +53,18 @@ vi.mock('../../../components/exercises/TypeAnswer', () => ({
 
 // Mock localStorage
 const localStorageMock = (() => {
-  let store = {};
+  let store: Record<string, string> = {};
   return {
-    getItem: (key) => store[key] || null,
-    setItem: (key, value) => {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => {
       store[key] = value.toString();
     },
     clear: () => {
       store = {};
     },
+    removeItem: (key: string) => {
+        delete store[key];
+    }
   };
 })();
 Object.defineProperty(window, 'localStorage', { value: localStorageMock });
@@ -73,58 +76,67 @@ describe('LessonPlayer', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     localStorageMock.clear();
-    require('react-router-dom').useNavigate.mockReturnValue(navigate);
-    require('react-router-dom').useSearchParams.mockReturnValue([searchParams]);
+    mockedUseNavigate.mockReturnValue(navigate);
+    mockedUseSearchParams.mockReturnValue([searchParams, vi.fn()]);
+    vi.useFakeTimers(); // Use fake timers
+  });
+
+  afterEach(() => {
+    vi.useRealTimers(); // Restore real timers after each test
   });
 
   it('renders "Lesson not found" if lesson does not exist', () => {
-    require('react-router-dom').useParams.mockReturnValue({ lessonId: 'nonexistent' });
+    mockedUseParams.mockReturnValue({ lessonId: 'nonexistent' });
     render(<LessonPlayer />);
     expect(screen.getByText('Lesson not found')).toBeInTheDocument();
   });
 
   it('renders the first exercise of a lesson', () => {
-    require('react-router-dom').useParams.mockReturnValue({ lessonId: 'lesson1' });
+    mockedUseParams.mockReturnValue({ lessonId: 'lesson1' });
     render(<LessonPlayer />);
     expect(screen.getByText('Multiple Choice')).toBeInTheDocument();
   });
 
   it('handles correct answer in normal mode', async () => {
-    require('react-router-dom').useParams.mockReturnValue({ lessonId: 'lesson1' });
+    mockedUseParams.mockReturnValue({ lessonId: 'lesson1' });
     render(<LessonPlayer />);
     
     fireEvent.click(screen.getByText('Correct'));
 
     expect(screen.getByText('Result is shown')).toBeInTheDocument();
 
-    // Wait for the next exercise to be rendered
+    // Advance timers to trigger the next exercise
+    vi.advanceTimersByTime(1000);
+
     await waitFor(() => {
       expect(screen.getByText('Type Answer')).toBeInTheDocument();
     });
   });
 
   it('handles lesson completion', async () => {
-    require('react-router-dom').useParams.mockReturnValue({ lessonId: 'lesson1' });
+    mockedUseParams.mockReturnValue({ lessonId: 'lesson1' });
     render(<LessonPlayer />);
 
     // First exercise
     fireEvent.click(screen.getByText('Correct'));
+    vi.advanceTimersByTime(1000);
     await waitFor(() => expect(screen.getByText('Type Answer')).toBeInTheDocument());
 
     // Second (last) exercise
     fireEvent.click(screen.getByText('Submit'));
+    vi.advanceTimersByTime(1000);
 
     await waitFor(() => {
-      const progress = JSON.parse(localStorage.getItem('progress'));
+      const progress = JSON.parse(localStorage.getItem('progress') || '{}');
       expect(progress.completedLessons).toContain('lesson1');
-      expect(progress.xp).toBe(20); // 10 for each correct answer
+      expect(progress.xp).toBe(20);
       expect(navigate).toHaveBeenCalledWith('/learn');
     });
   });
 
   it('shows quality buttons on correct answer in review mode', async () => {
     searchParams.set('exercise', 'ex1');
-    require('react-router-dom').useParams.mockReturnValue({ lessonId: 'lesson1' });
+    mockedUseParams.mockReturnValue({ lessonId: 'lesson1' });
     render(<LessonPlayer />);
 
     fireEvent.click(screen.getByText('Correct'));
@@ -139,7 +151,7 @@ describe('LessonPlayer', () => {
 
   it('handles review completion when a quality button is clicked', async () => {
     searchParams.set('exercise', 'ex1');
-    require('react-router-dom').useParams.mockReturnValue({ lessonId: 'lesson1' });
+    mockedUseParams.mockReturnValue({ lessonId: 'lesson1' });
     render(<LessonPlayer />);
 
     fireEvent.click(screen.getByText('Correct'));
@@ -148,7 +160,7 @@ describe('LessonPlayer', () => {
     fireEvent.click(screen.getByText('Easy'));
 
     await waitFor(() => {
-        const progress = JSON.parse(localStorage.getItem('progress'));
+        const progress = JSON.parse(localStorage.getItem('progress') || '{}');
         expect(progress.reviewSchedule.ex1).toBeDefined();
         expect(navigate).toHaveBeenCalledWith('/review');
     })

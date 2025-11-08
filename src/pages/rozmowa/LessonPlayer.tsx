@@ -1,56 +1,17 @@
-<<<<<<< HEAD
-=======
 import { useEffect, useReducer } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '../../components/rozmowa';
 import Header from '../../components/Header';
 import { skillTree } from '../../data/lessons';
 import { sm2 } from '../../lib/sm2';
-import { Exercise } from '../../types';
->>>>>>> cdc0897cd6c6b5e8814f59a11e3825f9cfe53d63
+import { Exercise, LessonAction, LessonState } from '../../types';
+import MultipleChoice from '../../components/exercises/MultipleChoice';
+import ListenAndSelect from '../../components/exercises/ListenAndSelect';
+import TypeAnswer from '../../components/exercises/TypeAnswer';
+import ListenAndType from '../../components/exercises/ListenAndType';
+import DragWords from '../../components/exercises/DragWords';
+import FillBlanks from '../../components/exercises/FillBlanks';
 
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { LessonPlayer } from '../LessonPlayer';
-import { skillTree } from '../../../data/lessons';
-import React from 'react';
-
-// Mock dependencies
-vi.mock('react-router-dom', () => ({
-  useParams: vi.fn(),
-  useNavigate: vi.fn(),
-  useSearchParams: vi.fn(),
-}));
-
-vi.mock('../../../data/lessons', () => ({
-  skillTree: [
-    {
-      id: 'unit1',
-      title: 'Unit 1',
-      lessons: [
-        {
-          id: 'lesson1',
-          title: 'Lesson 1',
-          exercises: [
-            { id: 'ex1', type: 'multiple_choice', prompt: 'Question 1', options: ['A', 'B'], answer: 'A' },
-            { id: 'ex2', type: 'type_answer', prompt: 'Question 2', answer: 'B' },
-          ],
-        },
-      ],
-    },
-  ],
-}));
-
-<<<<<<< HEAD
-// Mock exercise components
-vi.mock('../../../components/exercises/MultipleChoice', () => ({
-  default: ({ onSubmit, showResult }) => (
-    <div>
-      <h1>Multiple Choice</h1>
-      <button onClick={() => onSubmit(true)}>Correct</button>
-      <button onClick={() => onSubmit(false)}>Incorrect</button>
-      {showResult && <span>Result is shown</span>}
-=======
 const initialState: LessonState = {
   exerciseIndex: 0,
   xpEarned: 0,
@@ -232,119 +193,6 @@ export const LessonPlayer: React.FC = () => {
           )}
         </div>
       </div>
->>>>>>> cdc0897cd6c6b5e8814f59a11e3825f9cfe53d63
     </div>
-  ),
-}));
-vi.mock('../../../components/exercises/TypeAnswer', () => ({
-  default: ({ onSubmit }) => (
-    <div>
-      <h1>Type Answer</h1>
-      <button onClick={() => onSubmit(true)}>Submit</button>
-    </div>
-  ),
-}));
-
-// Mock localStorage
-const localStorageMock = (() => {
-  let store = {};
-  return {
-    getItem: (key) => store[key] || null,
-    setItem: (key, value) => {
-      store[key] = value.toString();
-    },
-    clear: () => {
-      store = {};
-    },
-  };
-})();
-Object.defineProperty(window, 'localStorage', { value: localStorageMock });
-
-describe('LessonPlayer', () => {
-  const navigate = vi.fn();
-  const searchParams = new URLSearchParams();
-
-  beforeEach(() => {
-    vi.clearAllMocks();
-    localStorageMock.clear();
-    require('react-router-dom').useNavigate.mockReturnValue(navigate);
-    require('react-router-dom').useSearchParams.mockReturnValue([searchParams]);
-  });
-
-  it('renders "Lesson not found" if lesson does not exist', () => {
-    require('react-router-dom').useParams.mockReturnValue({ lessonId: 'nonexistent' });
-    render(<LessonPlayer />);
-    expect(screen.getByText('Lesson not found')).toBeInTheDocument();
-  });
-
-  it('renders the first exercise of a lesson', () => {
-    require('react-router-dom').useParams.mockReturnValue({ lessonId: 'lesson1' });
-    render(<LessonPlayer />);
-    expect(screen.getByText('Multiple Choice')).toBeInTheDocument();
-  });
-
-  it('handles correct answer in normal mode', async () => {
-    require('react-router-dom').useParams.mockReturnValue({ lessonId: 'lesson1' });
-    render(<LessonPlayer />);
-    
-    fireEvent.click(screen.getByText('Correct'));
-
-    expect(screen.getByText('Result is shown')).toBeInTheDocument();
-
-    // Wait for the next exercise to be rendered
-    await waitFor(() => {
-      expect(screen.getByText('Type Answer')).toBeInTheDocument();
-    });
-  });
-
-  it('handles lesson completion', async () => {
-    require('react-router-dom').useParams.mockReturnValue({ lessonId: 'lesson1' });
-    render(<LessonPlayer />);
-
-    // First exercise
-    fireEvent.click(screen.getByText('Correct'));
-    await waitFor(() => expect(screen.getByText('Type Answer')).toBeInTheDocument());
-
-    // Second (last) exercise
-    fireEvent.click(screen.getByText('Submit'));
-
-    await waitFor(() => {
-      const progress = JSON.parse(localStorage.getItem('progress'));
-      expect(progress.completedLessons).toContain('lesson1');
-      expect(progress.xp).toBe(20); // 10 for each correct answer
-      expect(navigate).toHaveBeenCalledWith('/learn');
-    });
-  });
-
-  it('shows quality buttons on correct answer in review mode', async () => {
-    searchParams.set('exercise', 'ex1');
-    require('react-router-dom').useParams.mockReturnValue({ lessonId: 'lesson1' });
-    render(<LessonPlayer />);
-
-    fireEvent.click(screen.getByText('Correct'));
-
-    await waitFor(() => {
-        expect(screen.getByText('How did you do?')).toBeInTheDocument();
-    });
-    expect(screen.getByText('Hard')).toBeInTheDocument();
-    expect(screen.getByText('Good')).toBeInTheDocument();
-    expect(screen.getByText('Easy')).toBeInTheDocument();
-  });
-
-  it('handles review completion when a quality button is clicked', async () => {
-    searchParams.set('exercise', 'ex1');
-    require('react-router-dom').useParams.mockReturnValue({ lessonId: 'lesson1' });
-    render(<LessonPlayer />);
-
-    fireEvent.click(screen.getByText('Correct'));
-    
-    await waitFor(() => expect(screen.getByText('Easy')).toBeInTheDocument());
-    fireEvent.click(screen.getByText('Easy'));
-
-    await waitFor(() => {
-        const progress = JSON.parse(localStorage.getItem('progress'));
-        expect(progress.reviewSchedule.ex1).toBeDefined();
-        expect(navigate).toHaveBeenCalledWith('/review');
-    })
-  });
-});
+  );
+};
