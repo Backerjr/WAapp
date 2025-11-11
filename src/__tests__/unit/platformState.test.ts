@@ -1,14 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { usePlatformState } from '../../src/lib/state/academics';
+import { usePlatformState } from '../../lib/state/academics';
 
-vi.mock('zustand/middleware', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('zustand/middleware')>();
-  return {
-    ...actual,
-    persist: (creator: Parameters<typeof actual.persist>[0]) => (set: any, get: any, api: any) =>
-      creator(set, get, api),
-  };
-});
+// Mock persist to bypass localStorage in tests
+vi.mock('../../lib/state/zustand-persist-lite', () => ({
+  persist: (creator: any) => creator,
+}));
 
 describe('usePlatformState', () => {
   beforeEach(() => {
@@ -34,6 +30,7 @@ describe('usePlatformState', () => {
     const absentAlert = updatedStudent?.aiAlerts.find(alert => alert.message.includes('ABSENT'));
     expect(absentAlert).toBeDefined();
     expect(absentAlert?.message).toContain('ABSENT');
+  });
 
   it('logs snapshot and advances sync timestamp', () => {
     const previousSync = usePlatformState.getState().lastSyncIso;

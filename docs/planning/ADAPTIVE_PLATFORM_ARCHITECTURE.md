@@ -2,23 +2,30 @@
 
 ## Core Layout
 ```
-app/
-├── layout.tsx                   # Root layout with theme providers and command palette
-├── providers.tsx                # Zustand + analytics providers
-├── globals.css                  # Tailwind layer + CSS variables from tokens
-├── dashboard/
-│   ├── page.tsx                 # Role-aware adaptive dashboard router
-│   ├── teacher/page.tsx         # Teacher cockpit composition
-│   ├── manager/page.tsx         # Operations view composition
-│   ├── student/page.tsx         # Student workspace shell
-│   └── ai/page.tsx              # AI command center orchestration
-├── lessons/
-│   ├── page.tsx                 # Lesson discovery hub
-│   └── [lessonId]/page.tsx      # Adaptive lesson player (React Server Components)
-├── review/page.tsx              # Retrieval practice flows
-├── reports/
-│   ├── page.tsx                 # Analytics hub with filters
-│   └── [cohortId]/page.tsx      # Cohort deep dive dashboards
+src/
+├── main.tsx                     # Vite SPA entry point
+├── App.tsx                      # Top-level app state, routing, and persistence
+├── components/
+│   ├── SkillTree.tsx            # Unit/lesson selection and locking logic
+│   ├── LessonView.tsx           # Lesson player and exercise orchestration
+│   ├── ExerciseCard.tsx         # Exercise wrapper with feedback and callbacks
+│   ├── exercises/               # Individual exercise components (ListenAndSelect, etc.)
+│   └── platform/                # Role-specific dashboard components
+│       ├── TeacherConsole.tsx   # Teacher cockpit composition
+│       ├── ManagerDashboard.tsx # Operations view composition
+│       ├── StudentWorkspace.tsx # Student workspace shell
+│       └── AIControlPanel.tsx   # AI command center orchestration
+├── data/
+│   └── lessons.ts               # Single source of truth for skill tree and exercises
+├── lib/
+│   └── state/                   # State management (Zustand-lite + persist middleware)
+│       ├── academics.ts         # Academic state store with attendance and alerts
+│       ├── zustand-lite.ts      # Lightweight Zustand implementation
+│       └── zustand-persist-lite.ts # Persist middleware
+├── types.ts                     # Shared domain models and exercise shapes
+├── utils/                       # Formatting, accessibility helpers
+└── design-system/               # Tokens, Tailwind plugin, shared UI components
+
 # No backend API routes; production server is a minimal Node.js static server (see server.js)
 # All client-side logic; no Edge runtime or Next.js API endpoints.
 ```

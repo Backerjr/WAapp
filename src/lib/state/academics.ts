@@ -1,7 +1,8 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from './zustand-lite';
+import { persist } from './zustand-persist-lite';
 
 export type AttendanceStatus = 'present' | 'late' | 'absent' | 'excused';
+export const ATTENDANCE_STATUSES: readonly AttendanceStatus[] = ['present', 'late', 'absent', 'excused'] as const;
 export type SkillLevel = 'foundation' | 'intermediate' | 'advanced' | 'mastery';
 
 export interface LessonMetric {

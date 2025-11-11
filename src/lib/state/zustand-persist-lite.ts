@@ -38,7 +38,7 @@ export function persist<T>(creator: StateCreator<T>, options: PersistOptions<T>)
         try {
           const parsed = JSON.parse(storedValue);
           if (parsed.state) {
-            setPersistedState(() => parsed.state as T, true);
+            setPersistedState(parsed.state as T, true);
           }
         } catch (error) {
           console.warn('persist hydration failed', error);
