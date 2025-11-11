@@ -19,9 +19,8 @@ app/
 ├── reports/
 │   ├── page.tsx                 # Analytics hub with filters
 │   └── [cohortId]/page.tsx      # Cohort deep dive dashboards
-└── api/
-    ├── sync/route.ts            # Edge runtime webhook receiver
-    └── recommendations/route.ts # AI automation dispatcher
+# No backend API routes; production server is a minimal Node.js static server (see server.js)
+# All client-side logic; no Edge runtime or Next.js API endpoints.
 ```
 
 ```
