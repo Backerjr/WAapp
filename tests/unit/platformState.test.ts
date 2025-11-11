@@ -15,9 +15,6 @@ describe('usePlatformState', () => {
     const { getState, setState } = usePlatformState;
     setState({
       ...getState(),
-      schedules: getState().schedules,
-      achievementPulses: getState().achievementPulses,
-      snapshots: getState().snapshots,
       lastSyncIso: new Date('2024-12-18T00:00:00.000Z').toISOString(),
     });
   });
