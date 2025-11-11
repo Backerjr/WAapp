@@ -91,7 +91,7 @@ tests/
 - **Persistence**: localStorage for progress/stats/state, Firebase for authentication
 
 ## Automation
-- **Scripts**: `pnpm run check` runs type-check → lint → test
+- **Scripts**: `pnpm run check` (using pnpm as the package manager) runs the `check` script defined in `package.json` (type-check → lint → test)
 - **GitHub Actions**: CI pipeline runs checks and Playwright tests
 - **Deployment**: Vercel deployment with `vercel-build` script
 - **Testing**:
