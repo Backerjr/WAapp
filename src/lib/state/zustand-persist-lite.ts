@@ -37,7 +37,7 @@ export function persist<T>(creator: StateCreator<T>, options: PersistOptions<T>)
       if (storedValue) {
         try {
           const parsed = JSON.parse(storedValue);
-          if (parsed.state) {
+          if (parsed.state && parsed.version === (options.version ?? 0)) {
             setPersistedState(() => parsed.state as T, true);
           }
         } catch (error) {
