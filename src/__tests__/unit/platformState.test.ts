@@ -1,10 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { usePlatformState } from '../../lib/state/academics';
 
-// Mock persist to bypass localStorage in tests
+// Mock persist to bypass localStorage in tests - must be before imports
 vi.mock('../../lib/state/zustand-persist-lite', () => ({
   persist: (creator: any) => creator,
 }));
+
+import { usePlatformState } from '../../lib/state/academics';
 
 describe('usePlatformState', () => {
   beforeEach(() => {
