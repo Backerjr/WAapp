@@ -1,25 +1,20 @@
-import { defineConfig, mergeConfig } from 'vitest/config';
+/// <reference types="vitest" />
+import { defineConfig, mergeConfig } from 'vite';
 import viteConfig from './vite.config';
 
 export default mergeConfig(
-  viteConfig,
+  // We need to call the function exported from vite.config.ts
+  // to get the plain config object. We can pass a default mode.
+  (viteConfig as Function)({ mode: 'test' }),
   defineConfig({
     test: {
       globals: true,
       environment: 'jsdom',
-      setupFiles: './src/test/setup.ts',
-      // Exclude E2E tests (those are for Playwright)
-      exclude: [
-        '**/node_modules/**',
-        '**/dist/**',
-        '**/e2e/**',
-        '**/*.spec.ts', // Playwright uses .spec.ts
-      ],
-      // Only include unit tests
-      include: [
-        '**/__tests__/**/*.test.{ts,tsx}',
-        '**/*.test.{ts,tsx}',
-      ],
+      setupFiles: './src/setupTests.ts',
+      // you might want to disable it, if you don't have tests that rely on CSS
+      // since parsing CSS is slow
+      css: true,
     },
   })
 );
+
