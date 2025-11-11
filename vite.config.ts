@@ -4,7 +4,8 @@ import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/',
+  // This is the correct fix for GitHub Pages
+  base: '/WAapp/',
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
