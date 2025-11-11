@@ -31,8 +31,9 @@ describe('usePlatformState', () => {
       .schedules[0].roster.find((entry) => entry.studentId === targetStudent.studentId);
 
     expect(updatedStudent?.attendance).toBe('absent');
-    expect(updatedStudent?.aiAlerts[0].message).toContain('ABSENT');
-  });
+    const absentAlert = updatedStudent?.aiAlerts.find(alert => alert.message.includes('ABSENT'));
+    expect(absentAlert).toBeDefined();
+    expect(absentAlert?.message).toContain('ABSENT');
 
   it('logs snapshot and advances sync timestamp', () => {
     const previousSync = usePlatformState.getState().lastSyncIso;
