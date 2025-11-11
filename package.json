@@ -14,7 +14,10 @@
     "test:e2e:ui": "playwright test --ui",
     "preview": "vite preview",
     "start": "npm run build && node server.js",
-    "vercel-build": "npm run build:vercel"
+    "vercel-build": "npm run build:vercel",
+    "check": "npm run type-check && npm run lint && npm run test",
+    "ci": "npm run check",
+    "deploy:preview": "npm run build && npm run preview"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",
