@@ -47,7 +47,7 @@ src/
 │   └── types.ts                 # Component-level type definitions
 ├── design-system/
 │   ├── tokens.ts                # Unified design tokens (colors, spacing, typography)
-│   └── tailwind-plugin.ts       # Custom Tailwind plugin exposing tokens
+├── tailwind.config.js           # Tailwind configuration (uses design tokens)
 ├── data/
 │   ├── lessons.ts               # Single source of truth for skill tree and exercises
 │   ├── achievements.ts          # Achievement definitions and criteria
