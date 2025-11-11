@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import MainLayout from './pages/rozmowa/MainLayout';
 import Dashboard from './pages/rozmowa/Dashboard';
 import LearnPage from './pages/rozmowa/LearnPage';
@@ -6,10 +6,34 @@ import { LessonPlayer } from './pages/rozmowa/LessonPlayer';
 import ReviewPage from './pages/rozmowa/ReviewPage';
 import ResourceLibrary from './pages/rozmowa/ResourceLibrary';
 import ProfilePage from './pages/rozmowa/ProfilePage';
-import LeaderboardPage from './pages/rozmowa/LeaderboardPage'; // Import LeaderboardPage
+import LeaderboardPage from './pages/rozmowa/LeaderboardPage';
+import LandingPage from './components/LandingPage';
 import { auth, googleProvider } from './firebase';
 import { onAuthStateChanged, User, signInWithPopup } from 'firebase/auth';
 import { useState, useEffect } from 'react';
+import { useLocalStorage } from './hooks/useLocalStorage';
+
+/**
+ * Root route component that handles landing page vs dashboard redirect
+ * Shows LandingPage only on first visit, then redirects returning users to Dashboard
+ */
+function RootRoute() {
+  const [hasVisited, setHasVisited] = useLocalStorage('hasVisited', false);
+  const navigate = useNavigate();
+
+  // If user has visited before, redirect to dashboard
+  if (hasVisited) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  // First time visitor - show landing page and mark as visited when they start
+  const handleStart = () => {
+    setHasVisited(true);
+    navigate('/dashboard');
+  };
+
+  return <LandingPage onStart={handleStart} />;
+}
 
 /**
  * rozmoWA Application
@@ -46,8 +70,12 @@ export function RozmowaApp() {
     <BrowserRouter basename={basename}>
       {user ? (
         <Routes>
+          {/* Root route - shows landing page on first visit, redirects returning users */}
+          <Route path="/" element={<RootRoute />} />
+          
+          {/* Main app routes */}
           <Route path="/" element={<MainLayout />}>
-            <Route index element={<Dashboard />} />
+            <Route path="dashboard" element={<Dashboard />} />
             <Route path="learn" element={<LearnPage />} />
             <Route path="lesson/:lessonId" element={<LessonPlayer />} />
             <Route path="review" element={<ReviewPage />} />
