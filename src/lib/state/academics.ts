@@ -215,7 +215,7 @@ export const usePlatformState = create<PlatformState>()(
                   attendance: status,
                   aiAlerts: [
                     {
-                      id: `auto-${Date.now()}`,
+                      id: `auto-${crypto.randomUUID()}`,
                       message: `Attendance updated to ${status.toUpperCase()} at ${new Date().toLocaleTimeString('en-US', {
                         hour: '2-digit',
                         minute: '2-digit',
