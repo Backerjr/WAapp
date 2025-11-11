@@ -2,54 +2,76 @@
 
 ## Core Layout
 ```
-app/
-├── layout.tsx                   # Root layout with theme providers and command palette
-├── providers.tsx                # Zustand + analytics providers
-├── globals.css                  # Tailwind layer + CSS variables from tokens
-├── dashboard/
-│   ├── page.tsx                 # Role-aware adaptive dashboard router
-│   ├── teacher/page.tsx         # Teacher cockpit composition
-│   ├── manager/page.tsx         # Operations view composition
-│   ├── student/page.tsx         # Student workspace shell
-│   └── ai/page.tsx              # AI command center orchestration
-├── lessons/
-│   ├── page.tsx                 # Lesson discovery hub
-│   └── [lessonId]/page.tsx      # Adaptive lesson player (React Server Components)
-├── review/page.tsx              # Retrieval practice flows
-├── reports/
-│   ├── page.tsx                 # Analytics hub with filters
-│   └── [cohortId]/page.tsx      # Cohort deep dive dashboards
-# No backend API routes; production server is a minimal Node.js static server (see server.js)
-# All client-side logic; no Edge runtime or Next.js API endpoints.
-```
-
-```
 src/
-├── design-system/
-│   ├── tokens.ts                # Unified color, type, shadow, radius tokens
-│   ├── tailwind-plugin.ts       # Custom Tailwind plugin exposing tokens
-│   └── components.ts            # Shared shadcn/ui overrides
+├── main.tsx                     # Vite SPA entry point
+├── RozmowaApp.tsx               # Top-level app with React Router and Firebase auth
+├── index.css                    # Global styles
+├── styles/
+│   ├── theme.ts                 # Theme initialization and utilities
+│   ├── tokens.css               # CSS variables from design tokens
+│   ├── globals.css              # Tailwind layer imports
+│   └── prose.css                # Typography styles
+├── pages/rozmowa/               # Route-level page components
+│   ├── MainLayout.tsx           # Shell with nav and responsive chrome
+│   ├── Dashboard.tsx            # Main dashboard with stats and cards
+│   ├── LearnPage.tsx            # Lesson discovery and skill tree
+│   ├── LessonPlayer.tsx         # Adaptive lesson player with exercise flow
+│   ├── ReviewPage.tsx           # Spaced repetition review queue
+│   ├── ResourceLibrary.tsx      # Additional learning resources
+│   ├── ProfilePage.tsx          # User profile and settings
+│   └── LeaderboardPage.tsx      # Achievement rankings
 ├── components/
 │   ├── platform/                # Role-specific dashboard building blocks
-│   ├── layout/                  # Shells, nav bars, responsive chrome
-│   ├── charts/                  # Recharts wrappers with accessibility helpers
-│   ├── forms/                   # React Hook Form + Zod scaffolds
-│   └── interactive/             # Media players, AI assistants, and widgets
+│   │   ├── TeacherConsole.tsx   # Teacher cockpit with attendance tracking
+│   │   ├── ManagerDashboard.tsx # Operations view with cohort metrics
+│   │   ├── StudentWorkspace.tsx # Student workspace shell
+│   │   └── AICommandCenter.tsx  # AI orchestration and insights
+│   ├── exercises/               # Individual exercise components
+│   │   ├── ListenAndSelect.tsx  # Audio-based multiple choice
+│   │   ├── MultipleChoice.tsx   # Text-based multiple choice
+│   │   ├── TypeAnswer.tsx       # Free-text input exercises
+│   │   ├── ListenAndType.tsx    # Audio dictation exercises
+│   │   ├── FillBlanks.tsx       # Fill-in-the-blank exercises
+│   │   ├── DragWords.tsx        # Drag-and-drop word ordering
+│   │   └── ImageMatch.tsx       # Image-word matching
+│   ├── rozmowa/                 # Shared UI components
+│   │   ├── Button.tsx           # Primary button component
+│   │   ├── Input.tsx            # Form input component
+│   │   ├── ProgressBar.tsx      # Progress visualization
+│   │   ├── Badge.tsx            # Achievement badges
+│   │   ├── DailyGoalsCard.tsx   # Daily goals widget
+│   │   ├── ReviewQueueCard.tsx  # Review queue summary
+│   │   └── index.ts             # Component exports
+│   ├── Header.tsx               # App header with navigation
+│   ├── LandingPage.tsx          # First-visit landing page
+│   └── types.ts                 # Component-level type definitions
+├── design-system/
+│   ├── tokens.ts                # Unified design tokens (colors, spacing, typography)
+│   └── tailwind-plugin.ts       # Custom Tailwind plugin exposing tokens
+├── data/
+│   ├── lessons.ts               # Single source of truth for skill tree and exercises
+│   ├── achievements.ts          # Achievement definitions and criteria
+│   └── mockCourses.ts           # Sample course data
 ├── lib/
-│   ├── state/                   # Zustand stores and selectors
-│   ├── analytics/               # Client analytics + instrumentation
-│   ├── ai/                      # Copilot orchestration + prompt builders
-│   ├── api-client/              # Typed fetchers built with openapi-fetch
-│   └── utils/                   # Formatting, accessibility helpers
-├── server/                      # RSC-friendly server utilities (Edge ready)
-│   ├── auth.ts                  # Lucia auth adapters
-│   ├── prisma.ts                # Database client with accelerated reads
-│   └── ai-engine.ts             # Server actions invoking OpenAI + Claude
-└── types/
-    ├── domain.ts                # Shared domain models
-    ├── analytics.ts             # Telemetry contracts
-    └── ai.ts                    # Prompt + automation schemas
+│   ├── state/                   # Custom Zustand-lite stores
+│   │   ├── zustand-lite.ts      # Lightweight Zustand implementation
+│   │   ├── zustand-persist-lite.ts # Persist middleware for localStorage
+│   │   └── academics.ts         # Academic state store (attendance, alerts, snapshots)
+│   ├── sm2.ts                   # Spaced repetition algorithm
+│   └── utils.ts                 # Formatting and helper utilities
+├── hooks/
+│   └── useLocalStorage.ts       # localStorage persistence hook
+├── firebase.ts                  # Firebase auth configuration
+├── i18n/                        # Internationalization config and translations
+├── types.ts                     # Shared domain models and exercise shapes
+└── vite-env.d.ts                # Vite type declarations
 ```
+
+**Production Server:**
+- Build output: `dist/` (generated by `vite build`)
+- Server: `server.js` (minimal Node.js static file server)
+- No backend API routes; fully client-side SPA
+- All state persisted to localStorage or Firebase
 
 ```
 tests/
@@ -59,13 +81,20 @@ tests/
 └── e2e/                         # Playwright specs (retained existing setup)
 ```
 
-## Data Pipes
-- **Source-of-truth**: Supabase Postgres (classes, lessons, attendance, achievements)
-- **ETL cadence**: Edge webhook ingests daily CSV exports, normalizes to domain models, writes to Prisma
-- **Telemetry**: Ingest to Tinybird for real-time dashboards, mirrored to Zustand snapshots for optimistic UI
-- **AI Layer**: Command center orchestrates tasks via server actions hitting `/api/recommendations`
+## Data Flow
+- **Content**: Static lesson data and skill tree defined in `src/data/lessons.ts`
+- **State Management**: Custom Zustand-lite stores with localStorage persistence
+  - Academic state (attendance, AI alerts, snapshots) in `src/lib/state/academics.ts`
+  - User progress and stats managed in `RozmowaApp.tsx` and persisted to localStorage
+- **Authentication**: Firebase Auth with Google provider
+- **Client-side only**: No backend API; all logic runs in the browser
+- **Persistence**: localStorage for progress/stats/state, Firebase for authentication
 
 ## Automation
-- Husky hooks enforcing `pnpm run check`
-- GitHub Actions pipeline: install → `pnpm run check` → Playwright headed false → deploy preview via Vercel
-- Canary releases triggered on `main` with preview comment + analytics smoke tests
+- **Scripts**: `pnpm run check` runs type-check → lint → test
+- **GitHub Actions**: CI pipeline runs checks and Playwright tests
+- **Deployment**: Vercel deployment with `vercel-build` script
+- **Testing**:
+  - Unit tests: Vitest (`pnpm test:unit`)
+  - E2E tests: Playwright (`pnpm test:e2e`)
+  - Combined: `pnpm run check` or `pnpm run ci`
