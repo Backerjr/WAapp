@@ -19,7 +19,9 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "zustand": ["./src/lib/state/zustand-lite"],
+      "zustand/middleware": ["./src/lib/state/zustand-persist-lite"]
     }
   },
   "include": ["src"],

@@ -17,6 +17,8 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@': resolve(__dirname, './src'),
+        zustand: resolve(__dirname, './src/lib/state/zustand-lite'),
+        'zustand/middleware': resolve(__dirname, './src/lib/state/zustand-persist-lite'),
       },
     },
     server: {
