@@ -1,5 +1,5 @@
-import { create } from './zustand-lite';
-import { persist } from './zustand-persist-lite';
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 export type AttendanceStatus = 'present' | 'late' | 'absent' | 'excused';
 export type SkillLevel = 'foundation' | 'intermediate' | 'advanced' | 'mastery';
@@ -194,14 +194,14 @@ const baseSnapshots: PlatformSnapshot[] = [
   { date: '2024-12-18', activeStudents: 169, engagedMinutes: 3712, aiRecommendations: 72, completedAssignments: 245 },
 ];
 
-export const usePlatformState = create<PlatformState>(
+export const usePlatformState = create<PlatformState>()(
   persist(
     (set, get) => ({
       schedules: baseSchedules,
       achievementPulses: baseAchievementPulses,
       snapshots: baseSnapshots,
       lastSyncIso: new Date().toISOString(),
-      updateAttendance: (cohortId: string, studentId: string, status: AttendanceStatus) => {
+      updateAttendance: (cohortId, studentId, status) => {
         set((state) => ({
           ...state,
           schedules: state.schedules.map((schedule) => {
@@ -215,7 +215,7 @@ export const usePlatformState = create<PlatformState>(
                   attendance: status,
                   aiAlerts: [
                     {
-                      id: `auto-${Date.now()}`,
+                      id: `auto-${crypto.randomUUID()}`,
                       message: `Attendance updated to ${status.toUpperCase()} at ${new Date().toLocaleTimeString('en-US', {
                         hour: '2-digit',
                         minute: '2-digit',
@@ -231,7 +231,7 @@ export const usePlatformState = create<PlatformState>(
           lastSyncIso: new Date().toISOString(),
         }));
       },
-      logSnapshot: (snapshot: PlatformSnapshot) => {
+      logSnapshot: (snapshot) => {
         const previousSnapshots = get().snapshots;
         set({
           snapshots: [...previousSnapshots, snapshot],

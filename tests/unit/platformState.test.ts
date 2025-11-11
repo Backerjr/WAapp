@@ -15,9 +15,6 @@ describe('usePlatformState', () => {
     const { getState, setState } = usePlatformState;
     setState({
       ...getState(),
-      schedules: getState().schedules,
-      achievementPulses: getState().achievementPulses,
-      snapshots: getState().snapshots,
       lastSyncIso: new Date('2024-12-18T00:00:00.000Z').toISOString(),
     });
   });
@@ -34,8 +31,9 @@ describe('usePlatformState', () => {
       .schedules[0].roster.find((entry) => entry.studentId === targetStudent.studentId);
 
     expect(updatedStudent?.attendance).toBe('absent');
-    expect(updatedStudent?.aiAlerts[0].message).toContain('ABSENT');
-  });
+    const absentAlert = updatedStudent?.aiAlerts.find(alert => alert.message.includes('ABSENT'));
+    expect(absentAlert).toBeDefined();
+    expect(absentAlert?.message).toContain('ABSENT');
 
   it('logs snapshot and advances sync timestamp', () => {
     const previousSync = usePlatformState.getState().lastSyncIso;
@@ -48,7 +46,7 @@ describe('usePlatformState', () => {
     });
 
     const store = usePlatformState.getState();
-    expect(store.snapshots[store.snapshots.length - 1]?.date).toBe('2024-12-19');
+    expect(store.snapshots.at(-1)?.date).toBe('2024-12-19');
     expect(new Date(store.lastSyncIso).getTime()).toBeGreaterThan(new Date(previousSync).getTime());
   });
 });

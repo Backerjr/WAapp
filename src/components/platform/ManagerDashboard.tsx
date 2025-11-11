@@ -4,7 +4,7 @@ import { usePlatformState } from '../../lib/state/academics';
 
 export const ManagerDashboard: FC = () => {
   const { achievementPulses, snapshots } = usePlatformState();
-  const latest = snapshots.length > 0 ? snapshots[snapshots.length - 1] : undefined;
+  const latest = snapshots.at(-1);
 
   return (
     <section
