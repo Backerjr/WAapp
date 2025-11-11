@@ -48,7 +48,7 @@ describe('usePlatformState', () => {
     });
 
     const store = usePlatformState.getState();
-    expect(store.snapshots.at(-1)?.date).toBe('2024-12-19');
+    expect(store.snapshots[store.snapshots.length - 1]?.date).toBe('2024-12-19');
     expect(new Date(store.lastSyncIso).getTime()).toBeGreaterThan(new Date(previousSync).getTime());
   });
 });
