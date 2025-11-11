@@ -95,6 +95,6 @@ tests/
 - **GitHub Actions**: CI pipeline runs checks and Playwright tests
 - **Deployment**: Vercel deployment with `vercel-build` script
 - **Testing**:
-  - Unit tests: Vitest (`pnpm test:unit`)
-  - E2E tests: Playwright (`pnpm test:e2e`)
+  - Unit tests: Vitest (`pnpm run test:unit`)
+  - E2E tests: Playwright (`pnpm run test:e2e`)
   - Combined: `pnpm run check` or `pnpm run ci`
