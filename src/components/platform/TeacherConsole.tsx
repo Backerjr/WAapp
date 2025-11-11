@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 import { themeTokens } from '../../design-system/tokens';
-import { usePlatformState } from '../../lib/state/academics';
+import { usePlatformState, ATTENDANCE_STATUSES } from '../../lib/state/academics';
 
 interface TeacherConsoleProps {
   cohortId: string;
@@ -104,7 +104,7 @@ export const TeacherConsole: FC<TeacherConsoleProps> = ({ cohortId }) => {
                 <p className="text-sm text-white/70">{entry.progressPercent}% mastery</p>
               </div>
               <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Attendance controls">
-                {(['present', 'late', 'absent', 'excused'] as const).map((status) => (
+                {ATTENDANCE_STATUSES.map((status) => (
                   <button
                     key={status}
                     type="button"

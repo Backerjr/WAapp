@@ -37,7 +37,12 @@ type UseBoundStore<T> = {
 
 const identity = <T,>(value: T) => value;
 
-export function create<T>(createState: StateCreator<T>): UseBoundStore<T> {
+export function create<T>(): (createState: StateCreator<T>) => UseBoundStore<T>;
+export function create<T>(createState: StateCreator<T>): UseBoundStore<T>;
+export function create<T>(createState?: StateCreator<T>): any {
+  if (createState === undefined) {
+    return (actualCreateState: StateCreator<T>) => create<T>(actualCreateState);
+  }
   let state: T;
   const listeners = new Set<Listener<T>>();
 
