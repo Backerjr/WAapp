@@ -72,8 +72,8 @@ export function create<T>(createState: StateCreator<T>): UseBoundStore<T> {
 
   state = createState(setState, getState, api);
 
-    function useStore(): T;
-    function useStore<U>(selector: Selector<T, U>): U;
+  function useStore(): T;
+  function useStore<U>(selector: Selector<T, U>): U;
   function useStore<U>(selector: Selector<T, U> = identity as Selector<T, U>) {
     return useSyncExternalStore(
       (listener) => subscribe((_, __) => listener()),
